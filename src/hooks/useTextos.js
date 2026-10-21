@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-const API = "https://yanethm-heroes-api.fly.dev/api/v1/textos";
-const CLAVES_MENU = ["inicio", "heroes", "marvel", "dc", "equipos"];
+const API = "https://yanethm-sintonia-api.fly.dev/api/v1/textos";
+const CLAVES_MENU_INVITADO = ["descubrir", "planes", "paraArtistas", "ayuda"];
 
 function validarTextos(datos){
     const textos = datos?.textos;
@@ -9,19 +9,20 @@ function validarTextos(datos){
     const etiquetas = [
         nav?.logo?.texto,
         nav?.logo?.aria,
-        ...CLAVES_MENU.map((clave) => nav?.enlaces?.[clave]),
+        ...CLAVES_MENU_INVITADO.map((clave) => nav?.enlaces?.invitado?.[clave]),
         nav?.buscador?.placeholder,
-        nav?.buscador?.aria,
-        nav?.buscador?.boton,
-        nav?.botones?.favoritos,
+        nav?.buscador?.borrar,
+        nav?.botones?.invitado?.ingresar,
+        nav?.botones?.invitado?.crearCuenta,
+        nav?.aria?.navegacion,
         nav?.aria?.idioma,
-        nav?.aria?.menu,
+        nav?.aria?.accesibilidad,
         textos?.menuMovil?.abrir,
         textos?.menuMovil?.cerrar,
     ]
 
     if (!etiquetas.every((valor) =>typeof valor === "string" && valor.trim())){
-        throw new Error("la respuesta no contiene los textos del navbar.")
+        throw new Error("La respuesta no contiene los textos requeridos para el navbar de Sintonía.")
     }
     return textos;
 }

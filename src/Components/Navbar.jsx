@@ -4,11 +4,10 @@ import Icono from "./Icono.jsx";
 
 
 const DESTINOS = {
-  inicio: "#inicio", //pongo /inicio para ir a otra landing
-  heroes: "#heroes",
-  marvel: "#marvel",
-  dc: "#dc",
-  equipos: "#equipos",
+  descubrir: "#descubrir",
+  planes: "#planes",
+  paraArtistas: "#para-artistas",
+  ayuda: "#ayuda",
 };
 
 //navbar es hijo de main
@@ -23,10 +22,10 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, onBuscar, t
   const ingles = idioma === "en";
   
   const abrir =
-    textos?.menuMovil?.abrir ?? (ingles ? "Open menu" : "Abrir menu"); //si está en ingles muestra "open menu" si no "abrir menu"
+    textos?.menuMovil?.abrir ?? (ingles ? "Open menu" : "Abrir menú");
   const cerrar =
-    textos?.menuMovil?.cerrar ?? (ingles ? "Close menu" : "Cerrar menu"); //la misma logica en cerrar
-  const enlaces = Object.entries(nav?.enlaces ?? {}).filter(
+    textos?.menuMovil?.cerrar ?? (ingles ? "Close menu" : "Cerrar menú");
+  const enlaces = Object.entries(nav?.enlaces?.invitado ?? {}).filter(
     ([clave]) => DESTINOS[clave],
   );
 
@@ -63,7 +62,7 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, onBuscar, t
     <header className="navbar">
       <nav
         className="contenedor navbar-interior"
-        aria-label={nav?.aria?.menu ?? "Navegación principal"}
+        aria-label={nav?.aria?.navegacion ?? "Navegación principal"}
       >
         <a
           href="#inicio"
@@ -72,9 +71,9 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, onBuscar, t
           onClick={() => setAbierto(false)}
         >
           <span className="navbar-simbolo" aria-hidden="true">
-            H
+            S
           </span>
-          <span>{nav?.logo?.texto ?? "Héroes"}</span>
+          <span>{nav?.logo?.texto ?? "Sintonía"}</span>
         </a>
 
         {/* Acciones del navbar movil */}
@@ -82,22 +81,11 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, onBuscar, t
           <button
             type="button"
             className="navbar-icono"
-            aria-label={nav?.buscador?.aria ?? "Buscar"}
+            aria-label={nav?.buscador?.placeholder ?? (ingles ? "Search" : "Buscar")}
             onClick={abrirBusqueda}
           >
             <Icono nombre="buscar" />
           </button>
-          {/* Seccion de favoritos */}
-          {nav && (
-            <a
-              className="navbar-icono"
-              href="#favoritos"
-              aria-label={nav.botones.favoritos}
-              onClick={() => setAbierto(false)}
-            >
-              <Icono nombre="favoritos" />
-            </a>
-          )}
           <button
             type="button"
             ref={botonMenu}
@@ -118,15 +106,18 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, onBuscar, t
             <ul className="navbar-enlaces">
               {enlaces.map(([clave, etiqueta]) => <li key={clave}><a href={DESTINOS[clave]} aria-current={activo === clave ? "page" : undefined} onClick={() => setAbierto(false)}>{etiqueta}</a></li>)}
             </ul>
-            <form className="navbar-buscador" role="search" aria-label={nav.buscador.aria} onSubmit={buscar}>
-              <button type="submit" aria-label={nav.buscador.boton}><Icono nombre="buscar" /></button>
-              <input ref={campoBusqueda} type="search" value={busqueda} onChange={(evento) => setBusqueda(evento.target.value)} placeholder={nav.buscador.placeholder} aria-label={nav.buscador.aria} required />
+            <form className="navbar-buscador" role="search" aria-label={nav.buscador.placeholder} onSubmit={buscar}>
+              <button type="submit" aria-label={nav.buscador.placeholder}><Icono nombre="buscar" /></button>
+              <input ref={campoBusqueda} type="search" value={busqueda} onChange={(evento) => setBusqueda(evento.target.value)} placeholder={nav.buscador.placeholder} aria-label={nav.buscador.placeholder} required />
             </form>
           </>}
           <div className="navbar-utilidades">
             <label className="navbar-idioma"><Icono nombre="idioma" /><select value={idioma} onChange={(evento) => cambiarIdioma(evento.target.value)} aria-label={nav?.aria?.idioma ?? "Cambiar idioma"}><option value="es">ES</option><option value="en">EN</option></select></label>
-            <button className="navbar-icono navbar-accesibilidad" type="button" aria-label={ingles ? "Enlarge text" : "Aumentar texto"} aria-pressed={textoGrande} onClick={alternarTexto}><Icono nombre="accesibilidad" /></button>
-            {nav && <a className="navbar-accion" href="#favoritos" onClick={() => setAbierto(false)}>{nav.botones.favoritos}</a>}
+            <button className="navbar-icono navbar-accesibilidad" type="button" aria-label={nav?.aria?.accesibilidad ?? (ingles ? "Enlarge text" : "Aumentar texto")} aria-pressed={textoGrande} onClick={alternarTexto}><Icono nombre="accesibilidad" /></button>
+            {nav && <div className="navbar-cuenta">
+              <a className="navbar-ingresar" href="#ingresar" onClick={() => setAbierto(false)}>{nav.botones.invitado.ingresar}</a>
+              <a className="navbar-accion" href="#registro" onClick={() => setAbierto(false)}>{nav.botones.invitado.crearCuenta}</a>
+            </div>}
           </div>
         </div>
       </nav>

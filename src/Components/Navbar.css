@@ -89,6 +89,9 @@
 .navbar-buscador input { width: 100%; min-width: 0; height: 44px; padding: 0 12px 0 0; border: 0; border-radius: 999px; color: var(--color-texto); background: transparent; font-size: .875rem; }
 .navbar-buscador input::placeholder { color: var(--color-texto-suave); opacity: 1; }
 .navbar-utilidades { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.navbar-cuenta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.navbar-ingresar { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 12px; color: var(--color-texto); font-size: .875rem; font-weight: 600; white-space: nowrap; }
+.navbar-ingresar:hover { color: var(--color-primario); }
 .navbar-idioma {
   display: inline-flex;
   align-items: center;
