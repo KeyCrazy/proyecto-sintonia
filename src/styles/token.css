@@ -1,13 +1,13 @@
 :root{
-    --color-fondo:#f8fafc;
-    --color-superficie:#ffffff;
-    --color-texto: #172033;
-    --color-texto-suave: #475569;
-    --color-primario: #1d4ed8;
-    --color-primario-hover: #1e40af;
-    --color-sobre-primario: #ffffff;
-    --color-borde: #cbd5e1;
-    --color-foco: #7c3aed;
+    --color-fondo:#0b0a0f;
+    --color-superficie:#131219;
+    --color-texto: #f7f6f8;
+    --color-texto-suave: #aaa7b4;
+    --color-primario: #c5f542;
+    --color-primario-hover: #d6ff68;
+    --color-sobre-primario: #11120b;
+    --color-borde: #292631;
+    --color-foco: #c5f542;
 
     --fuente-texto: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     --fuente-titulos: Georgia, "Times New Roman", serif;

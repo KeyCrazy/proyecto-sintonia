@@ -9,6 +9,12 @@ const DESTINOS = {
   paraArtistas: "#para-artistas",
   ayuda: "#ayuda",
 };
+const ICONOS_ENLACE = {
+  descubrir: "descubrir",
+  planes: "planes",
+  paraArtistas: "artistas",
+  ayuda: "ayuda",
+};
 
 //navbar es hijo de main
 const Navbar = ({ textos, cargando, error, recargar, idioma, activo, onBuscar, textoGrande, alternarTexto, cambiarIdioma}) => {
@@ -71,7 +77,9 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, onBuscar, t
           onClick={() => setAbierto(false)}
         >
           <span className="navbar-simbolo" aria-hidden="true">
-            S
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 9v6m5-10v14m5-10v6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+            </svg>
           </span>
           <span>{nav?.logo?.texto ?? "Sintonía"}</span>
         </a>
@@ -86,6 +94,7 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, onBuscar, t
           >
             <Icono nombre="buscar" />
           </button>
+          {nav && <a className="navbar-movil-ingresar" href="#ingresar" onClick={() => setAbierto(false)}>{nav.botones.invitado.ingresar}</a>}
           <button
             type="button"
             ref={botonMenu}
@@ -104,7 +113,7 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, onBuscar, t
           {error && <div className="navbar-estado" role="alert"><p>{ingles ? "Navigation could not be loaded." : "No pudimos cargar el menú."}</p><button type="button" onClick={recargar}>{ingles ? "Try again" : "Reintentar"}</button></div>}
           {nav && <>
             <ul className="navbar-enlaces">
-              {enlaces.map(([clave, etiqueta]) => <li key={clave}><a href={DESTINOS[clave]} aria-current={activo === clave ? "page" : undefined} onClick={() => setAbierto(false)}>{etiqueta}</a></li>)}
+              {enlaces.map(([clave, etiqueta]) => <li key={clave}><a href={DESTINOS[clave]} aria-current={activo === DESTINOS[clave].slice(1) ? "page" : undefined} onClick={() => setAbierto(false)}><span className="navbar-enlace-icono" aria-hidden="true"><Icono nombre={ICONOS_ENLACE[clave]} /></span>{etiqueta}</a></li>)}
             </ul>
             <form className="navbar-buscador" role="search" aria-label={nav.buscador.placeholder} onSubmit={buscar}>
               <button type="submit" aria-label={nav.buscador.placeholder}><Icono nombre="buscar" /></button>
