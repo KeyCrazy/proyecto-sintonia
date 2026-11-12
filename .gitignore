@@ -59,6 +59,10 @@ logs
 node_modules
 bower_components
 
+.env
+.env.*
+!.env.example
+
 *.sublime*
 
 psd
