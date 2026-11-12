@@ -4,6 +4,7 @@ import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer.jsx";
 import CookieNotice from "./Components/base/CookieNotice.jsx";
 import InicioPublico from "./Components/InicioPublico.jsx";
+import Catalogo from "./Components/Catalogo.jsx";
 import AccessibilityPanel from "./Components/AccessibilityPanel.jsx";
 import { guardarCookie, leerCookie } from "./utils/cookies.js";
 import {useEffect, useRef, useState} from "react";
@@ -18,6 +19,8 @@ const SECCIONES = new Set([
 ]);
 
 function leerSeccion(){
+    if (window.location.pathname === "/catalogo") return "catalogo";
+    if (window.location.pathname !== "/") return "detalle";
     const seccion = window.location.hash.slice(1);
     return SECCIONES.has(seccion) ? seccion : "inicio";
 }
@@ -41,6 +44,8 @@ function App() {
     });
 
     const datos = useTextos(idioma);
+    const rutaDetalle =
+        activo === "detalle" ? decodeURIComponent(window.location.pathname.slice(1)) : "";
     
     //va a sincornizar el estado del componente con el hash de la URL
     useEffect(() => {
@@ -49,7 +54,11 @@ function App() {
             window.scrollTo(0, 0)
         }
         window.addEventListener("hashchange", actualizar)
-        return () => window.removeEventListener("hashchange", actualizar)
+        window.addEventListener("popstate", actualizar)
+        return () => {
+            window.removeEventListener("hashchange", actualizar)
+            window.removeEventListener("popstate", actualizar)
+        }
     }, [])
 
     useEffect(() => {
@@ -141,7 +150,7 @@ function App() {
             />
             <main
                 id={activo}
-                className={`contenido${activo === "inicio" ? " contenido-inicio" : ""}`}
+                className={`contenido${activo === "inicio" ? " contenido-inicio" : ""}${activo === "catalogo" ? " contenido-catalogo" : ""}`}
                 aria-labelledby={`titulo-${activo}`}
             >
                 {activo === "inicio" && datos.textos?.paginas?.inicioPublico && datos.textos?.estados ? (
@@ -149,6 +158,15 @@ function App() {
                         textos={datos.textos.paginas.inicioPublico}
                         estados={datos.textos.estados}
                     />
+                ) : activo === "catalogo" && datos.textos?.paginas?.catalogo && datos.textos?.estados ? (
+                    <Catalogo
+                        textos={datos.textos}
+                        estados={datos.textos.estados}
+                    />
+                ) : activo === "detalle" ? (
+                    <h1 id="titulo-detalle" className="solo-lectores">
+                        {rutaDetalle}
+                    </h1>
                 ) : (
                     <h1 id={`titulo-${activo}`} className="solo-lectores">
                         {etiquetasSeccion[activo]}

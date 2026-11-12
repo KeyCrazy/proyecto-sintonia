@@ -14,6 +14,10 @@
     display: block;
 }
 
+.contenido-catalogo{
+    display: block;
+}
+
 .solo-lectores{
     position: absolute;
     width: 1px;

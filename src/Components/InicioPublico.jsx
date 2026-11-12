@@ -35,8 +35,8 @@ export default function InicioPublico({ textos, estados }) {
           <h1 className="inicio-hero-titulo" id="titulo-inicio">{textos.hero.titulo}</h1>
           <p className="inicio-hero-subtitulo">{textos.hero.subtitulo}</p>
           <div className="inicio-hero-acciones">
-            <Button href="#registro">{textos.hero.botones.crearCuentaGratis}</Button>
-            <Button href="#catalogo" variant="secondary">{textos.hero.botones.explorarCatalogo}</Button>
+            <Button href="/#registro">{textos.hero.botones.crearCuentaGratis}</Button>
+            <Button href="/catalogo" variant="secondary">{textos.hero.botones.explorarCatalogo}</Button>
           </div>
           <div className="inicio-cifras" role="group" aria-label={textos.hero.titulo}>
             <div>
@@ -61,7 +61,7 @@ export default function InicioPublico({ textos, estados }) {
       <section className="inicio-destacados" aria-labelledby="inicio-destacados-titulo">
         <div className="inicio-seccion-encabezado">
           <h2 id="inicio-destacados-titulo">{textos.destacados.titulo}</h2>
-          <a className="inicio-enlace-mas" href="#catalogo">
+          <a className="inicio-enlace-mas" href="/catalogo">
             {textos.destacados.enlaces.descubrirMas}
             <span aria-hidden="true">→</span>
           </a>
@@ -92,7 +92,7 @@ export default function InicioPublico({ textos, estados }) {
       <section className="inicio-generos" aria-labelledby="inicio-generos-titulo">
         <div className="inicio-seccion-encabezado">
           <h2 id="inicio-generos-titulo">{textos.generos.titulo}</h2>
-          <Button href="#catalogo" variant="secondary">{textos.generos.enlaces.verCatalogo}</Button>
+          <Button href="/catalogo" variant="secondary">{textos.generos.enlaces.verCatalogo}</Button>
         </div>
 
         {estadoGeneros === "cargando" && <EstadoCarga etiqueta={estados.cargando.aria} />}
@@ -108,7 +108,7 @@ export default function InicioPublico({ textos, estados }) {
               <a
                 className="inicio-genero"
                 key={genero.id}
-                href="#catalogo"
+                href={`/catalogo?genero=${encodeURIComponent(genero.id)}`}
                 style={{ "--color-genero": genero.colorHex }}
               >
                 <span>{genero.nombre}</span>
@@ -127,7 +127,7 @@ export default function InicioPublico({ textos, estados }) {
           <h2>{textos.cta.titulo}</h2>
           <p>{textos.cta.texto}</p>
         </div>
-        <Button href="#registro" className="inicio-cta-boton">
+        <Button href="/#registro" className="inicio-cta-boton">
           {textos.cta.botones.crearCuentaGratis}
         </Button>
       </section>

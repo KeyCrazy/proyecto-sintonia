@@ -3,16 +3,16 @@ import logo from "../assets/logo.svg";
 
 const DESTINOS = {
   explorar: [
-    ["inicio", "#inicio"],
-    ["catalogo", "#catalogo"],
+    ["inicio", "/#inicio"],
+    ["catalogo", "/catalogo"],
   ],
   cuenta: [
-    ["ingresar", "#ingresar"],
-    ["crearCuenta", "#registro"],
+    ["ingresar", "/#ingresar"],
+    ["crearCuenta", "/#registro"],
   ],
   legal: [
-    ["terminos", "#terminos"],
-    ["accesibilidad", "#accesibilidad"],
+    ["terminos", "/#terminos"],
+    ["accesibilidad", "/#accesibilidad"],
   ],
 };
 
@@ -34,7 +34,7 @@ export default function Footer({ textos, idioma = "es" }) {
           <div className="pie-pagina-marca">
             <a
               className="pie-pagina-logotipo"
-              href="#inicio"
+              href="/#inicio"
               aria-label={idioma === "en" ? "Sintonía, go to home" : "Sintonía, ir al inicio"}
             >
               <img src={logo} alt="" />

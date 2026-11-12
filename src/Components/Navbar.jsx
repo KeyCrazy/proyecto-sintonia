@@ -7,8 +7,8 @@ import LanguageSelector from "./base/LanguageSelector.jsx";
 
 
 const DESTINOS = {
-  inicio: "#inicio",
-  catalogo: "#catalogo",
+  inicio: "/#inicio",
+  catalogo: "/catalogo",
 };
 
 const Navbar = ({ textos, cargando, error, recargar, idioma, activo, accesibilidadAbierta, abrirAccesibilidad, botonAccesibilidadRef, cambiarIdioma }) => {
@@ -52,7 +52,7 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, accesibilid
         aria-label={nav?.aria?.navegacion ?? "Navegación principal"}
       >
         <a
-          href="#inicio"
+          href="/#inicio"
           className="navbar-marca"
           aria-label={nav?.logo?.aria ?? "Sintonía, ir al inicio"}
           onClick={() => setAbierto(false)}
@@ -63,7 +63,7 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, accesibilid
         {/* Acciones del navbar movil */}
         <div className="navbar-movil-acciones">
           {nav && (
-            <a className="navbar-movil-ingresar" href="#ingresar">
+            <a className="navbar-movil-ingresar" href="/#ingresar">
               {nav.botones.invitado.ingresar}
             </a>
           )}
@@ -85,7 +85,7 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, accesibilid
           {error && <div className="navbar-estado" role="alert"><p>{ingles ? "Navigation could not be loaded." : "No pudimos cargar el menú."}</p><button type="button" onClick={recargar}>{ingles ? "Try again" : "Reintentar"}</button></div>}
           {nav && (
             <ul className="navbar-enlaces">
-              {enlaces.map(([clave, etiqueta]) => <li key={clave}><a href={DESTINOS[clave]} aria-current={activo === DESTINOS[clave].slice(1) ? "page" : undefined} onClick={() => setAbierto(false)}>{etiqueta}</a></li>)}
+              {enlaces.map(([clave, etiqueta]) => <li key={clave}><a href={DESTINOS[clave]} aria-current={activo === clave ? "page" : undefined} onClick={() => setAbierto(false)}>{etiqueta}</a></li>)}
             </ul>
           )}
           <div className="navbar-utilidades">
@@ -116,9 +116,9 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, accesibilid
               </span>
             </button>
             {nav && <div className="navbar-cuenta">
-              <a className="navbar-ingresar" href="#ingresar" onClick={() => setAbierto(false)}>{nav.botones.invitado.ingresar}</a>
+              <a className="navbar-ingresar" href="/#ingresar" onClick={() => setAbierto(false)}>{nav.botones.invitado.ingresar}</a>
               <Button
-                href="#registro"
+                href="/#registro"
                 className="navbar-accion"
                 onClick={() => setAbierto(false)}
               >
