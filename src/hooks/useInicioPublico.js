@@ -3,7 +3,7 @@ import { crearUrlApi } from "../utils/api.js";
 
 const HEX_COLOR = /^#[\da-f]{6}$/i;
 
-function portadaValida(portada) {
+export function portadaValida(portada) {
   return (
     portada &&
     Number.isInteger(portada.patron) &&
@@ -15,7 +15,7 @@ function portadaValida(portada) {
   );
 }
 
-function validarGeneros(datos) {
+export function validarGeneros(datos) {
   if (
     !Array.isArray(datos?.datos) ||
     !datos.datos.every(
@@ -33,7 +33,7 @@ function validarGeneros(datos) {
   return datos.datos;
 }
 
-function validarAlbumesPopulares(datos) {
+export function validarAlbumesPopulares(datos) {
   if (
     !Array.isArray(datos?.datos) ||
     !datos.datos.every(
@@ -50,7 +50,7 @@ function validarAlbumesPopulares(datos) {
   return datos.datos;
 }
 
-export function useInicioPublico() {
+export function useInicioPublico(incluirAlbumesPopulares = true) {
   const [generos, setGeneros] = useState([]);
   const [albumesPopulares, setAlbumesPopulares] = useState([]);
   const [estadoGeneros, setEstadoGeneros] = useState("cargando");
@@ -61,7 +61,8 @@ export function useInicioPublico() {
     const controlador = new AbortController();
     let vigente = true;
     setEstadoGeneros("cargando");
-    setEstadoAlbumesPopulares("cargando");
+    setEstadoAlbumesPopulares(incluirAlbumesPopulares ? "cargando" : "listo");
+    if (!incluirAlbumesPopulares) setAlbumesPopulares([]);
 
     async function cargarGeneros() {
       try {
@@ -102,12 +103,12 @@ export function useInicioPublico() {
     }
 
     cargarGeneros();
-    cargarAlbumesPopulares();
+    if (incluirAlbumesPopulares) cargarAlbumesPopulares();
     return () => {
       vigente = false;
       controlador.abort();
     };
-  }, [intento]);
+  }, [intento, incluirAlbumesPopulares]);
 
   return {
     generos,

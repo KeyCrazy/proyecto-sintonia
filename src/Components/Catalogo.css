@@ -1,0 +1,384 @@
+.catalogo {
+  width: min(calc(100% - 32px), 80rem);
+  min-height: 34rem;
+  margin: 16px auto 0;
+  padding: clamp(20px, 2.4vw, 32px);
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radio-xl);
+  background: var(--fondo-superficie);
+}
+
+.catalogo-encabezado {
+  margin-bottom: 22px;
+}
+
+.catalogo-encabezado h1 {
+  margin: 0;
+  font-size: clamp(24px, 2.2vw, 32px);
+  line-height: 1.2;
+}
+
+.catalogo-encabezado p {
+  margin: 6px 0 0;
+  color: var(--texto-secundario);
+  font-size: var(--tamano-detalle-nota);
+}
+
+.catalogo h2 {
+  margin: 0 0 10px;
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+.catalogo-generos {
+  margin-bottom: 14px;
+}
+
+.catalogo-lista-generos {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.catalogo-genero {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  min-width: 0;
+  aspect-ratio: 2 / 1;
+  padding: 10px;
+  border: 2px solid transparent;
+  border-radius: var(--radio-md);
+  color: var(--fijo-negro);
+  background: var(--color-genero);
+  font-family: var(--fuente-syne);
+  font-size: 14px;
+  font-weight: var(--peso-bold);
+  text-decoration: none;
+  transition:
+    border-color var(--duracion-transicion) ease,
+    transform var(--duracion-transicion) ease;
+}
+
+.catalogo-genero:hover {
+  color: var(--fijo-negro);
+  transform: translateY(-2px);
+}
+
+.catalogo-genero[aria-current="true"] {
+  border-color: var(--texto-principal);
+}
+
+.catalogo-genero:focus-visible,
+.catalogo-album:focus-visible,
+.catalogo-artista:focus-visible,
+.catalogo-pista:focus-visible,
+.catalogo-descubrir:focus-visible {
+  outline: var(--grosor-anillo-foco) solid var(--marca-primario);
+  outline-offset: var(--desplazamiento-anillo-foco);
+}
+
+.catalogo-genero > span {
+  position: relative;
+  z-index: 1;
+}
+
+.catalogo-genero-portada {
+  position: absolute;
+  right: -2px;
+  bottom: -48%;
+  width: 48%;
+  transform: rotate(14deg);
+  filter: drop-shadow(0 6px 8px rgb(0 0 0 / 20%));
+  pointer-events: none;
+}
+
+.catalogo-seccion-encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.catalogo-seccion-encabezado h2 {
+  margin-bottom: 0;
+}
+
+.catalogo-descubrir {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--texto-marca);
+  font-size: var(--tamano-detalle-nota);
+  font-weight: var(--peso-semibold);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.catalogo-albumes-lista {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: clamp(10px, 2vw, 24px);
+}
+
+.catalogo-album {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  min-width: 0;
+  color: var(--texto-principal);
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.catalogo-album .portada {
+  width: 100%;
+  margin-bottom: 4px;
+  border-radius: var(--radio-md);
+}
+
+.catalogo-album-titulo,
+.catalogo-album-artista,
+.catalogo-artista-nombre {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.catalogo-album-titulo {
+  font-weight: var(--peso-semibold);
+}
+
+.catalogo-album-artista,
+.catalogo-artista-etiqueta {
+  color: var(--texto-secundario);
+  font-size: 11px;
+}
+
+.catalogo-detalle > section {
+  margin-top: 20px;
+}
+
+.catalogo-artistas-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.catalogo-artista {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  width: 96px;
+  min-width: 0;
+  color: var(--texto-principal);
+  font-size: 12px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.catalogo-artista-avatar {
+  display: block;
+  width: 80px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.catalogo-artista-etiqueta {
+  font-size: 10px;
+}
+
+.catalogo-detalle .catalogo-albumes-lista {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.catalogo-detalle .catalogo-album {
+  width: clamp(96px, 14%, 180px);
+}
+
+.catalogo-pistas {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.catalogo-pistas li + li {
+  border-top: 1px solid var(--borde-sutil);
+}
+
+.catalogo-pista {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 38px;
+  color: var(--texto-principal);
+  text-decoration: none;
+}
+
+.catalogo-pista-numero,
+.catalogo-pista-duracion {
+  color: var(--texto-secundario);
+  font-size: 11px;
+}
+
+.catalogo-pista-info {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.catalogo-pista-titulo {
+  overflow: hidden;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.catalogo-pista-artista {
+  overflow: hidden;
+  color: var(--texto-secundario);
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.catalogo-estado {
+  color: var(--texto-secundario);
+}
+
+.catalogo-error {
+  padding: 20px;
+  border: 1px solid var(--borde-sutil);
+  border-radius: var(--radio-lg);
+  background: var(--fondo-elevada);
+}
+
+.catalogo-error h3,
+.catalogo-error p {
+  margin: 0 0 10px;
+}
+
+.catalogo-error p {
+  color: var(--texto-secundario);
+}
+
+@media (max-width: 640px) {
+  .catalogo {
+    width: calc(100% - 24px);
+    min-height: 0;
+    margin-top: 8px;
+    padding: 12px;
+    border: 0;
+    border-radius: var(--radio-md);
+    background: transparent;
+  }
+
+  .catalogo-encabezado {
+    margin-bottom: 20px;
+  }
+
+  .catalogo-encabezado h1 {
+    font-size: 28px;
+    line-height: 1.15;
+  }
+
+  .catalogo-encabezado p {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .catalogo h2 {
+    margin-bottom: 8px;
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  .catalogo-generos {
+    margin-bottom: 12px;
+  }
+
+  .catalogo-lista-generos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .catalogo-genero:nth-child(n + 9):not([aria-current="true"]) {
+    display: none;
+  }
+
+  .catalogo-genero {
+    aspect-ratio: 1.8 / 1;
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 11px;
+  }
+
+  .catalogo-genero-portada {
+    right: -6px;
+    bottom: -50%;
+    width: 55%;
+  }
+
+  .catalogo-seccion-encabezado {
+    margin-bottom: 8px;
+  }
+
+  .catalogo-descubrir {
+    font-size: 10px;
+  }
+
+  .catalogo-albumes-lista {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .catalogo-album {
+    padding: 6px;
+    border-radius: var(--radio-md);
+    background: var(--fondo-superficie);
+    font-size: 12px;
+  }
+
+  .catalogo-album .portada {
+    margin-bottom: 2px;
+  }
+
+  .catalogo-album-artista {
+    font-size: 10px;
+  }
+
+  .catalogo-detalle > section {
+    margin-top: 18px;
+  }
+
+  .catalogo-artistas-lista {
+    gap: 10px;
+  }
+
+  .catalogo-artista {
+    width: 80px;
+    font-size: 11px;
+  }
+
+  .catalogo-artista-avatar {
+    width: 64px;
+  }
+
+  .catalogo-detalle .catalogo-albumes-lista {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .catalogo-detalle .catalogo-album {
+    width: auto;
+  }
+
+  .catalogo-pista {
+    min-height: 44px;
+  }
+}

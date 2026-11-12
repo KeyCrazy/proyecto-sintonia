@@ -6,6 +6,7 @@ function validarTextos(datos){
     const textos = datos?.textos;
     const nav = textos?.navbar;
     const inicio = textos?.paginas?.inicioPublico;
+    const catalogo = textos?.paginas?.catalogo;
     const etiquetas = [
         nav?.logo?.texto,
         nav?.logo?.aria,
@@ -51,6 +52,20 @@ function validarTextos(datos){
         inicio?.cta?.titulo,
         inicio?.cta?.texto,
         inicio?.cta?.botones?.crearCuentaGratis,
+        catalogo?.seo?.titulo,
+        catalogo?.seo?.descripcion,
+        catalogo?.encabezado?.titulo,
+        catalogo?.encabezado?.subtitulo,
+        catalogo?.generos?.titulo,
+        catalogo?.generos?.aria?.seleccionado,
+        catalogo?.destacados?.titulo,
+        catalogo?.destacados?.enlaces?.descubrirMas,
+        catalogo?.genero?.artistas?.titulo,
+        catalogo?.genero?.artistas?.etiqueta,
+        catalogo?.genero?.albumes?.titulo,
+        catalogo?.genero?.canciones?.titulo,
+        catalogo?.vacio?.titulo,
+        catalogo?.vacio?.texto,
         textos?.estados?.cargando?.aria,
         textos?.estados?.vacio?.generico,
         textos?.estados?.error?.titulo,
