@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+import { crearUrlApi } from "../utils/api.js";
 const CLAVES_MENU = ["inicio", "catalogo"];
 
 function validarTextos(datos){
     const textos = datos?.textos;
     const nav = textos?.navbar;
+    const inicio = textos?.paginas?.inicioPublico;
     const etiquetas = [
         nav?.logo?.texto,
         nav?.logo?.aria,
@@ -33,6 +33,29 @@ function validarTextos(datos){
         textos?.footer?.columnas?.legal?.enlaces?.accesibilidad,
         textos?.footer?.legal?.derechos,
         textos?.footer?.legal?.nota,
+        inicio?.seo?.titulo,
+        inicio?.hero?.etiquetas?.temporada,
+        inicio?.hero?.titulo,
+        inicio?.hero?.subtitulo,
+        inicio?.hero?.botones?.crearCuentaGratis,
+        inicio?.hero?.botones?.explorarCatalogo,
+        inicio?.cifras?.canciones?.valor,
+        inicio?.cifras?.canciones?.etiqueta,
+        inicio?.cifras?.generos?.etiqueta,
+        inicio?.cifras?.cortes?.valor,
+        inicio?.cifras?.cortes?.etiqueta,
+        inicio?.destacados?.titulo,
+        inicio?.destacados?.enlaces?.descubrirMas,
+        inicio?.generos?.titulo,
+        inicio?.generos?.enlaces?.verCatalogo,
+        inicio?.cta?.titulo,
+        inicio?.cta?.texto,
+        inicio?.cta?.botones?.crearCuentaGratis,
+        textos?.estados?.cargando?.aria,
+        textos?.estados?.vacio?.generico,
+        textos?.estados?.error?.titulo,
+        textos?.estados?.error?.descripcion,
+        textos?.estados?.error?.botones?.reintentar,
     ]
 
     if (!etiquetas.every((valor) =>typeof valor === "string" && valor.trim())){
@@ -57,10 +80,7 @@ export function useTextos(idioma){
 
         async function cargarTextosNavbar(){
             try{
-                if (!API_BASE_URL) {
-                    throw new Error("Falta configurar la variable VITE_API_URL.");
-                }
-                const url = `${API_BASE_URL.replace(/\/+$/, "")}/textos?idioma=${idioma}`;
+                const url = crearUrlApi(`textos?idioma=${idioma}`);
                 const respuesta = await fetch(url,{
                     signal: controlador.signal,
                 });
