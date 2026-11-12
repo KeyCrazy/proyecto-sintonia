@@ -16,7 +16,7 @@ const DESTINOS = {
   ],
 };
 
-export default function Footer({ textos, idioma = "es" }) {
+export default function Footer({ textos, etiquetaLogo }) {
   if (!textos) return null;
 
   const columnas = ["explora", "cuenta", "legal"].map((clave) => ({
@@ -24,9 +24,6 @@ export default function Footer({ textos, idioma = "es" }) {
     contenido: textos.columnas[clave],
     enlaces: DESTINOS[clave === "explora" ? "explorar" : clave],
   }));
-  const etiquetaNavegacion =
-    idioma === "en" ? "Footer navigation" : "Navegación del pie";
-
   return (
     <footer className="pie-pagina">
       <div className="contenedor pie-pagina-interior">
@@ -35,14 +32,14 @@ export default function Footer({ textos, idioma = "es" }) {
             <a
               className="pie-pagina-logotipo"
               href="/#inicio"
-              aria-label={idioma === "en" ? "Sintonía, go to home" : "Sintonía, ir al inicio"}
+              aria-label={etiquetaLogo}
             >
               <img src={logo} alt="" />
             </a>
             <p>{textos.lema}</p>
           </div>
 
-          <nav className="pie-pagina-navegacion" aria-label={etiquetaNavegacion}>
+          <nav className="pie-pagina-navegacion">
             {columnas.map(({ clave, contenido, enlaces }) => (
               <section className="pie-pagina-columna" key={clave}>
                 <h2>{contenido.titulo}</h2>

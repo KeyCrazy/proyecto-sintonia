@@ -35,6 +35,7 @@ export default function Button({
       className={classes}
       type={type}
       disabled={disabled}
+      onClick={onClick}
       {...props}
     >
       {children}

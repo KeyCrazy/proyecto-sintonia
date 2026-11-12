@@ -7,6 +7,7 @@ import InicioPublico from "./Components/InicioPublico.jsx";
 import Catalogo from "./Components/Catalogo.jsx";
 import AccessibilityPanel from "./Components/AccessibilityPanel.jsx";
 import { guardarCookie, leerCookie } from "./utils/cookies.js";
+import { useIdiomas } from "./hooks/useIdiomas.js";
 import {useEffect, useRef, useState} from "react";
 
 const SECCIONES = new Set([
@@ -44,6 +45,7 @@ function App() {
     });
 
     const datos = useTextos(idioma);
+    const idiomasDisponibles = useIdiomas();
     const rutaDetalle =
         activo === "detalle" ? decodeURIComponent(window.location.pathname.slice(1)) : "";
     
@@ -117,12 +119,12 @@ function App() {
     }
 
     const etiquetasSeccion = {
-        inicio: datos.textos?.navbar?.enlaces?.inicio ?? (idioma === "en" ? "Home" : "Inicio"),
-        catalogo: datos.textos?.navbar?.enlaces?.catalogo ?? (idioma === "en" ? "Catalog" : "Catálogo"),
-        ingresar: datos.textos?.navbar?.botones?.invitado?.ingresar ?? (idioma === "en" ? "Log in" : "Ingresar"),
-        registro: datos.textos?.navbar?.botones?.invitado?.crearCuenta ?? (idioma === "en" ? "Create account" : "Crear cuenta"),
-        terminos: datos.textos?.footer?.columnas?.legal?.enlaces?.terminos ?? (idioma === "en" ? "Terms of use" : "Términos de uso"),
-        accesibilidad: datos.textos?.footer?.columnas?.legal?.enlaces?.accesibilidad ?? (idioma === "en" ? "Accessibility" : "Accesibilidad"),
+        inicio: datos.textos?.navbar?.enlaces?.inicio,
+        catalogo: datos.textos?.navbar?.enlaces?.catalogo,
+        ingresar: datos.textos?.navbar?.botones?.invitado?.ingresar,
+        registro: datos.textos?.navbar?.botones?.invitado?.crearCuenta,
+        terminos: datos.textos?.footer?.columnas?.legal?.enlaces?.terminos,
+        accesibilidad: datos.textos?.footer?.columnas?.legal?.enlaces?.accesibilidad,
     }
 
 
@@ -133,6 +135,9 @@ function App() {
                 {...datos} 
                 idioma = {idioma} 
                 cambiarIdioma={cambiarIdioma}
+                idiomas={idiomasDisponibles.idiomas}
+                estadoIdiomas={idiomasDisponibles.estado}
+                reintentarIdiomas={idiomasDisponibles.reintentar}
                 activo={activo}
                 accesibilidadAbierta={accesibilidadAbierta}
                 abrirAccesibilidad={() => setAccesibilidadAbierta(true)}
@@ -140,7 +145,7 @@ function App() {
             />
             <AccessibilityPanel
                 abierto={accesibilidadAbierta}
-                idioma={idioma}
+                textos={datos.textos?.accesibilidad}
                 ajustes={ajustesAccesibilidad}
                 alCambiarEscala={cambiarEscalaTexto}
                 botonActivadorRef={botonAccesibilidadRef}
@@ -173,7 +178,10 @@ function App() {
                     </h1>
                 )}
             </main>
-            <Footer textos={datos.textos?.footer} idioma={idioma} />
+            <Footer
+                textos={datos.textos?.footer}
+                etiquetaLogo={datos.textos?.navbar?.logo?.aria}
+            />
             <CookieNotice textos={datos.textos?.cookies?.banner} idioma={idioma} />
         </div>
 
