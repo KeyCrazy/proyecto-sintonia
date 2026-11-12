@@ -33,12 +33,10 @@ function validarGeneros(datos) {
   return datos.datos;
 }
 
-function validarDetalleGenero(datos) {
+function validarAlbumesPopulares(datos) {
   if (
-    !datos ||
-    typeof datos.id !== "string" ||
-    !Array.isArray(datos.albumes) ||
-    !datos.albumes.every(
+    !Array.isArray(datos?.datos) ||
+    !datos.datos.every(
       (album) =>
         typeof album.id === "string" &&
         typeof album.titulo === "string" &&
@@ -46,44 +44,36 @@ function validarDetalleGenero(datos) {
         portadaValida(album.portada),
     )
   ) {
-    throw new Error("La respuesta del género no tiene el formato esperado.");
+    throw new Error("La respuesta de álbumes populares no tiene el formato esperado.");
   }
 
-  return datos;
+  return datos.datos;
 }
 
 export function useInicioPublico() {
   const [generos, setGeneros] = useState([]);
-  const [generoId, setGeneroId] = useState("");
-  const [detalle, setDetalle] = useState(null);
+  const [albumesPopulares, setAlbumesPopulares] = useState([]);
   const [estadoGeneros, setEstadoGeneros] = useState("cargando");
-  const [estadoDetalle, setEstadoDetalle] = useState("inactivo");
+  const [estadoAlbumesPopulares, setEstadoAlbumesPopulares] = useState("cargando");
   const [intento, setIntento] = useState(0);
 
   useEffect(() => {
     const controlador = new AbortController();
     let vigente = true;
+    setEstadoGeneros("cargando");
+    setEstadoAlbumesPopulares("cargando");
 
     async function cargarGeneros() {
-      setEstadoGeneros("cargando");
-
       try {
         const respuesta = await fetch(crearUrlApi("generos"), {
           signal: controlador.signal,
         });
-        if (!respuesta.ok) {
-          throw new Error(`HTTP ${respuesta.status}`);
-        }
+        if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
 
         const nuevosGeneros = validarGeneros(await respuesta.json());
         if (!vigente) return;
 
         setGeneros(nuevosGeneros);
-        setGeneroId((actual) =>
-          nuevosGeneros.some((genero) => genero.id === actual)
-            ? actual
-            : (nuevosGeneros[0]?.id ?? ""),
-        );
         setEstadoGeneros("listo");
       } catch (error) {
         if (!vigente || controlador.signal.aborted) return;
@@ -92,61 +82,38 @@ export function useInicioPublico() {
       }
     }
 
+    async function cargarAlbumesPopulares() {
+      try {
+        const respuesta = await fetch(
+          crearUrlApi("albumes?orden=populares&limite=6"),
+          { signal: controlador.signal },
+        );
+        if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
+
+        const albumes = validarAlbumesPopulares(await respuesta.json());
+        if (!vigente) return;
+        setAlbumesPopulares(albumes);
+        setEstadoAlbumesPopulares("listo");
+      } catch (error) {
+        if (!vigente || controlador.signal.aborted) return;
+        console.error("Error al cargar los álbumes populares:", error);
+        setEstadoAlbumesPopulares("error");
+      }
+    }
+
     cargarGeneros();
+    cargarAlbumesPopulares();
     return () => {
       vigente = false;
       controlador.abort();
     };
   }, [intento]);
 
-  useEffect(() => {
-    if (!generoId) {
-      setDetalle(null);
-      setEstadoDetalle("inactivo");
-      return undefined;
-    }
-
-    const controlador = new AbortController();
-    let vigente = true;
-
-    async function cargarDetalle() {
-      setDetalle(null);
-      setEstadoDetalle("cargando");
-
-      try {
-        const respuesta = await fetch(
-          crearUrlApi(`generos/${encodeURIComponent(generoId)}`),
-          { signal: controlador.signal },
-        );
-        if (!respuesta.ok) {
-          throw new Error(`HTTP ${respuesta.status}`);
-        }
-
-        const nuevoDetalle = validarDetalleGenero(await respuesta.json());
-        if (!vigente) return;
-        setDetalle(nuevoDetalle);
-        setEstadoDetalle("listo");
-      } catch (error) {
-        if (!vigente || controlador.signal.aborted) return;
-        console.error("Error al cargar los álbumes del género:", error);
-        setEstadoDetalle("error");
-      }
-    }
-
-    cargarDetalle();
-    return () => {
-      vigente = false;
-      controlador.abort();
-    };
-  }, [generoId, intento]);
-
   return {
     generos,
-    generoId,
-    seleccionarGenero: setGeneroId,
-    detalle,
+    albumesPopulares,
     estadoGeneros,
-    estadoDetalle,
+    estadoAlbumesPopulares,
     reintentar: () => setIntento((actual) => actual + 1),
   };
 }

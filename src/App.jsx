@@ -4,8 +4,9 @@ import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer.jsx";
 import CookieNotice from "./Components/base/CookieNotice.jsx";
 import InicioPublico from "./Components/InicioPublico.jsx";
+import AccessibilityPanel from "./Components/AccessibilityPanel.jsx";
 import { guardarCookie, leerCookie } from "./utils/cookies.js";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 const SECCIONES = new Set([
     "inicio",
@@ -29,8 +30,15 @@ function leerIdiomaInicial() {
 function App() {
     const [idioma, setIdioma] = useState(leerIdiomaInicial);
     const [activo, setActivo] = useState(leerSeccion);
-    const [textoGrande, setTextoGrande] = useState(false);
-
+    const [accesibilidadAbierta, setAccesibilidadAbierta] = useState(false);
+    const botonAccesibilidadRef = useRef(null);
+    const [ajustesAccesibilidad, setAjustesAccesibilidad] = useState({
+        escalaTexto: 100,
+        contrasteAlto: false,
+        reducirMovimiento: false,
+        subrayarEnlaces: false,
+        espaciadoAmpliado: false,
+    });
 
     const datos = useTextos(idioma);
     
@@ -49,9 +57,48 @@ function App() {
     },[idioma])
 
     useEffect(() => {
-        document.documentElement.style.fontSize = textoGrande ? "112%" : "";
-        return () => {document.documentElement.style.fontSize = ""}
-    },[textoGrande])
+        const raiz = document.documentElement;
+        raiz.style.fontSize = `${ajustesAccesibilidad.escalaTexto}%`;
+        const atributos = {
+            "data-contraste-alto": ajustesAccesibilidad.contrasteAlto,
+            "data-reducir-movimiento": ajustesAccesibilidad.reducirMovimiento,
+            "data-subrayar-enlaces": ajustesAccesibilidad.subrayarEnlaces,
+            "data-espaciado-ampliado": ajustesAccesibilidad.espaciadoAmpliado,
+        };
+
+        Object.entries(atributos).forEach(([atributo, activo]) => {
+            raiz.setAttribute(atributo, String(activo));
+        });
+
+        return () => {
+            raiz.style.fontSize = "";
+            Object.keys(atributos).forEach((atributo) => raiz.removeAttribute(atributo));
+        };
+    }, [ajustesAccesibilidad]);
+
+    function cambiarEscalaTexto(cambio) {
+        setAjustesAccesibilidad((actuales) => ({
+            ...actuales,
+            escalaTexto: Math.min(150, Math.max(80, actuales.escalaTexto + cambio)),
+        }));
+    }
+
+    function alternarAjusteAccesibilidad(ajuste) {
+        setAjustesAccesibilidad((actuales) => ({
+            ...actuales,
+            [ajuste]: !actuales[ajuste],
+        }));
+    }
+
+    function restablecerAccesibilidad() {
+        setAjustesAccesibilidad({
+            escalaTexto: 100,
+            contrasteAlto: false,
+            reducirMovimiento: false,
+            subrayarEnlaces: false,
+            espaciadoAmpliado: false,
+        });
+    }
 
     function cambiarIdioma(nuevoIdioma) {
         setIdioma(nuevoIdioma);
@@ -78,8 +125,19 @@ function App() {
                 idioma = {idioma} 
                 cambiarIdioma={cambiarIdioma}
                 activo={activo}
-                textoGrande={textoGrande}
-                alternarTexto={()=>setTextoGrande((valor) => !valor)}
+                accesibilidadAbierta={accesibilidadAbierta}
+                abrirAccesibilidad={() => setAccesibilidadAbierta(true)}
+                botonAccesibilidadRef={botonAccesibilidadRef}
+            />
+            <AccessibilityPanel
+                abierto={accesibilidadAbierta}
+                idioma={idioma}
+                ajustes={ajustesAccesibilidad}
+                alCambiarEscala={cambiarEscalaTexto}
+                botonActivadorRef={botonAccesibilidadRef}
+                alCerrar={() => setAccesibilidadAbierta(false)}
+                alAlternar={alternarAjusteAccesibilidad}
+                alRestablecer={restablecerAccesibilidad}
             />
             <main
                 id={activo}

@@ -1,5 +1,5 @@
 .pie-pagina {
-  padding: var(--espacio-8) 0 var(--espacio-4);
+  padding: var(--espacio-12) 0 var(--espacio-12);
   color: var(--texto-principal);
   background: var(--fondo-superficie);
 }
@@ -13,7 +13,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: var(--espacio-12);
-  padding-bottom: var(--espacio-6);
+  padding-bottom: var(--espacio-8);
 }
 
 .pie-pagina-marca {
@@ -87,7 +87,7 @@
   display: flex;
   justify-content: space-between;
   gap: var(--espacio-4);
-  padding-top: var(--espacio-4);
+  padding-top: var(--espacio-6);
   border-top: var(--grosor-borde) solid var(--borde-sutil);
 }
 
