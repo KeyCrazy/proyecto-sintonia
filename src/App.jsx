@@ -6,8 +6,18 @@ import CookieNotice from "./Components/base/CookieNotice.jsx";
 import { guardarCookie, leerCookie } from "./utils/cookies.js";
 import {useEffect, useState} from "react";
 
+const SECCIONES = new Set([
+    "inicio",
+    "catalogo",
+    "ingresar",
+    "registro",
+    "terminos",
+    "accesibilidad",
+]);
+
 function leerSeccion(){
-    return window.location.hash.slice(1) || "inicio";
+    const seccion = window.location.hash.slice(1);
+    return SECCIONES.has(seccion) ? seccion : "inicio";
 }
 
 function leerIdiomaInicial() {
@@ -27,6 +37,7 @@ function App() {
     useEffect(() => {
         function actualizar(){
             setActivo(leerSeccion())
+            window.scrollTo(0, 0)
         }
         window.addEventListener("hashchange", actualizar)
         return () => window.removeEventListener("hashchange", actualizar)
@@ -48,6 +59,15 @@ function App() {
         }
     }
 
+    const etiquetasSeccion = {
+        inicio: datos.textos?.navbar?.enlaces?.inicio ?? (idioma === "en" ? "Home" : "Inicio"),
+        catalogo: datos.textos?.navbar?.enlaces?.catalogo ?? (idioma === "en" ? "Catalog" : "Catálogo"),
+        ingresar: datos.textos?.navbar?.botones?.invitado?.ingresar ?? (idioma === "en" ? "Log in" : "Ingresar"),
+        registro: datos.textos?.navbar?.botones?.invitado?.crearCuenta ?? (idioma === "en" ? "Create account" : "Crear cuenta"),
+        terminos: datos.textos?.footer?.columnas?.legal?.enlaces?.terminos ?? (idioma === "en" ? "Terms of use" : "Términos de uso"),
+        accesibilidad: datos.textos?.footer?.columnas?.legal?.enlaces?.accesibilidad ?? (idioma === "en" ? "Accessibility" : "Accesibilidad"),
+    }
+
 
 
     return (
@@ -60,7 +80,11 @@ function App() {
                 textoGrande={textoGrande}
                 alternarTexto={()=>setTextoGrande((valor) => !valor)}
             />
-            <main id="inicio" className="contenido" />
+            <main id={activo} className="contenido" aria-labelledby={`titulo-${activo}`}>
+                <h1 id={`titulo-${activo}`} className="solo-lectores">
+                    {etiquetasSeccion[activo]}
+                </h1>
+            </main>
             <Footer textos={datos.textos?.footer} idioma={idioma} />
             <CookieNotice textos={datos.textos?.cookies?.banner} idioma={idioma} />
         </div>
