@@ -5,6 +5,8 @@ const CLAVES_MENU = ["inicio", "catalogo"];
 function validarTextos(datos){
     const textos = datos?.textos;
     const nav = textos?.navbar;
+    const idioma = textos?.idioma;
+    const accesibilidad = textos?.accesibilidad;
     const inicio = textos?.paginas?.inicioPublico;
     const catalogo = textos?.paginas?.catalogo;
     const etiquetas = [
@@ -16,8 +18,31 @@ function validarTextos(datos){
         nav?.aria?.navegacion,
         nav?.aria?.idioma,
         nav?.aria?.accesibilidad,
+        idioma?.titulo,
+        idioma?.codigos?.es,
+        idioma?.codigos?.en,
+        idioma?.opciones?.es,
+        idioma?.opciones?.en,
+        accesibilidad?.titulo,
+        accesibilidad?.tamanoTexto?.etiqueta,
+        accesibilidad?.tamanoTexto?.reducir,
+        accesibilidad?.tamanoTexto?.aumentar,
+        accesibilidad?.tamanoTexto?.valor,
+        accesibilidad?.altoContraste?.etiqueta,
+        accesibilidad?.altoContraste?.ayuda,
+        accesibilidad?.reducirMovimiento?.etiqueta,
+        accesibilidad?.reducirMovimiento?.ayuda,
+        accesibilidad?.subrayarEnlaces?.etiqueta,
+        accesibilidad?.subrayarEnlaces?.ayuda,
+        accesibilidad?.espaciado?.etiqueta,
+        accesibilidad?.espaciado?.ayuda,
+        accesibilidad?.enlaces?.declaracion,
+        accesibilidad?.botones?.restablecer,
+        accesibilidad?.mensajes?.nota,
+        accesibilidad?.aria?.cerrar,
         textos?.menuMovil?.abrir,
         textos?.menuMovil?.cerrar,
+        textos?.menuMovil?.secciones?.accesibilidad,
         textos?.cookies?.banner?.titulo,
         textos?.cookies?.banner?.texto,
         textos?.cookies?.banner?.botones?.rechazar,

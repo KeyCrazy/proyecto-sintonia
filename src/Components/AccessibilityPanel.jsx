@@ -3,31 +3,15 @@ import Icono from "./Icono.jsx";
 import "./AccessibilityPanel.css";
 
 const OPCIONES = [
-  {
-    clave: "contrasteAlto",
-    es: ["Alto contraste", "Más diferencia entre el texto y el fondo"],
-    en: ["High contrast", "More difference between text and background"],
-  },
-  {
-    clave: "reducirMovimiento",
-    es: ["Reducir movimiento", "Sin animaciones ni transiciones"],
-    en: ["Reduce motion", "No animations or transitions"],
-  },
-  {
-    clave: "subrayarEnlaces",
-    es: ["Subrayar enlaces", "Los enlaces se distinguen sin depender del color"],
-    en: ["Underline links", "Links are identifiable without relying on color"],
-  },
-  {
-    clave: "espaciadoAmpliado",
-    es: ["Espaciado de lectura", "Más espacio entre las letras y entre líneas"],
-    en: ["Reading spacing", "More space between letters and lines"],
-  },
+  ["contrasteAlto", "altoContraste"],
+  ["reducirMovimiento", "reducirMovimiento"],
+  ["subrayarEnlaces", "subrayarEnlaces"],
+  ["espaciadoAmpliado", "espaciado"],
 ];
 
 export default function AccessibilityPanel({
   abierto,
-  idioma,
+  textos,
   ajustes,
   botonActivadorRef,
   alCerrar,
@@ -36,7 +20,6 @@ export default function AccessibilityPanel({
   alRestablecer,
 }) {
   const dialogoRef = useRef(null);
-  const ingles = idioma === "en";
 
   useEffect(() => {
     const dialogo = dialogoRef.current;
@@ -106,6 +89,8 @@ export default function AccessibilityPanel({
     };
   }, [abierto, botonActivadorRef, ajustes.escalaTexto, alCerrar]);
 
+  if (!textos) return null;
+
   return (
     <dialog
       ref={dialogoRef}
@@ -116,12 +101,12 @@ export default function AccessibilityPanel({
       <section className="panel-accesibilidad-contenido">
         <header className="panel-accesibilidad-encabezado">
           <h2 id="panel-accesibilidad-titulo">
-            {ingles ? "Accessibility" : "Accesibilidad"}
+            {textos.titulo}
           </h2>
           <button
             type="button"
             className="panel-accesibilidad-cerrar"
-            aria-label={ingles ? "Close accessibility options" : "Cerrar opciones de accesibilidad"}
+            aria-label={textos.aria.cerrar}
             onClick={() => {
               alCerrar();
               botonActivadorRef.current?.focus();
@@ -133,20 +118,22 @@ export default function AccessibilityPanel({
 
         <div className="panel-accesibilidad-opciones">
           <section className="panel-accesibilidad-tamano">
-            <h3>{ingles ? "Text size" : "Tamaño del texto"}</h3>
+            <h3>{textos.tamanoTexto.etiqueta}</h3>
             <div className="panel-accesibilidad-control-tamano">
               <button
                 type="button"
-                aria-label={ingles ? "Decrease text size" : "Disminuir tamaño del texto"}
+                aria-label={textos.tamanoTexto.reducir}
                 disabled={ajustes.escalaTexto <= 80}
                 onClick={() => alCambiarEscala(-10)}
               >
                 −
               </button>
-              <output aria-live="polite">{ajustes.escalaTexto} %</output>
+              <output aria-live="polite">
+                {textos.tamanoTexto.valor.replace("{valor}", ajustes.escalaTexto)}
+              </output>
               <button
                 type="button"
-                aria-label={ingles ? "Increase text size" : "Aumentar tamaño del texto"}
+                aria-label={textos.tamanoTexto.aumentar}
                 disabled={ajustes.escalaTexto >= 150}
                 onClick={() => alCambiarEscala(10)}
               >
@@ -155,21 +142,21 @@ export default function AccessibilityPanel({
             </div>
           </section>
 
-          {OPCIONES.map(({ clave, es, en }) => {
-            const [titulo, descripcion] = ingles ? en : es;
+          {OPCIONES.map(([clave, textoClave]) => {
+            const { etiqueta, ayuda } = textos[textoClave];
 
             return (
               <div className="panel-accesibilidad-opcion" key={clave}>
                 <span className="panel-accesibilidad-textos">
-                  <span className="panel-accesibilidad-titulo-opcion">{titulo}</span>
-                  <span className="panel-accesibilidad-descripcion">{descripcion}</span>
+                  <span className="panel-accesibilidad-titulo-opcion">{etiqueta}</span>
+                  <span className="panel-accesibilidad-descripcion">{ayuda}</span>
                 </span>
                 <button
                   type="button"
                   className="panel-accesibilidad-interruptor"
                   role="switch"
                   aria-checked={ajustes[clave]}
-                  aria-label={titulo}
+                  aria-label={etiqueta}
                   onClick={() => alAlternar(clave)}
                 >
                   <span className="panel-accesibilidad-interruptor-marca" />
@@ -179,22 +166,18 @@ export default function AccessibilityPanel({
           })}
         </div>
 
-        <p className="panel-accesibilidad-nota">
-          {ingles
-            ? "Settings are saved on this device. Initial values follow your system preferences."
-            : "Se guarda en este dispositivo. Los valores iniciales salen de lo que ya viene definido en tu sistema."}
-        </p>
+        <p className="panel-accesibilidad-nota">{textos.mensajes.nota}</p>
 
         <footer className="panel-accesibilidad-pie">
           <a href="#accesibilidad" onClick={alCerrar}>
-            {ingles ? "Accessibility statement" : "Declaración de accesibilidad"}
+            {textos.enlaces.declaracion}
           </a>
           <button
             type="button"
             className="panel-accesibilidad-restablecer"
             onClick={alRestablecer}
           >
-            {ingles ? "Reset" : "Restablecer"}
+            {textos.botones.restablecer}
           </button>
         </footer>
       </section>

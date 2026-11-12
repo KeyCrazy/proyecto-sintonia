@@ -11,16 +11,11 @@ const DESTINOS = {
   catalogo: "/catalogo",
 };
 
-const Navbar = ({ textos, cargando, error, recargar, idioma, activo, accesibilidadAbierta, abrirAccesibilidad, botonAccesibilidadRef, cambiarIdioma }) => {
+const Navbar = ({ textos, cargando, error, recargar, idiomas, estadoIdiomas, reintentarIdiomas, idioma, activo, accesibilidadAbierta, abrirAccesibilidad, botonAccesibilidadRef, cambiarIdioma }) => {
   const [abierto, setAbierto] = useState(false); // Saber si el toogle de mobile esta abierto
   const botonMenu = useRef(null);
   const nav = textos?.navbar;
-  const ingles = idioma === "en";
-
-  const abrir =
-    textos?.menuMovil?.abrir ?? (ingles ? "Open menu" : "Abrir menú");
-  const cerrar =
-    textos?.menuMovil?.cerrar ?? (ingles ? "Close menu" : "Cerrar menú");
+  const estados = textos?.estados;
   const enlaces = Object.entries(nav?.enlaces ?? {}).filter(([clave]) => DESTINOS[clave]);
 
   //Abrir y cerrar el menu toogle en vista mobile
@@ -49,12 +44,12 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, accesibilid
     <header className="navbar">
       <nav
         className="contenedor navbar-interior"
-        aria-label={nav?.aria?.navegacion ?? "Navegación principal"}
+        aria-label={nav?.aria?.navegacion}
       >
         <a
           href="/#inicio"
           className="navbar-marca"
-          aria-label={nav?.logo?.aria ?? "Sintonía, ir al inicio"}
+          aria-label={nav?.logo?.aria}
           onClick={() => setAbierto(false)}
         >
           <img src={logo} alt="" />
@@ -71,7 +66,7 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, accesibilid
             type="button"
             ref={botonMenu}
             className="navbar-icono"
-            aria-label={abierto ? cerrar : abrir}
+            aria-label={abierto ? textos?.menuMovil?.cerrar : textos?.menuMovil?.abrir}
             aria-expanded={abierto}
             aria-controls="navbar-panel"
             onClick={() => setAbierto((valor) => !valor)}
@@ -81,8 +76,13 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, accesibilid
         </div>
 
         <div id="navbar-panel" className={`navbar-panel${abierto ? " is-abierto" : ""}`} aria-busy={cargando}>
-          {cargando && <p className="navbar-estado" role="status">{ingles ? "Loading navigation…" : "Cargando navegación…"}</p>}
-          {error && <div className="navbar-estado" role="alert"><p>{ingles ? "Navigation could not be loaded." : "No pudimos cargar el menú."}</p><button type="button" onClick={recargar}>{ingles ? "Try again" : "Reintentar"}</button></div>}
+          {cargando && estados?.cargando && <p className="navbar-estado" role="status">{estados.cargando.aria}</p>}
+          {error && estados?.error && (
+            <div className="navbar-estado" role="alert">
+              <p>{estados.error.descripcion}</p>
+              <button type="button" onClick={recargar}>{estados.error.botones.reintentar}</button>
+            </div>
+          )}
           {nav && (
             <ul className="navbar-enlaces">
               {enlaces.map(([clave, etiqueta]) => <li key={clave}><a href={DESTINOS[clave]} aria-current={activo === clave ? "page" : undefined} onClick={() => setAbierto(false)}>{etiqueta}</a></li>)}
@@ -90,18 +90,31 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, accesibilid
           )}
           <div className="navbar-utilidades">
             <div className="navbar-preferencia navbar-preferencia-idioma">
-              <LanguageSelector
-                idioma={idioma}
-                cambiarIdioma={cambiarIdioma}
-                etiqueta={nav?.aria?.idioma ?? "Cambiar idioma"}
-                className="navbar-idioma"
-              />
+              {estadoIdiomas === "error" && estados?.error ? (
+                <div className="navbar-estado" role="alert">
+                  <p>{estados.error.descripcion}</p>
+                  <button type="button" onClick={reintentarIdiomas}>
+                    {estados.error.botones.reintentar}
+                  </button>
+                </div>
+              ) : (
+                <LanguageSelector
+                  idiomas={idiomas}
+                  idioma={idioma}
+                  cambiarIdioma={cambiarIdioma}
+                  etiqueta={nav?.aria?.idioma}
+                  etiquetas={textos?.idioma?.codigos ?? {}}
+                  nombres={textos?.idioma?.opciones ?? {}}
+                  disabled={estadoIdiomas !== "listo"}
+                  className="navbar-idioma"
+                />
+              )}
             </div>
             <button
               ref={botonAccesibilidadRef}
               className="navbar-icono navbar-accesibilidad"
               type="button"
-              aria-label={nav?.aria?.accesibilidad ?? (ingles ? "Accessibility options" : "Opciones de accesibilidad")}
+              aria-label={nav?.aria?.accesibilidad}
               aria-haspopup="dialog"
               aria-expanded={accesibilidadAbierta}
               aria-controls="panel-accesibilidad"
@@ -110,7 +123,7 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, accesibilid
                 abrirAccesibilidad();
               }}
             >
-              <span>{textos?.menuMovil?.secciones?.accesibilidad ?? (ingles ? "Accessibility" : "Accesibilidad")}</span>
+              <span>{textos?.menuMovil?.secciones?.accesibilidad}</span>
               <span className="navbar-accesibilidad-icono">
                 <Icono nombre="accesibilidad" />
               </span>

@@ -1,11 +1,12 @@
 import "./base.css";
 
-const IDIOMAS = ["es", "en"];
-
 export default function LanguageSelector({
+  idiomas = [],
   idioma,
   cambiarIdioma,
   etiqueta,
+  etiquetas = {},
+  nombres = {},
   disabled = false,
   className = "",
 }) {
@@ -15,16 +16,17 @@ export default function LanguageSelector({
       role="group"
       aria-label={etiqueta}
     >
-      {IDIOMAS.map((opcion) => (
+      {idiomas.map(({ codigo }) => (
         <button
-          key={opcion}
+          key={codigo}
           className="selector-idioma-opcion"
           type="button"
           disabled={disabled}
-          aria-pressed={idioma === opcion}
-          onClick={() => cambiarIdioma(opcion)}
+          aria-label={nombres[codigo]}
+          aria-pressed={idioma === codigo}
+          onClick={() => cambiarIdioma(codigo)}
         >
-          {opcion.toUpperCase()}
+          {etiquetas[codigo]}
         </button>
       ))}
     </div>
