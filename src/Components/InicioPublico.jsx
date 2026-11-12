@@ -1,4 +1,5 @@
 import { useInicioPublico } from "../hooks/useInicioPublico.js";
+import ilustracionInicio from "../assets/inicio-ilustracion.png";
 import Button from "./base/Button.jsx";
 import Portada from "./base/Portada.jsx";
 import "./InicioPublico.css";
@@ -41,27 +42,23 @@ export default function InicioPublico({ textos, estados }) {
             <Button href="#registro">{textos.hero.botones.crearCuentaGratis}</Button>
             <Button href="#catalogo" variant="secondary">{textos.hero.botones.explorarCatalogo}</Button>
           </div>
+          <div className="inicio-cifras" role="group" aria-label={textos.hero.titulo}>
+            <div>
+              <strong>{textos.cifras.canciones.valor}</strong>
+              <span>{textos.cifras.canciones.etiqueta}</span>
+            </div>
+            <div>
+              <strong>{estadoGeneros === "listo" ? generos.length : "—"}</strong>
+              <span>{textos.cifras.generos.etiqueta}</span>
+            </div>
+            <div>
+              <strong>{textos.cifras.cortes.valor}</strong>
+              <span>{textos.cifras.cortes.etiqueta}</span>
+            </div>
+          </div>
         </div>
         <div className="inicio-hero-ilustracion" aria-hidden="true">
-          <div className="inicio-arte-base"><span /></div>
-          <div className="inicio-arte-rayas" />
-          <div className="inicio-arte-anillos" />
-          <div className="inicio-arte-etiqueta" />
-        </div>
-      </section>
-
-      <section className="inicio-cifras" aria-label={textos.hero.titulo}>
-        <div>
-          <strong>{textos.cifras.canciones.valor}</strong>
-          <span>{textos.cifras.canciones.etiqueta}</span>
-        </div>
-        <div>
-          <strong>{estadoGeneros === "listo" ? generos.length : "—"}</strong>
-          <span>{textos.cifras.generos.etiqueta}</span>
-        </div>
-        <div>
-          <strong>{textos.cifras.cortes.valor}</strong>
-          <span>{textos.cifras.cortes.etiqueta}</span>
+          <img src={ilustracionInicio} alt="" />
         </div>
       </section>
 

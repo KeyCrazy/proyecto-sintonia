@@ -59,107 +59,41 @@
   position: relative;
   width: 100%;
   max-width: 33rem;
-  aspect-ratio: 1 / 0.88;
+  aspect-ratio: 55 / 49;
   justify-self: end;
 }
 
-.inicio-arte-base {
-  position: absolute;
-  top: 10%;
-  left: 10%;
-  width: 72%;
-  height: 78%;
-  overflow: hidden;
-  border-radius: 28px;
-  background: var(--portada-3);
-}
-
-.inicio-arte-base::before {
-  position: absolute;
-  right: -9%;
-  bottom: -32%;
-  width: 78%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--fondo-base);
-  content: "";
-}
-
-.inicio-arte-base span {
-  position: absolute;
-  top: 13%;
-  right: 12%;
-  width: 15%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--fijo-blanco);
-}
-
-.inicio-arte-rayas {
-  position: absolute;
-  top: 8%;
-  right: 2%;
-  width: 32%;
-  aspect-ratio: 0.94;
-  transform: rotate(9deg);
-  border-radius: 18px;
-  background: repeating-linear-gradient(
-    -35deg,
-    var(--portada-2) 0 18px,
-    var(--portada-4) 18px 36px
-  );
-}
-
-.inicio-arte-anillos {
-  position: absolute;
-  bottom: -1%;
-  left: -2%;
-  width: 39%;
-  aspect-ratio: 1;
-  border-radius: 24px;
-  background: radial-gradient(circle at 100% 100%, var(--portada-1) 0 38%, var(--portada-5) 39% 72%, transparent 73%);
-}
-
-.inicio-arte-etiqueta {
-  position: absolute;
-  right: 0;
-  bottom: 4%;
-  width: 43%;
-  height: 27%;
-  transform: rotate(5deg);
-  border-radius: 20px;
-  background: var(--marca-primario);
+.inicio-hero-ilustracion img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .inicio-cifras {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  width: min(calc(100% - 2 * var(--ancho-gutter-navbar)), 80.5rem);
-  margin: 0 auto;
-  padding-block: var(--espacio-6);
-  border-top: 1px solid var(--borde-sutil);
-  border-bottom: 1px solid var(--borde-sutil);
+  gap: var(--espacio-3);
+  width: min(100%, 20rem);
+  margin-top: var(--espacio-6);
 }
 
 .inicio-cifras > div {
   display: grid;
   gap: var(--espacio-1);
-  padding-inline: var(--espacio-6);
-}
-
-.inicio-cifras > div + div {
-  border-left: 1px solid var(--borde-sutil);
 }
 
 .inicio-cifras strong {
+  color: var(--marca-primario);
   font-family: var(--fuente-syne);
-  font-size: var(--tamano-h2);
-  line-height: var(--interlineado-h2);
+  font-size: var(--tamano-h3);
+  line-height: var(--interlineado-h3);
 }
 
 .inicio-cifras span {
   color: var(--texto-secundario);
-  font-size: var(--tamano-cuerpo-p);
+  font-size: var(--tamano-detalle-nota);
+  line-height: var(--interlineado-detalle-nota);
 }
 
 .inicio-generos {
@@ -336,37 +270,19 @@
   }
 
   .inicio-hero-titulo {
-    max-width: 9ch;
+    max-width: none;
     margin-block: var(--espacio-4);
-    font-size: clamp(3.5rem, 14vw, 5.5rem);
+    font-size: clamp(3.5rem, 15.5vw, 6rem);
   }
 
   .inicio-hero-subtitulo {
-    font-size: var(--tamano-cuerpo-p);
+    font-size: var(--tamano-cuerpo-m);
+    line-height: var(--interlineado-cuerpo-m);
   }
 
   .inicio-hero-ilustracion {
     width: min(100%, 28rem);
     justify-self: center;
-  }
-
-  .inicio-cifras {
-    gap: var(--espacio-2);
-    padding-block: var(--espacio-4);
-  }
-
-  .inicio-cifras > div {
-    padding-inline: var(--espacio-2);
-  }
-
-  .inicio-cifras strong {
-    font-size: var(--tamano-h3);
-    line-height: var(--interlineado-h3);
-  }
-
-  .inicio-cifras span {
-    font-size: var(--tamano-detalle-nota);
-    line-height: var(--interlineado-detalle-nota);
   }
 
   .inicio-genero-seleccionado {
@@ -386,6 +302,11 @@
 }
 
 @media (max-width: 30rem) {
+  .inicio-hero-titulo {
+    max-width: 9ch;
+    font-size: clamp(3.25rem, 14vw, 3.5rem);
+  }
+
   .inicio-hero-acciones {
     align-items: stretch;
     flex-direction: column;
