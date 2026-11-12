@@ -40,12 +40,6 @@ function App() {
         return () => {document.documentElement.style.fontSize = ""}
     },[textoGrande])
 
-    function buscar(valor){
-        setActivo("buscar");
-        //window.history es el que da acceso al hsitorial de la pestaña
-        window.history.replaceState(null, "", "#buscar");
-    }
-
     function cambiarIdioma(nuevoIdioma) {
         setIdioma(nuevoIdioma);
         if (leerCookie("consentimiento") === "aceptada") {
@@ -62,7 +56,6 @@ function App() {
                 idioma = {idioma} 
                 cambiarIdioma={cambiarIdioma}
                 activo={activo}
-                onBuscar={buscar}
                 textoGrande={textoGrande}
                 alternarTexto={()=>setTextoGrande((valor) => !valor)}
             />

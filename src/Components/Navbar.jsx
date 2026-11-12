@@ -10,11 +10,9 @@ const DESTINOS = {
   catalogo: "#catalogo",
 };
 
-const Navbar = ({ textos, cargando, error, recargar, idioma, activo, onBuscar, textoGrande, alternarTexto, cambiarIdioma }) => {
+const Navbar = ({ textos, cargando, error, recargar, idioma, activo, textoGrande, alternarTexto, cambiarIdioma }) => {
   const [abierto, setAbierto] = useState(false); // Saber si el toogle de mobile esta abierto
-  const [busqueda, setBusqueda] = useState(""); //Sin valor a buscar
   const botonMenu = useRef(null);
-  const campoBusqueda = useRef(null);
   const nav = textos?.navbar;
   const ingles = idioma === "en";
 
@@ -36,21 +34,6 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, onBuscar, t
     document.addEventListener("keydown", cerrarConEscape); //Escucha las teclas en todo el documento
     return () => document.removeEventListener("keydown", cerrarConEscape);
   }, [abierto]);
-
-  function abrirBusqueda(evento) {
-    setAbierto(true);
-    requestAnimationFrame(() => campoBusqueda.current?.focus());
-  }
-
-  function buscar(evento) {
-    evento.preventDefault(); // cancelar la accion que el navegador haria por defecto antes ese evento
-    const consulta = busqueda.trim();
-    if (!consulta) return;
-    onBuscar(consulta);
-    setAbierto(false);
-  }
-
-
 
   return (
     <header className="navbar">
@@ -74,14 +57,6 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, onBuscar, t
 
         {/* Acciones del navbar movil */}
         <div className="navbar-movil-acciones">
-          <button
-            type="button"
-            className="navbar-icono"
-            aria-label={nav?.buscador?.placeholder ?? (ingles ? "Search" : "Buscar")}
-            onClick={abrirBusqueda}
-          >
-            <Icono nombre="buscar" />
-          </button>
           {nav && <a className="navbar-movil-ingresar" href="#ingresar" onClick={() => setAbierto(false)}>{nav.botones.invitado.ingresar}</a>}
           <button
             type="button"
@@ -99,15 +74,11 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, onBuscar, t
         <div id="navbar-panel" className={`navbar-panel${abierto ? " is-abierto" : ""}`} aria-busy={cargando}>
           {cargando && <p className="navbar-estado" role="status">{ingles ? "Loading navigation…" : "Cargando navegación…"}</p>}
           {error && <div className="navbar-estado" role="alert"><p>{ingles ? "Navigation could not be loaded." : "No pudimos cargar el menú."}</p><button type="button" onClick={recargar}>{ingles ? "Try again" : "Reintentar"}</button></div>}
-          {nav && <>
+          {nav && (
             <ul className="navbar-enlaces">
               {enlaces.map(([clave, etiqueta]) => <li key={clave}><a href={DESTINOS[clave]} aria-current={activo === DESTINOS[clave].slice(1) ? "page" : undefined} onClick={() => setAbierto(false)}>{etiqueta}</a></li>)}
             </ul>
-            <form className="navbar-buscador" role="search" aria-label={nav.buscador.placeholder} onSubmit={buscar}>
-              <button type="submit" aria-label={nav.buscador.placeholder}><Icono nombre="buscar" /></button>
-              <input ref={campoBusqueda} type="search" value={busqueda} onChange={(evento) => setBusqueda(evento.target.value)} placeholder={nav.buscador.placeholder} aria-label={nav.buscador.placeholder} required />
-            </form>
-          </>}
+          )}
           <div className="navbar-utilidades">
             <button className="navbar-icono navbar-accesibilidad" type="button" aria-label={nav?.aria?.accesibilidad ?? (ingles ? "Enlarge text" : "Aumentar texto")} aria-pressed={textoGrande} onClick={alternarTexto}><Icono nombre="accesibilidad" /></button>
             <LanguageSelector
