@@ -1,11 +1,12 @@
 .pie-pagina {
-  padding: var(--espacio-8) var(--espacio-4) var(--espacio-4);
+  padding: var(--espacio-8) 0 var(--espacio-4);
   color: var(--texto-principal);
   background: var(--fondo-superficie);
 }
 
 .pie-pagina-interior {
-  width: min(100%, var(--ancho-contenido));
+  width: min(calc(100% - 2 * var(--ancho-gutter-navbar)), var(--ancho-navbar));
+  max-width: var(--ancho-navbar);
 }
 
 .pie-pagina-superior {
@@ -22,27 +23,14 @@
 .pie-pagina-logotipo {
   display: inline-flex;
   align-items: center;
-  gap: var(--espacio-2);
   color: var(--texto-principal);
-  font-family: var(--fuente-syne);
-  font-size: var(--tamano-h4);
-  font-weight: var(--peso-bold);
   text-decoration: none;
 }
 
-.pie-pagina-simbolo {
-  display: grid;
-  width: var(--alto-icono-navbar-compacto);
-  height: var(--alto-icono-navbar-compacto);
-  place-items: center;
-  border-radius: var(--radio-completo);
-  color: var(--texto-sobre-marca);
-  background: var(--marca-primario);
-}
-
-.pie-pagina-simbolo svg {
-  width: var(--tamano-detalle-nota);
-  height: var(--tamano-detalle-nota);
+.pie-pagina-logotipo img {
+  display: block;
+  width: 128px;
+  height: 32px;
 }
 
 .pie-pagina-marca p,

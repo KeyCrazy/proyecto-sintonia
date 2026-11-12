@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./Navbar.css";
+import logo from "../assets/logo.svg";
 import Icono from "./Icono.jsx";
 import Button from "./base/Button.jsx";
 import LanguageSelector from "./base/LanguageSelector.jsx";
@@ -24,6 +25,15 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, textoGrande
 
   //Abrir y cerrar el menu toogle en vista mobile
   useEffect(() => {
+    if (!abierto) return undefined;
+
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [abierto]);
+
+  useEffect(() => {
     function cerrarConEscape(evento) {
       if (!abierto) return; //Unicamnete se registre el listener mientras el menu este abierto
       if (evento.key === "Escape" && abierto) { //siempre y cuando el menu esté abierto y presione la tecla "Escape"
@@ -47,17 +57,11 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, textoGrande
           aria-label={nav?.logo?.aria ?? "Sintonía, ir al inicio"}
           onClick={() => setAbierto(false)}
         >
-          <span className="navbar-simbolo" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M6 9v6m6-10v14m6-10v6" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-            </svg>
-          </span>
-          <span>{nav?.logo?.texto ?? "Sintonía"}</span>
+          <img src={logo} alt="" />
         </a>
 
         {/* Acciones del navbar movil */}
         <div className="navbar-movil-acciones">
-          {nav && <a className="navbar-movil-ingresar" href="#ingresar" onClick={() => setAbierto(false)}>{nav.botones.invitado.ingresar}</a>}
           <button
             type="button"
             ref={botonMenu}
@@ -80,13 +84,26 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, textoGrande
             </ul>
           )}
           <div className="navbar-utilidades">
-            <button className="navbar-icono navbar-accesibilidad" type="button" aria-label={nav?.aria?.accesibilidad ?? (ingles ? "Enlarge text" : "Aumentar texto")} aria-pressed={textoGrande} onClick={alternarTexto}><Icono nombre="accesibilidad" /></button>
-            <LanguageSelector
-              idioma={idioma}
-              cambiarIdioma={cambiarIdioma}
-              etiqueta={nav?.aria?.idioma ?? "Cambiar idioma"}
-              className="navbar-idioma"
-            />
+            <div className="navbar-preferencia navbar-preferencia-idioma">
+              <LanguageSelector
+                idioma={idioma}
+                cambiarIdioma={cambiarIdioma}
+                etiqueta={nav?.aria?.idioma ?? "Cambiar idioma"}
+                className="navbar-idioma"
+              />
+            </div>
+            <button
+              className="navbar-icono navbar-accesibilidad"
+              type="button"
+              aria-label={nav?.aria?.accesibilidad ?? (ingles ? "Enlarge text" : "Aumentar texto")}
+              aria-pressed={textoGrande}
+              onClick={alternarTexto}
+            >
+              <span>{textos?.menuMovil?.secciones?.accesibilidad ?? (ingles ? "Accessibility" : "Accesibilidad")}</span>
+              <span className="navbar-accesibilidad-icono">
+                <Icono nombre="accesibilidad" />
+              </span>
+            </button>
             {nav && <div className="navbar-cuenta">
               <a className="navbar-ingresar" href="#ingresar" onClick={() => setAbierto(false)}>{nav.botones.invitado.ingresar}</a>
               <Button

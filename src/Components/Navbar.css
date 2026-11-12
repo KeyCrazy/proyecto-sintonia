@@ -1,7 +1,7 @@
 .navbar {
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 30;
   color: var(--color-texto);
   background: var(--color-fondo);
   font-family: var(--fuente-texto);
@@ -11,7 +11,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--espacio-12);
+  gap: clamp(var(--espacio-8), 3vw, var(--espacio-12));
   width: min(calc(100% - 2 * var(--ancho-gutter-navbar)), var(--ancho-navbar));
   max-width: none;
   min-height: var(--alto-navbar);
@@ -37,28 +37,14 @@
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
-  gap: var(--espacio-2);
   color: var(--color-texto);
-  font-size: var(--tamano-navbar-marca);
-  font-weight: var(--peso-bold);
-  letter-spacing: var(--tracking-navbar-marca);
   white-space: nowrap;
 }
 
-.navbar-simbolo {
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  width: var(--alto-marca-navbar);
-  height: var(--alto-marca-navbar);
-  border-radius: var(--radio-completo);
-  color: var(--color-sobre-primario);
-  background: var(--color-primario);
-}
-
-.navbar-simbolo svg {
-  width: var(--tamano-icono-navbar);
-  height: var(--tamano-icono-navbar);
+.navbar-marca img {
+  display: block;
+  width: 128px;
+  height: 32px;
 }
 
 .navbar-movil-acciones {
@@ -130,6 +116,11 @@
   display: flex;
   flex-direction: column;
   gap: var(--espacio-6);
+  z-index: 1;
+}
+
+.navbar-panel.is-abierto .navbar-utilidades {
+  margin-top: auto;
 }
 
 .navbar-enlaces {
@@ -165,6 +156,10 @@
   gap: var(--espacio-4);
 }
 
+.navbar-preferencia {
+  display: contents;
+}
+
 .navbar-cuenta {
   display: flex;
   flex-wrap: wrap;
@@ -193,6 +188,28 @@
   height: var(--alto-icono-navbar);
 }
 
+.navbar-accesibilidad > span:first-child {
+  display: none;
+}
+
+.navbar .navbar-idioma {
+  width: 92px;
+  min-height: 38px;
+  gap: 4px;
+  padding: 3px;
+}
+
+.navbar-idioma .selector-idioma-opcion {
+  min-width: 40px;
+  min-height: 30px;
+}
+
+.navbar-accesibilidad-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .navbar-estado {
   margin: 0;
   color: var(--color-texto-suave);
@@ -215,7 +232,8 @@
 @media (min-width: 64rem) {
   .navbar-interior {
     justify-content: flex-start;
-    gap: var(--espacio-8);
+    gap: clamp(var(--espacio-8), 3vw, var(--espacio-12));
+    min-height: var(--alto-navbar-escritorio);
   }
 
   .navbar-movil-acciones,
@@ -242,14 +260,14 @@
 
   .navbar-enlaces {
     flex-direction: row;
-    gap: var(--espacio-6);
+    gap: 30px;
   }
 
   .navbar-enlaces a {
     min-height: var(--alto-enlace-navbar);
     padding-inline: 0;
     border-radius: var(--radio);
-    font-size: var(--texto-base);
+    font-size: var(--tamano-cuerpo-p);
     white-space: nowrap;
   }
 
@@ -273,9 +291,10 @@
   }
 
   .navbar-cuenta {
+    order: 2;
     flex-wrap: nowrap;
-    gap: var(--espacio-16);
-    margin-left: var(--espacio-16);
+    gap: clamp(var(--espacio-12), 4.2vw, calc(var(--espacio-16) + var(--espacio-1) + var(--grosor-borde) + var(--grosor-borde)));
+    margin-left: clamp(var(--espacio-12), 4.2vw, calc(var(--espacio-16) + var(--espacio-1) + var(--grosor-borde) + var(--grosor-borde)));
   }
 
   .navbar-ingresar {
@@ -284,11 +303,20 @@
   }
 
   .navbar-idioma {
-    margin-left: var(--espacio-8);
+    order: 1;
+    min-height: 38px;
+    margin-left: clamp(var(--espacio-8), 2.86vw, var(--espacio-12));
+  }
+
+  .navbar-idioma .selector-idioma-opcion {
+    min-width: var(--alto-icono-navbar);
+    min-height: 30px;
   }
 
   .navbar .navbar-accion {
     min-width: var(--ancho-boton-cta);
+    min-height: 38px;
+    padding-inline: var(--espacio-4);
   }
 
   .navbar-panel .navbar-ingresar {
@@ -296,19 +324,106 @@
   }
 }
 
+@media (max-width: 63.999rem) {
+  .navbar-panel.is-abierto {
+    position: fixed;
+    top: var(--alto-navbar);
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100dvh - var(--alto-navbar));
+    max-height: none;
+    gap: 0;
+    padding: var(--espacio-2) var(--espacio-4) var(--espacio-6);
+    border-top: var(--grosor-borde) solid var(--color-borde);
+    box-shadow: none;
+  }
+
+  .navbar-enlaces {
+    gap: var(--espacio-2);
+  }
+
+  .navbar-enlaces a {
+    padding-inline: var(--espacio-2);
+  }
+
+  .navbar-enlaces a[aria-current="page"] {
+    background: transparent;
+  }
+
+  .navbar-utilidades {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 0;
+    width: 100%;
+    margin-top: auto;
+  }
+
+  .navbar-preferencia {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    min-height: var(--alto-control);
+    border-top: var(--grosor-borde) solid var(--color-borde);
+    color: var(--color-texto);
+    font-weight: var(--peso-medium);
+  }
+
+  .navbar-utilidades .navbar-accesibilidad {
+    justify-content: space-between;
+    width: 100%;
+    height: auto;
+    min-height: var(--alto-control);
+    border: 0;
+    border-top: var(--grosor-borde) solid var(--color-borde);
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .navbar-accesibilidad > span:first-child {
+    display: inline;
+  }
+
+  .navbar-accesibilidad-icono {
+    width: var(--alto-icono-navbar-compacto);
+    height: var(--alto-icono-navbar-compacto);
+    border: var(--grosor-borde) solid var(--color-borde);
+    border-radius: var(--radio-completo);
+    background: var(--color-superficie-activa);
+  }
+
+  .navbar-cuenta {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--espacio-2);
+    width: 100%;
+    margin: var(--espacio-2) 0 0;
+  }
+
+  .navbar-panel .navbar-ingresar {
+    display: inline-flex;
+    order: 1;
+    width: 100%;
+    border: var(--grosor-borde) solid var(--color-borde);
+    border-radius: var(--radio-completo);
+  }
+
+  .navbar .navbar-accion {
+    order: 0;
+    width: 100%;
+    min-height: 50px;
+  }
+
+  .navbar-movil-ingresar {
+    display: none;
+  }
+}
+
 @media (max-width: 30rem) {
   .navbar-interior {
     gap: var(--espacio-2);
-  }
-
-  .navbar-marca {
-    gap: var(--espacio-2);
-    font-size: var(--tamano-navbar-marca-movil);
-  }
-
-  .navbar-simbolo {
-    width: var(--alto-marca-navbar-compacto);
-    height: var(--alto-marca-navbar-compacto);
   }
 
   .navbar-icono {

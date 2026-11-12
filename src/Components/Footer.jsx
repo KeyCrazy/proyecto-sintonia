@@ -1,4 +1,5 @@
 import "./Footer.css";
+import logo from "../assets/logo.svg";
 
 const DESTINOS = {
   explorar: [
@@ -36,17 +37,7 @@ export default function Footer({ textos, idioma = "es" }) {
               href="#inicio"
               aria-label={idioma === "en" ? "Sintonía, go to home" : "Sintonía, ir al inicio"}
             >
-              <span className="pie-pagina-simbolo" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M6 9v6m6-10v14m6-10v6"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </span>
-              <span>Sintonía</span>
+              <img src={logo} alt="" />
             </a>
             <p>{textos.lema}</p>
           </div>
