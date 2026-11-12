@@ -426,6 +426,19 @@
     gap: var(--espacio-2);
   }
 
+  .navbar-marca img {
+    width: 96px;
+    height: 24px;
+  }
+
+  .navbar-movil-acciones {
+    gap: var(--espacio-2);
+  }
+
+  .navbar-movil-ingresar {
+    display: inline-flex;
+  }
+
   .navbar-icono {
     width: var(--alto-icono-navbar-compacto);
     height: var(--alto-icono-navbar-compacto);

@@ -21,15 +21,11 @@ function EstadoError({ textos, reintentar }) {
 export default function InicioPublico({ textos, estados }) {
   const {
     generos,
-    generoId,
-    seleccionarGenero,
-    detalle,
+    albumesPopulares,
     estadoGeneros,
-    estadoDetalle,
+    estadoAlbumesPopulares,
     reintentar,
   } = useInicioPublico();
-
-  const generoSeleccionado = generos.find((genero) => genero.id === generoId);
 
   return (
     <div className="inicio-publico">
@@ -62,6 +58,37 @@ export default function InicioPublico({ textos, estados }) {
         </div>
       </section>
 
+      <section className="inicio-destacados" aria-labelledby="inicio-destacados-titulo">
+        <div className="inicio-seccion-encabezado">
+          <h2 id="inicio-destacados-titulo">{textos.destacados.titulo}</h2>
+          <a className="inicio-enlace-mas" href="#catalogo">
+            {textos.destacados.enlaces.descubrirMas}
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        {estadoAlbumesPopulares === "cargando" && (
+          <EstadoCarga etiqueta={estados.cargando.aria} />
+        )}
+        {estadoAlbumesPopulares === "error" && (
+          <EstadoError textos={estados.error} reintentar={reintentar} />
+        )}
+        {estadoAlbumesPopulares === "listo" && albumesPopulares.length === 0 && (
+          <p className="inicio-estado">{estados.vacio.generico}</p>
+        )}
+        {estadoAlbumesPopulares === "listo" && albumesPopulares.length > 0 && (
+          <div className="inicio-destacados-lista">
+            {albumesPopulares.map((album) => (
+              <article className="inicio-destacado" key={album.id}>
+                <Portada portada={album.portada} />
+                <h3>{album.titulo}</h3>
+                <p>{album.artista.nombre}</p>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
+
       <section className="inicio-generos" aria-labelledby="inicio-generos-titulo">
         <div className="inicio-seccion-encabezado">
           <h2 id="inicio-generos-titulo">{textos.generos.titulo}</h2>
@@ -76,55 +103,22 @@ export default function InicioPublico({ textos, estados }) {
           <p className="inicio-estado">{estados.vacio.generico}</p>
         )}
         {estadoGeneros === "listo" && generos.length > 0 && (
-          <>
-            <div className="inicio-lista-generos" role="group" aria-labelledby="inicio-generos-titulo">
-              {generos.map((genero) => (
-                <button
-                  className="inicio-genero"
-                  key={genero.id}
-                  type="button"
-                  aria-pressed={genero.id === generoId}
-                  style={{ "--color-genero": genero.colorHex }}
-                  onClick={() => seleccionarGenero(genero.id)}
-                >
-                  {genero.nombre}
-                </button>
-              ))}
-            </div>
-
-            {generoSeleccionado && (
-              <div className="inicio-genero-seleccionado">
-                <div className="inicio-genero-portada">
-                  <Portada portada={generoSeleccionado.portada} />
-                </div>
-                <div className="inicio-genero-contenido">
-                  <p className="inicio-genero-descripcion">{generoSeleccionado.descripcion}</p>
-                  {estadoDetalle === "cargando" && (
-                    <EstadoCarga etiqueta={estados.cargando.aria} />
-                  )}
-                  {estadoDetalle === "error" && (
-                    <EstadoError textos={estados.error} reintentar={reintentar} />
-                  )}
-                  {estadoDetalle === "listo" && detalle?.albumes.length === 0 && (
-                    <p className="inicio-estado">{estados.vacio.generico}</p>
-                  )}
-                  {estadoDetalle === "listo" && detalle?.albumes.length > 0 && (
-                    <div className="inicio-albumes" aria-live="polite">
-                      {detalle.albumes.map((album) => (
-                        <article className="inicio-album" key={album.id}>
-                          <Portada portada={album.portada} />
-                          <div>
-                            <h3>{album.titulo}</h3>
-                            <p>{album.artista.nombre}</p>
-                          </div>
-                        </article>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-          </>
+          <div className="inicio-lista-generos" role="group" aria-labelledby="inicio-generos-titulo">
+            {generos.slice(0, 8).map((genero) => (
+              <a
+                className="inicio-genero"
+                key={genero.id}
+                href="#catalogo"
+                style={{ "--color-genero": genero.colorHex }}
+              >
+                <span>{genero.nombre}</span>
+                <Portada
+                  className="inicio-genero-miniatura"
+                  portada={genero.portada}
+                />
+              </a>
+            ))}
+          </div>
         )}
       </section>
 
@@ -133,7 +127,9 @@ export default function InicioPublico({ textos, estados }) {
           <h2>{textos.cta.titulo}</h2>
           <p>{textos.cta.texto}</p>
         </div>
-        <Button href="#registro">{textos.cta.botones.crearCuentaGratis}</Button>
+        <Button href="#registro" className="inicio-cta-boton">
+          {textos.cta.botones.crearCuentaGratis}
+        </Button>
       </section>
     </div>
   );

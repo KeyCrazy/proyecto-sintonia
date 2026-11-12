@@ -11,7 +11,7 @@ const DESTINOS = {
   catalogo: "#catalogo",
 };
 
-const Navbar = ({ textos, cargando, error, recargar, idioma, activo, textoGrande, alternarTexto, cambiarIdioma }) => {
+const Navbar = ({ textos, cargando, error, recargar, idioma, activo, accesibilidadAbierta, abrirAccesibilidad, botonAccesibilidadRef, cambiarIdioma }) => {
   const [abierto, setAbierto] = useState(false); // Saber si el toogle de mobile esta abierto
   const botonMenu = useRef(null);
   const nav = textos?.navbar;
@@ -62,6 +62,11 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, textoGrande
 
         {/* Acciones del navbar movil */}
         <div className="navbar-movil-acciones">
+          {nav && (
+            <a className="navbar-movil-ingresar" href="#ingresar">
+              {nav.botones.invitado.ingresar}
+            </a>
+          )}
           <button
             type="button"
             ref={botonMenu}
@@ -93,11 +98,17 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, textoGrande
               />
             </div>
             <button
+              ref={botonAccesibilidadRef}
               className="navbar-icono navbar-accesibilidad"
               type="button"
-              aria-label={nav?.aria?.accesibilidad ?? (ingles ? "Enlarge text" : "Aumentar texto")}
-              aria-pressed={textoGrande}
-              onClick={alternarTexto}
+              aria-label={nav?.aria?.accesibilidad ?? (ingles ? "Accessibility options" : "Opciones de accesibilidad")}
+              aria-haspopup="dialog"
+              aria-expanded={accesibilidadAbierta}
+              aria-controls="panel-accesibilidad"
+              onClick={() => {
+                setAbierto(false);
+                abrirAccesibilidad();
+              }}
             >
               <span>{textos?.menuMovil?.secciones?.accesibilidad ?? (ingles ? "Accessibility" : "Accesibilidad")}</span>
               <span className="navbar-accesibilidad-icono">
