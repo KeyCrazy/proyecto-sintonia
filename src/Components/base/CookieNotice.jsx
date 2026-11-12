@@ -36,7 +36,7 @@ export default function CookieNotice({ textos, idioma = "es" }) {
           {textos.botones.rechazar}
         </Button>
         <Button
-          variant="primary"
+          variant="secondary"
           onClick={() => responder("aceptada")}
         >
           {textos.botones.aceptar}

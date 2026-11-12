@@ -260,6 +260,7 @@
 }
 
 .aviso-cookies-acciones .boton {
+  width: var(--ancho-boton-cookie);
   min-width: var(--ancho-boton-cookie);
   min-height: var(--alto-control-compacto);
   padding-inline: var(--espacio-3);
@@ -299,6 +300,7 @@
   }
 
   .aviso-cookies-acciones .boton {
+    width: 100%;
     min-width: 0;
     min-height: 44px;
     font-size: 14px;
