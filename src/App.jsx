@@ -3,6 +3,7 @@ import "./App.css"
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer.jsx";
 import CookieNotice from "./Components/base/CookieNotice.jsx";
+import InicioPublico from "./Components/InicioPublico.jsx";
 import { guardarCookie, leerCookie } from "./utils/cookies.js";
 import {useEffect, useState} from "react";
 
@@ -80,10 +81,21 @@ function App() {
                 textoGrande={textoGrande}
                 alternarTexto={()=>setTextoGrande((valor) => !valor)}
             />
-            <main id={activo} className="contenido" aria-labelledby={`titulo-${activo}`}>
-                <h1 id={`titulo-${activo}`} className="solo-lectores">
-                    {etiquetasSeccion[activo]}
-                </h1>
+            <main
+                id={activo}
+                className={`contenido${activo === "inicio" ? " contenido-inicio" : ""}`}
+                aria-labelledby={`titulo-${activo}`}
+            >
+                {activo === "inicio" && datos.textos?.paginas?.inicioPublico && datos.textos?.estados ? (
+                    <InicioPublico
+                        textos={datos.textos.paginas.inicioPublico}
+                        estados={datos.textos.estados}
+                    />
+                ) : (
+                    <h1 id={`titulo-${activo}`} className="solo-lectores">
+                        {etiquetasSeccion[activo]}
+                    </h1>
+                )}
             </main>
             <Footer textos={datos.textos?.footer} idioma={idioma} />
             <CookieNotice textos={datos.textos?.cookies?.banner} idioma={idioma} />
