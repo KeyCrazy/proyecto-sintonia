@@ -21,10 +21,22 @@ function validarTextos(datos){
         textos?.cookies?.banner?.texto,
         textos?.cookies?.banner?.botones?.rechazar,
         textos?.cookies?.banner?.botones?.aceptar,
+        textos?.footer?.lema,
+        textos?.footer?.columnas?.explora?.titulo,
+        textos?.footer?.columnas?.explora?.enlaces?.inicio,
+        textos?.footer?.columnas?.explora?.enlaces?.catalogo,
+        textos?.footer?.columnas?.cuenta?.titulo,
+        textos?.footer?.columnas?.cuenta?.enlaces?.ingresar,
+        textos?.footer?.columnas?.cuenta?.enlaces?.crearCuenta,
+        textos?.footer?.columnas?.legal?.titulo,
+        textos?.footer?.columnas?.legal?.enlaces?.terminos,
+        textos?.footer?.columnas?.legal?.enlaces?.accesibilidad,
+        textos?.footer?.legal?.derechos,
+        textos?.footer?.legal?.nota,
     ]
 
     if (!etiquetas.every((valor) =>typeof valor === "string" && valor.trim())){
-        throw new Error("La respuesta no contiene los textos requeridos para el navbar de Sintonía.")
+        throw new Error("La respuesta no contiene los textos requeridos para la navegación y el pie de página de Sintonía.")
     }
     return textos;
 }

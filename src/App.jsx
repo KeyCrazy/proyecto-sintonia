@@ -1,6 +1,7 @@
 import {useTextos} from "./hooks/useTextos.js";
 import "./App.css"
 import Navbar from "./Components/Navbar";
+import Footer from "./Components/Footer.jsx";
 import CookieNotice from "./Components/base/CookieNotice.jsx";
 import { guardarCookie, leerCookie } from "./utils/cookies.js";
 import {useEffect, useState} from "react";
@@ -50,7 +51,7 @@ function App() {
 
 
     return (
-        <>
+        <div className="sitio">
             <Navbar 
                 {...datos} 
                 idioma = {idioma} 
@@ -59,8 +60,10 @@ function App() {
                 textoGrande={textoGrande}
                 alternarTexto={()=>setTextoGrande((valor) => !valor)}
             />
+            <main id="inicio" className="contenido" />
+            <Footer textos={datos.textos?.footer} idioma={idioma} />
             <CookieNotice textos={datos.textos?.cookies?.banner} idioma={idioma} />
-        </>
+        </div>
 
     )
 }
