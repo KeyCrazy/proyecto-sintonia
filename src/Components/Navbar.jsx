@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import "./Navbar.css";
 import Icono from "./Icono.jsx";
+import Button from "./base/Button.jsx";
+import LanguageSelector from "./base/LanguageSelector.jsx";
 
 
 const DESTINOS = {
@@ -108,16 +110,21 @@ const Navbar = ({ textos, cargando, error, recargar, idioma, activo, onBuscar, t
           </>}
           <div className="navbar-utilidades">
             <button className="navbar-icono navbar-accesibilidad" type="button" aria-label={nav?.aria?.accesibilidad ?? (ingles ? "Enlarge text" : "Aumentar texto")} aria-pressed={textoGrande} onClick={alternarTexto}><Icono nombre="accesibilidad" /></button>
-            <div className="navbar-idioma" role="group" aria-label={nav?.aria?.idioma ?? "Cambiar idioma"}>
-              {["es", "en"].map((opcion) => (
-                <button key={opcion} type="button" aria-pressed={idioma === opcion} onClick={() => cambiarIdioma(opcion)}>
-                  {opcion.toUpperCase()}
-                </button>
-              ))}
-            </div>
+            <LanguageSelector
+              idioma={idioma}
+              cambiarIdioma={cambiarIdioma}
+              etiqueta={nav?.aria?.idioma ?? "Cambiar idioma"}
+              className="navbar-idioma"
+            />
             {nav && <div className="navbar-cuenta">
               <a className="navbar-ingresar" href="#ingresar" onClick={() => setAbierto(false)}>{nav.botones.invitado.ingresar}</a>
-              <a className="navbar-accion" href="#registro" onClick={() => setAbierto(false)}>{nav.botones.invitado.crearCuenta}</a>
+              <Button
+                href="#registro"
+                className="navbar-accion"
+                onClick={() => setAbierto(false)}
+              >
+                {nav.botones.invitado.crearCuenta}
+              </Button>
             </div>}
           </div>
         </div>

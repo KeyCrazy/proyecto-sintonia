@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const API = "https://yanethm-sintonia-api.fly.dev/api/v1/textos";
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 const CLAVES_MENU = ["inicio", "catalogo"];
 
 function validarTextos(datos){
@@ -19,6 +19,10 @@ function validarTextos(datos){
         nav?.aria?.accesibilidad,
         textos?.menuMovil?.abrir,
         textos?.menuMovil?.cerrar,
+        textos?.cookies?.banner?.titulo,
+        textos?.cookies?.banner?.texto,
+        textos?.cookies?.banner?.botones?.rechazar,
+        textos?.cookies?.banner?.botones?.aceptar,
     ]
 
     if (!etiquetas.every((valor) =>typeof valor === "string" && valor.trim())){
@@ -43,7 +47,11 @@ export function useTextos(idioma){
 
         async function cargarTextosNavbar(){
             try{
-                const respuesta = await fetch(`${API}?idioma=${idioma}`,{
+                if (!API_BASE_URL) {
+                    throw new Error("Falta configurar la variable VITE_API_URL.");
+                }
+                const url = `${API_BASE_URL.replace(/\/+$/, "")}/textos?idioma=${idioma}`;
+                const respuesta = await fetch(url,{
                     signal: controlador.signal,
                 });
                 if(!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);

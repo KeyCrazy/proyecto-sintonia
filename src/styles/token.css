@@ -1,30 +1,205 @@
-:root{
-    --color-fondo:#0b0a0f;
-    --color-superficie:#131219;
-    --color-texto: #f7f6f8;
-    --color-texto-suave: #aaa7b4;
-    --color-primario: #c5f542;
-    --color-primario-hover: #d6ff68;
-    --color-sobre-primario: #11120b;
-    --color-borde: #292631;
-    --color-foco: #c5f542;
-    --color-superficie-activa: #201f27;
+:root {
+  color-scheme: dark;
 
-    --fuente-texto: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    --fuente-titulos: Georgia, "Times New Roman", serif;
-    --texto-pequeno: 0.875rem;
-    --texto-base: 1rem;
-    --texto-subtitulo: 1.5rem;
-    --texto-titulo: clamp(2rem, 1.5rem + 2vw, 3rem);
-    --interlineado: 1.6;
+  --fondo-base: #0c0b10;
+  --fondo-superficie: #16151c;
+  --fondo-elevada: #201f29;
+  --fondo-sutil: #2a2935;
+  --fondo-inverso: #f4f2f7;
 
-    --espacio-1: 0.5rem;
-    --espacio-2: 1rem;
-    --espacio-3: 1.5rem;
-    --espacio-4: 2rem;
-    --espacio-5: 3rem;
-    --radio: 0.5rem;
-    --radio-pildora: 999px;
-    --ancho-contenido: 72rem;
-    --ancho-navbar: 86rem;
+  --marca-primario: #c6f24e;
+  --marca-primario-hover: #d6f97a;
+  --marca-primario-presionado: #aeda36;
+  --marca-suave: #2a3314;
+
+  --texto-principal: #f4f2f7;
+  --texto-secundario: #a9a6b5;
+  --texto-terciario: #737081;
+  --texto-marca: #c6f24e;
+  --texto-sobre-marca: #10130a;
+  --texto-inverso: #15131c;
+
+  --borde-sutil: #272631;
+  --borde-fuerte: #3d3c4b;
+
+  --estado-exito: #4ade80;
+  --estado-error: #ff6b6b;
+  --estado-error-suave: #3a1517;
+  --fijo-negro: #0c0b10;
+  --fijo-blanco: #ffffff;
+
+  --espacio-1: 4px;
+  --espacio-2: 8px;
+  --espacio-3: 12px;
+  --espacio-4: 16px;
+  --espacio-6: 24px;
+  --espacio-8: 32px;
+  --espacio-12: 48px;
+  --espacio-16: 64px;
+
+  --radio-sm: 6px;
+  --radio-md: 10px;
+  --radio-lg: 16px;
+  --radio-xl: 24px;
+  --radio-completo: 999px;
+
+  --fuente-syne: "Syne", system-ui, sans-serif;
+  --fuente-inter: "Inter", system-ui, sans-serif;
+  --peso-regular: 400;
+  --peso-medium: 500;
+  --peso-semibold: 600;
+  --peso-bold: 700;
+  --peso-extrabold: 800;
+
+  --tamano-h1: 40px;
+  --interlineado-h1: 46px;
+  --tamano-h2: 28px;
+  --interlineado-h2: 34px;
+  --tamano-h3: 20px;
+  --interlineado-h3: 26px;
+  --tamano-h4: 16px;
+  --interlineado-h4: 22px;
+  --tamano-cuerpo-m: 16px;
+  --interlineado-cuerpo-m: 24px;
+  --tamano-cuerpo-p: 14px;
+  --interlineado-cuerpo-p: 20px;
+  --tamano-detalle-nota: 12px;
+  --interlineado-detalle-nota: 16px;
+  --tamano-detalle-etiqueta: 11px;
+  --interlineado-detalle-etiqueta: 16px;
+  --tracking-h1: -0.015em;
+  --tracking-h2: -0.01em;
+  --tracking-h3: -0.005em;
+  --tracking-etiqueta: 0.08em;
+  --tamano-navbar-marca: 22px;
+  --tamano-navbar-marca-movil: 18px;
+  --tracking-navbar-marca: -0.035em;
+  --grosor-anillo-foco: 3px;
+  --desplazamiento-anillo-foco: 3px;
+  --grosor-borde: 1px;
+  --opacidad-deshabilitado: 0.5;
+  --alto-control: 44px;
+  --alto-control-compacto: 36px;
+  --ancho-minimo-boton: 44px;
+  --alto-selector-idioma: 36px;
+  --alto-opcion-idioma: 28px;
+  --ancho-opcion-idioma: 32px;
+  --ancho-boton-cta: 136px;
+  --ancho-boton-cookie: 88px;
+  --ancho-banner-cookie: 86rem;
+  --ancho-gutter-navbar: clamp(20px, 4vw, 64px);
+  --ancho-gutter-panel: max(var(--espacio-4), calc((100vw - var(--ancho-contenido)) / 2));
+  --alto-navbar: 72px;
+  --alto-enlace-navbar: 40px;
+  --alto-campo-navbar: 44px;
+  --alto-marca-navbar: 36px;
+  --alto-marca-navbar-compacto: 32px;
+  --alto-icono-navbar: 42px;
+  --alto-icono-navbar-compacto: 36px;
+  --tamano-icono-navbar: 22px;
+  --tamano-icono-navbar-compacto: 20px;
+  --duracion-transicion: 160ms;
+
+  --sombra-tarjeta: 0 8px 24px 0 #00000059;
+  --sombra-flotante: 0 24px 64px 0 #0000008c;
+  --brillo-marca: 0 0 28px 0 #c6f24e59;
+  --anillo-foco: 0 0 0 3px rgb(198 242 78 / 16%);
+
+  --ancho-contenido: 72rem;
+  --ancho-navbar: 86rem;
+
+  --color-fondo: var(--fondo-base);
+  --color-superficie: var(--fondo-superficie);
+  --color-texto: var(--texto-principal);
+  --color-texto-suave: var(--texto-secundario);
+  --color-primario: var(--marca-primario);
+  --color-primario-hover: var(--marca-primario-hover);
+  --color-sobre-primario: var(--texto-sobre-marca);
+  --color-borde: var(--borde-sutil);
+  --color-foco: var(--marca-primario);
+  --color-superficie-activa: var(--fondo-elevada);
+  --fuente-texto: var(--fuente-inter);
+  --fuente-titulos: var(--fuente-syne);
+  --texto-pequeno: var(--tamano-cuerpo-p);
+  --texto-base: var(--tamano-cuerpo-m);
+  --texto-subtitulo: var(--tamano-h2);
+  --texto-titulo: var(--tamano-h1);
+  --interlineado: 1.5;
+  --radio: var(--radio-md);
+  --radio-pildora: var(--radio-completo);
+}
+
+.titular-h1 {
+  font-family: var(--fuente-syne);
+  font-size: var(--tamano-h1);
+  font-weight: var(--peso-bold);
+  line-height: var(--interlineado-h1);
+  letter-spacing: var(--tracking-h1);
+}
+
+.titular-h2 {
+  font-family: var(--fuente-syne);
+  font-size: var(--tamano-h2);
+  font-weight: var(--peso-bold);
+  line-height: var(--interlineado-h2);
+  letter-spacing: var(--tracking-h2);
+}
+
+.titular-h3 {
+  font-family: var(--fuente-syne);
+  font-size: var(--tamano-h3);
+  font-weight: var(--peso-bold);
+  line-height: var(--interlineado-h3);
+  letter-spacing: var(--tracking-h3);
+}
+
+.titular-h4 {
+  font-family: var(--fuente-syne);
+  font-size: var(--tamano-h4);
+  font-weight: var(--peso-bold);
+  line-height: var(--interlineado-h4);
+}
+
+.cuerpo-m {
+  font-family: var(--fuente-inter);
+  font-size: var(--tamano-cuerpo-m);
+  font-weight: var(--peso-regular);
+  line-height: var(--interlineado-cuerpo-m);
+}
+
+.cuerpo-m-fuerte {
+  font-family: var(--fuente-inter);
+  font-size: var(--tamano-cuerpo-m);
+  font-weight: var(--peso-semibold);
+  line-height: var(--interlineado-cuerpo-m);
+}
+
+.cuerpo-p {
+  font-family: var(--fuente-inter);
+  font-size: var(--tamano-cuerpo-p);
+  font-weight: var(--peso-regular);
+  line-height: var(--interlineado-cuerpo-p);
+}
+
+.cuerpo-p-fuerte {
+  font-family: var(--fuente-inter);
+  font-size: var(--tamano-cuerpo-p);
+  font-weight: var(--peso-semibold);
+  line-height: var(--interlineado-cuerpo-p);
+}
+
+.detalle-nota {
+  font-family: var(--fuente-inter);
+  font-size: var(--tamano-detalle-nota);
+  font-weight: var(--peso-regular);
+  line-height: var(--interlineado-detalle-nota);
+}
+
+.detalle-etiqueta {
+  font-family: var(--fuente-inter);
+  font-size: var(--tamano-detalle-etiqueta);
+  font-weight: var(--peso-semibold);
+  line-height: var(--interlineado-detalle-etiqueta);
+  letter-spacing: var(--tracking-etiqueta);
+  text-transform: uppercase;
 }
