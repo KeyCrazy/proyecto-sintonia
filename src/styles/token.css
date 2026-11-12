@@ -8,6 +8,7 @@
     --color-sobre-primario: #11120b;
     --color-borde: #292631;
     --color-foco: #c5f542;
+    --color-superficie-activa: #201f27;
 
     --fuente-texto: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     --fuente-titulos: Georgia, "Times New Roman", serif;
@@ -23,5 +24,7 @@
     --espacio-4: 2rem;
     --espacio-5: 3rem;
     --radio: 0.5rem;
+    --radio-pildora: 999px;
     --ancho-contenido: 72rem;
+    --ancho-navbar: 86rem;
 }
