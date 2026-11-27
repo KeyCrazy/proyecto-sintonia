@@ -70,6 +70,17 @@
 .ingresar-campos {
   display: grid;
   gap: var(--espacio-6);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* Bloqueado por demasiados intentos: todo se ve deshabilitado */
+.ingresar-campos:disabled .campo-etiqueta,
+.ingresar-campos:disabled .ingresar-mantener {
+  color: var(--texto-terciario);
+  cursor: not-allowed;
 }
 
 .ingresar-opciones {

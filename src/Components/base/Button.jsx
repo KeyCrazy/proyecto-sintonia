@@ -1,18 +1,28 @@
 import "./base.css";
 
+/**
+ * Botón reutilizable.
+ *   <Button onClick={guardar}>Guardar</Button>
+ *   <Button href="/catalogo" variante="secondary">Ver catálogo</Button>
+ *   <Button type="submit" cargando={enviando}>{enviando ? "Ingresando…" : "Ingresar"}</Button>
+ *
+ * cargando (Figma «Botón · cargando»): muestra el spinner, no se puede pulsar otra vez
+ * y avisa al lector de pantalla con aria-busy.
+ */
 export default function Button({
   children,
   variante = "primary",
   href,
   className = "",
   disabled = false,
+  cargando = false,
   type = "button",
   onClick,
   tipografia = "cuerpo-p-fuerte",
   tabIndex,
   ...props
 }) {
-  const classes = ["boton", `boton--${variante}`, tipografia, className]
+  const classes = ["boton", `boton--${variante}`, cargando && "boton--cargando", tipografia, className]
     .filter(Boolean)
     .join(" ");
 
@@ -35,10 +45,12 @@ export default function Button({
     <button
       className={classes}
       type={type}
-      disabled={disabled}
+      disabled={disabled || cargando}
+      aria-busy={cargando || undefined}
       onClick={onClick}
       {...props}
     >
+      {cargando && <span className="boton-spinner" aria-hidden="true" />}
       {children}
     </button>
   );

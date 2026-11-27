@@ -42,6 +42,9 @@ export default function Ingresar({ textos }) {
   const [errores, setErrores] = useState({});
   const [aviso, setAviso] = useState(null);
   const [enviando, setEnviando] = useState(false);
+  // 429: segundos que faltan para poder volver a intentar (cabecera Retry-After).
+  const [segundosBloqueo, setSegundosBloqueo] = useState(0);
+  const bloqueado = segundosBloqueo > 0;
   const correoRef = useRef(null);
   const claveRef = useRef(null);
   const avisoRef = useRef(null);
@@ -52,6 +55,18 @@ export default function Ingresar({ textos }) {
   useEffect(() => {
     if (aviso && aviso.tipo !== "campos") avisoRef.current?.focus();
   }, [aviso]);
+
+  // Cuenta regresiva del bloqueo por demasiados intentos.
+  useEffect(() => {
+    if (!bloqueado) return undefined;
+    const intervalo = setInterval(() => setSegundosBloqueo((segundos) => segundos - 1), 1000);
+    return () => clearInterval(intervalo);
+  }, [bloqueado]);
+
+  // Al terminar el bloqueo se quita el aviso y el formulario vuelve a funcionar.
+  useEffect(() => {
+    if (segundosBloqueo <= 0 && aviso?.tipo === "intentos") setAviso(null);
+  }, [segundosBloqueo, aviso]);
 
   function validar() {
     const nuevos = {};
@@ -90,7 +105,9 @@ export default function Ingresar({ textos }) {
       } else if (codigo === "credenciales_invalidas") {
         setAviso({ tipo: "credenciales" });
       } else if (codigo === "demasiadas_peticiones") {
-        setAviso({ tipo: "intentos", segundos: error.reintentarEn ?? 60 });
+        const segundos = error.reintentarEn ?? 60;
+        setSegundosBloqueo(segundos);
+        setAviso({ tipo: "intentos", segundos });
       } else if (codigo === "sin_conexion") {
         setAviso({ tipo: "conexion" });
       } else {
@@ -101,7 +118,8 @@ export default function Ingresar({ textos }) {
 
   function enviar(evento) {
     evento.preventDefault();
-    if (enviando) return;
+    // No se puede enviar dos veces ni durante el bloqueo por demasiados intentos.
+    if (enviando || bloqueado) return;
     const nuevos = validar();
     setErrores(nuevos);
     if (Object.keys(nuevos).length > 0) {
@@ -121,7 +139,18 @@ export default function Ingresar({ textos }) {
       case "intentos":
         return {
           titulo: mensajes.demasiadosIntentos.titulo,
-          texto: rellenar(mensajes.demasiadosIntentos.texto, { segundos: aviso.segundos }),
+          // La cuenta regresiva se ve cada segundo, pero el lector de pantalla solo lee
+          // el mensaje una vez (con los segundos iniciales) para no repetirlo cada segundo.
+          texto: (
+            <>
+              <span aria-hidden="true">
+                {rellenar(mensajes.demasiadosIntentos.texto, { segundos: Math.max(segundosBloqueo, 0) })}
+              </span>
+              <span className="solo-lectores">
+                {rellenar(mensajes.demasiadosIntentos.texto, { segundos: aviso.segundos })}
+              </span>
+            </>
+          ),
         };
       case "conexion":
         return { titulo: mensajes.conexion.titulo, texto: mensajes.conexion.texto, reintentar: true };
@@ -159,17 +188,13 @@ export default function Ingresar({ textos }) {
 
           {avisoActual && (
             <div className="ingresar-aviso" ref={avisoRef} tabIndex={-1}>
-              <Aviso tipo="error" titulo={avisoActual.titulo} texto={avisoActual.texto}>
-                {avisoActual.reintentar && (
-                  <Button onClick={ingresar} disabled={enviando}>
-                    {mensajes.conexion.botones.reintentar}
-                  </Button>
-                )}
-              </Aviso>
+              <Aviso tipo="error" titulo={avisoActual.titulo} texto={avisoActual.texto} />
             </div>
           )}
 
-          <form className="ingresar-campos" onSubmit={enviar} noValidate aria-busy={enviando}>
+          <form onSubmit={enviar} noValidate aria-busy={enviando}>
+            {/* Con 429 el fieldset deshabilitado bloquea todos los campos y el botón a la vez. */}
+            <fieldset className="ingresar-campos" disabled={bloqueado}>
             <Field
               ref={correoRef}
               etiqueta={formulario.etiquetas.correo}
@@ -213,14 +238,20 @@ export default function Ingresar({ textos }) {
               </a>
             </div>
 
+            {/* Figma: «Ingresando…» con spinner mientras envía; «Reintentar» si no hubo conexión. */}
             <Button
               type="submit"
               className="ingresar-boton"
               tipografia="cuerpo-m-fuerte"
-              disabled={enviando}
+              cargando={enviando}
             >
-              {enviando ? formulario.mensajes.ingresando : formulario.botones.ingresar}
+              {enviando
+                ? formulario.mensajes.ingresando
+                : avisoActual?.reintentar
+                  ? mensajes.conexion.botones.reintentar
+                  : formulario.botones.ingresar}
             </Button>
+            </fieldset>
           </form>
 
           <p className="ingresar-registro cuerpo-p">

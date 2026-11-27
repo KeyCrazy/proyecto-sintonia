@@ -61,6 +61,46 @@
   cursor: not-allowed;
 }
 
+/* Cargando (Figma «Botón · cargando»): conserva su color, más apagado, con un spinner */
+.boton {
+  gap: var(--espacio-2);
+}
+
+.boton--primary.boton--cargando:disabled {
+  border-color: transparent;
+  color: var(--texto-sobre-marca);
+  background: var(--marca-primario-presionado);
+  cursor: progress;
+}
+
+.boton--secondary.boton--cargando:disabled {
+  border-color: var(--borde-fuerte);
+  color: var(--texto-principal);
+  background: transparent;
+  cursor: progress;
+}
+
+.boton-spinner {
+  width: var(--espacio-4);
+  height: var(--espacio-4);
+  border: var(--linea-gruesa) solid currentColor;
+  border-right-color: transparent;
+  border-radius: var(--radio-completo);
+  animation: boton-girar 0.8s linear infinite;
+}
+
+@keyframes boton-girar {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boton-spinner {
+    animation-duration: 2.4s;
+  }
+}
+
 .campo {
   display: grid;
   gap: var(--espacio-2);
