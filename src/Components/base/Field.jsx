@@ -24,23 +24,23 @@ export default function Field({
 
   return (
     <div className={`campo ${className}`.trim()}>
-      <label className="campo-etiqueta" htmlFor={inputId}>
+      <label className="campo-etiqueta cuerpo-p-fuerte" htmlFor={inputId}>
         {label}
       </label>
       <input
-        className="campo-control"
+        className="campo-control cuerpo-m"
         id={inputId}
         aria-invalid={error ? true : externalInvalid}
         aria-describedby={describedBy}
         {...restInputProps}
       />
       {hint && (
-        <p className="campo-ayuda" id={hintId}>
+        <p className="campo-ayuda detalle-nota" id={hintId}>
           {hint}
         </p>
       )}
       {error && (
-        <p className="campo-error" id={errorId} role="alert">
+        <p className="campo-error detalle-nota-fuerte" id={errorId} role="alert">
           {error}
         </p>
       )}

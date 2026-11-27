@@ -20,30 +20,27 @@
 
 .solo-lectores{
     position: absolute;
-    width: 1px;
-    height: 1px;
+    width: var(--linea);
+    height: var(--linea);
     padding: 0;
-    margin: -1px;
+    margin: calc(var(--linea) * -1);
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
 }
 
+/* Alto contraste: fondos negros, textos y bordes blancos, con los colores fijos de los tokens. */
 html[data-contraste-alto="true"] {
-    --fondo-base: #000;
-    --fondo-superficie: #000;
-    --fondo-elevada: #111;
-    --fondo-sutil: #222;
-    --texto-principal: #fff;
-    --texto-secundario: #fff;
-    --texto-terciario: #e6e6e6;
-    --texto-marca: #ff0;
-    --marca-primario: #ff0;
-    --marca-primario-hover: #ff0;
-    --borde-sutil: #fff;
-    --borde-fuerte: #fff;
-    --color-foco: #ff0;
+    --fondo-base: var(--fijo-negro);
+    --fondo-superficie: var(--fijo-negro);
+    --fondo-elevada: var(--fijo-negro);
+    --fondo-sutil: var(--fijo-negro);
+    --texto-principal: var(--fijo-blanco);
+    --texto-secundario: var(--fijo-blanco);
+    --texto-terciario: var(--fijo-blanco);
+    --borde-sutil: var(--fijo-blanco);
+    --borde-fuerte: var(--fijo-blanco);
 }
 
 html[data-reducir-movimiento="true"] *,
@@ -60,7 +57,9 @@ html[data-subrayar-enlaces="true"] a {
     text-underline-offset: 0.18em;
 }
 
-html[data-espaciado-ampliado="true"] body {
-    letter-spacing: 0.04em;
-    line-height: 1.8;
+/* Valores del criterio WCAG 1.4.12 (espaciado del texto); las clases de Figma
+   fijan su propio interlineado, por eso se aplica a todos los elementos. */
+html[data-espaciado-ampliado="true"] body * {
+    letter-spacing: 0.04em !important;
+    line-height: 1.8 !important;
 }

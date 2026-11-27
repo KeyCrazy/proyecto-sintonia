@@ -19,7 +19,7 @@ export default function LanguageSelector({
       {idiomas.map(({ codigo }) => (
         <button
           key={codigo}
-          className="selector-idioma-opcion"
+          className="selector-idioma-opcion detalle-nota-fuerte"
           type="button"
           disabled={disabled}
           aria-label={nombres[codigo]}

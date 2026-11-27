@@ -36,17 +36,17 @@ export default function Footer({ textos, etiquetaLogo }) {
             >
               <img src={logo} alt="" />
             </a>
-            <p>{textos.lema}</p>
+            <p className="detalle-nota">{textos.lema}</p>
           </div>
 
           <nav className="pie-pagina-navegacion">
             {columnas.map(({ clave, contenido, enlaces }) => (
               <section className="pie-pagina-columna" key={clave}>
-                <h2>{contenido.titulo}</h2>
+                <h2 className="detalle-etiqueta">{contenido.titulo}</h2>
                 <ul>
                   {enlaces.map(([claveEnlace, destino]) => (
                     <li key={claveEnlace}>
-                      <a href={destino}>{contenido.enlaces[claveEnlace]}</a>
+                      <a className="detalle-nota" href={destino}>{contenido.enlaces[claveEnlace]}</a>
                     </li>
                   ))}
                 </ul>
@@ -55,7 +55,7 @@ export default function Footer({ textos, etiquetaLogo }) {
           </nav>
         </div>
 
-        <div className="pie-pagina-legal">
+        <div className="pie-pagina-legal detalle-nota">
           <p>
             {textos.legal.derechos.replace(
               "{anio}",

@@ -5,7 +5,7 @@
 }
 
 .pie-pagina-interior {
-  width: min(calc(100% - 2 * var(--ancho-gutter-navbar)), var(--ancho-navbar));
+  width: min(calc(100% - 2 * var(--margen-pagina)), var(--ancho-navbar));
   max-width: var(--ancho-navbar);
 }
 
@@ -17,7 +17,7 @@
 }
 
 .pie-pagina-marca {
-  max-width: 20rem;
+  max-width: calc(var(--espacio-16) * 5);
 }
 
 .pie-pagina-logotipo {
@@ -29,16 +29,14 @@
 
 .pie-pagina-logotipo img {
   display: block;
-  width: 128px;
-  height: 32px;
+  width: calc(var(--espacio-16) * 2);
+  height: var(--espacio-8);
 }
 
 .pie-pagina-marca p,
 .pie-pagina-legal p {
   margin: var(--espacio-2) 0 0;
   color: var(--texto-secundario);
-  font-size: var(--tamano-detalle-nota);
-  line-height: var(--interlineado-detalle-nota);
 }
 
 .pie-pagina-navegacion {
@@ -50,12 +48,6 @@
 .pie-pagina-columna h2 {
   margin: 0 0 var(--espacio-2);
   color: var(--texto-terciario);
-  font-family: var(--fuente-inter);
-  font-size: var(--tamano-detalle-etiqueta);
-  font-weight: var(--peso-semibold);
-  letter-spacing: var(--tracking-etiqueta);
-  line-height: var(--interlineado-detalle-etiqueta);
-  text-transform: uppercase;
 }
 
 .pie-pagina-columna ul {
@@ -68,8 +60,6 @@
 
 .pie-pagina-columna a {
   color: var(--texto-principal);
-  font-size: var(--tamano-detalle-nota);
-  line-height: var(--interlineado-detalle-nota);
   text-decoration: none;
 }
 
@@ -79,8 +69,8 @@
 }
 
 .pie-pagina a:focus-visible {
-  outline: var(--grosor-anillo-foco) solid var(--marca-primario);
-  outline-offset: var(--desplazamiento-anillo-foco);
+  outline: var(--anillo-foco) solid var(--marca-primario);
+  outline-offset: var(--anillo-foco);
 }
 
 .pie-pagina-legal {
@@ -88,7 +78,7 @@
   justify-content: space-between;
   gap: var(--espacio-4);
   padding-top: var(--espacio-6);
-  border-top: var(--grosor-borde) solid var(--borde-sutil);
+  border-top: var(--linea) solid var(--borde-sutil);
 }
 
 .pie-pagina-legal p {

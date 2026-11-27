@@ -1,29 +1,29 @@
+/* Componentes base. Colores, espacios, radios y sombras salen de tokens.css;
+   la tipografía, de las clases de Figma que cada componente pone en su JSX. */
+
 .boton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: var(--alto-control);
   padding-inline: var(--espacio-6);
-  border: var(--grosor-borde) solid transparent;
+  border: var(--linea) solid transparent;
   border-radius: var(--radio-completo);
-  font-family: var(--fuente-inter);
-  font-size: var(--tamano-cuerpo-p);
-  font-weight: var(--peso-semibold);
-  line-height: var(--interlineado-cuerpo-p);
   text-align: center;
   text-decoration: none;
   cursor: pointer;
   transition:
-    color var(--duracion-transicion) ease,
-    background-color var(--duracion-transicion) ease,
-    border-color var(--duracion-transicion) ease;
+    color var(--transicion),
+    background-color var(--transicion),
+    border-color var(--transicion);
 }
 
 .boton:focus-visible,
 .campo-control:focus-visible,
-.selector-idioma-opcion:focus-visible {
-  outline: var(--grosor-anillo-foco) solid var(--marca-primario);
-  outline-offset: var(--desplazamiento-anillo-foco);
+.selector-idioma-opcion:focus-visible,
+.tarjeta--interactiva:focus-visible {
+  outline: var(--anillo-foco) solid var(--marca-primario);
+  outline-offset: var(--anillo-foco);
 }
 
 .boton--primary {
@@ -32,6 +32,7 @@
 }
 
 .boton--primary:hover:not(:disabled, [aria-disabled="true"]) {
+  color: var(--texto-sobre-marca);
   background: var(--marca-primario-hover);
 }
 
@@ -47,12 +48,15 @@
 
 .boton--secondary:hover:not(:disabled, [aria-disabled="true"]) {
   border-color: var(--texto-secundario);
+  color: var(--texto-principal);
   background: var(--fondo-elevada);
 }
 
 .boton:disabled,
 .boton[aria-disabled="true"] {
-  opacity: var(--opacidad-deshabilitado);
+  border-color: var(--borde-sutil);
+  color: var(--texto-terciario);
+  background: var(--fondo-sutil);
   cursor: not-allowed;
 }
 
@@ -63,24 +67,23 @@
 
 .campo-etiqueta {
   color: var(--texto-principal);
-  font-family: var(--fuente-inter);
-  font-size: var(--tamano-cuerpo-p);
-  font-weight: var(--peso-semibold);
-  line-height: var(--interlineado-cuerpo-p);
 }
 
 .campo-control {
   width: 100%;
   min-height: var(--alto-control);
   padding-inline: var(--espacio-4);
-  border: var(--grosor-borde) solid var(--borde-fuerte);
+  border: var(--linea) solid var(--borde-fuerte);
   border-radius: var(--radio-md);
   color: var(--texto-principal);
   background: var(--fondo-superficie);
-  font: inherit;
   transition:
-    border-color var(--duracion-transicion) ease,
-    background-color var(--duracion-transicion) ease;
+    border-color var(--transicion),
+    background-color var(--transicion);
+}
+
+.campo-control::placeholder {
+  color: var(--texto-terciario);
 }
 
 .campo-control:hover:not(:disabled) {
@@ -105,9 +108,6 @@
 .campo-ayuda,
 .campo-error {
   margin: 0;
-  font-family: var(--fuente-inter);
-  font-size: var(--tamano-detalle-nota);
-  line-height: var(--interlineado-detalle-nota);
 }
 
 .campo-ayuda {
@@ -121,13 +121,9 @@
 .etiqueta {
   display: inline-flex;
   align-items: center;
-  min-height: var(--alto-control-compacto);
+  min-height: var(--espacio-6);
   padding-inline: var(--espacio-3);
   border-radius: var(--radio-completo);
-  font-family: var(--fuente-inter);
-  font-size: var(--tamano-detalle-etiqueta);
-  font-weight: var(--peso-semibold);
-  line-height: var(--interlineado-detalle-etiqueta);
 }
 
 .etiqueta--default {
@@ -142,7 +138,7 @@
 
 .tarjeta {
   min-width: 0;
-  border: var(--grosor-borde) solid var(--borde-sutil);
+  border: var(--linea) solid var(--borde-sutil);
   border-radius: var(--radio-lg);
   color: var(--texto-principal);
   background: var(--fondo-superficie);
@@ -153,23 +149,21 @@
   display: block;
   text-decoration: none;
   transition:
-    border-color var(--duracion-transicion) ease,
-    background-color var(--duracion-transicion) ease,
-    transform var(--duracion-transicion) ease;
+    border-color var(--transicion),
+    background-color var(--transicion);
 }
 
 .tarjeta--interactiva:hover:not([aria-disabled="true"]) {
   border-color: var(--borde-fuerte);
+  color: var(--texto-principal);
   background: var(--fondo-elevada);
 }
 
-.tarjeta--interactiva:focus-visible {
-  outline: var(--grosor-anillo-foco) solid var(--marca-primario);
-  outline-offset: var(--desplazamiento-anillo-foco);
-}
-
 .tarjeta--interactiva[aria-disabled="true"] {
-  opacity: var(--opacidad-deshabilitado);
+  border-color: var(--borde-sutil);
+  color: var(--texto-terciario);
+  background: var(--fondo-sutil);
+  box-shadow: none;
   cursor: not-allowed;
   pointer-events: none;
 }
@@ -178,24 +172,21 @@
   display: inline-flex;
   align-items: center;
   gap: var(--espacio-1);
-  min-height: var(--alto-selector-idioma);
+  min-height: var(--alto-control-compacto);
   padding: var(--espacio-1);
-  border: var(--grosor-borde) solid var(--borde-sutil);
+  border: var(--linea) solid var(--borde-sutil);
   border-radius: var(--radio-completo);
   background: var(--fondo-elevada);
 }
 
 .selector-idioma-opcion {
-  min-width: var(--ancho-opcion-idioma);
-  min-height: var(--alto-opcion-idioma);
+  min-width: var(--espacio-8);
+  min-height: calc(var(--espacio-6) + var(--espacio-1));
   padding-inline: var(--espacio-2);
   border: 0;
   border-radius: var(--radio-completo);
   color: var(--texto-principal);
   background: transparent;
-  font-family: var(--fuente-inter);
-  font-size: var(--tamano-detalle-nota);
-  font-weight: var(--peso-semibold);
   cursor: pointer;
 }
 
@@ -204,12 +195,13 @@
   background: var(--marca-primario);
 }
 
-.selector-idioma-opcion:hover:not([aria-pressed="true"]) {
+.selector-idioma-opcion:hover:not([aria-pressed="true"], :disabled) {
   color: var(--marca-primario);
 }
 
 .selector-idioma-opcion:disabled {
-  opacity: var(--opacidad-deshabilitado);
+  color: var(--texto-terciario);
+  background: transparent;
   cursor: not-allowed;
 }
 
@@ -223,10 +215,10 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--espacio-6);
-  width: min(calc(100% - 2 * var(--espacio-4)), var(--ancho-banner-cookie));
+  width: min(calc(100% - 2 * var(--espacio-4)), calc(var(--espacio-16) * 21.5));
   margin-inline: auto;
   padding: var(--espacio-4) var(--espacio-6);
-  border: var(--grosor-borde) solid var(--borde-sutil);
+  border: var(--linea) solid var(--borde-sutil);
   border-radius: var(--radio-lg);
   color: var(--texto-principal);
   background: var(--fondo-elevada);
@@ -239,18 +231,11 @@
 
 .aviso-cookies-titulo {
   margin: 0 0 var(--espacio-1);
-  font-family: var(--fuente-inter);
-  font-size: var(--tamano-cuerpo-p);
-  font-weight: var(--peso-semibold);
-  line-height: var(--interlineado-cuerpo-p);
 }
 
 .aviso-cookies-texto {
   margin: 0;
   color: var(--texto-secundario);
-  font-family: var(--fuente-inter);
-  font-size: var(--tamano-detalle-nota);
-  line-height: var(--interlineado-detalle-nota);
 }
 
 .aviso-cookies-acciones {
@@ -260,37 +245,23 @@
 }
 
 .aviso-cookies-acciones .boton {
-  width: var(--ancho-boton-cookie);
-  min-width: var(--ancho-boton-cookie);
+  min-width: calc(var(--espacio-16) + var(--espacio-6));
   min-height: var(--alto-control-compacto);
   padding-inline: var(--espacio-3);
-  font-size: var(--tamano-detalle-nota);
-  font-weight: var(--peso-semibold);
 }
 
 @media (max-width: 40rem) {
   .aviso-cookies {
-    right: 4px;
-    bottom: 4px;
-    left: 4px;
+    right: var(--espacio-1);
+    bottom: var(--espacio-1);
+    left: var(--espacio-1);
     align-items: stretch;
     flex-direction: column;
     gap: var(--espacio-3);
-    width: calc(100% - 8px);
+    width: calc(100% - 2 * var(--espacio-1));
     margin-inline: 0;
-    padding: 20px;
+    padding: calc(var(--espacio-4) + var(--espacio-1));
     border-radius: var(--radio-xl);
-  }
-
-  .aviso-cookies-titulo {
-    margin-bottom: var(--espacio-1);
-    font-size: 16px;
-    line-height: 24px;
-  }
-
-  .aviso-cookies-texto {
-    font-size: 14px;
-    line-height: 21px;
   }
 
   .aviso-cookies-acciones {
@@ -302,8 +273,6 @@
   .aviso-cookies-acciones .boton {
     width: 100%;
     min-width: 0;
-    min-height: 44px;
-    font-size: 14px;
-    line-height: 20px;
+    min-height: var(--alto-control);
   }
 }

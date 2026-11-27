@@ -8,10 +8,11 @@ export default function Button({
   disabled = false,
   type = "button",
   onClick,
+  tipografia = "cuerpo-p-fuerte",
   tabIndex,
   ...props
 }) {
-  const classes = ["boton", `boton--${variant}`, className]
+  const classes = ["boton", `boton--${variant}`, tipografia, className]
     .filter(Boolean)
     .join(" ");
 
