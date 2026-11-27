@@ -1,0 +1,60 @@
+/* Estados de carga, vacío y error. Medidas de las tarjetas y filas de Figma. */
+.estado-carga {
+  display: grid;
+  gap: var(--espacio-6);
+}
+
+.estado-aviso {
+  max-width: calc(var(--espacio-16) * 8); /* 512 */
+}
+
+/* Misma caja que la tarjeta de álbum: padding 12, portada y luego el texto */
+.esqueleto-tarjeta {
+  display: grid;
+  align-content: start;
+  gap: var(--espacio-2);
+  padding: var(--espacio-3);
+}
+
+.esqueleto-tarjeta .esqueleto--cuadrado {
+  margin-bottom: var(--espacio-1);
+}
+
+/* Misma altura que una fila de pista (62): portada de 40 y dos líneas */
+.esqueleto-filas {
+  display: grid;
+  gap: var(--linea-gruesa);
+}
+
+.esqueleto-fila {
+  display: grid;
+  grid-template-columns: var(--alto-icono) minmax(0, 1fr) var(--espacio-8);
+  align-items: center;
+  gap: var(--espacio-4);
+  padding: var(--espacio-2) var(--espacio-4);
+}
+
+.esqueleto-fila-portada {
+  aspect-ratio: 1;
+}
+
+.esqueleto-fila-texto {
+  display: grid;
+  gap: var(--espacio-2);
+}
+
+@media (max-width: 40rem) {
+  .esqueleto-fila {
+    grid-template-columns: var(--espacio-12) minmax(0, 1fr) var(--espacio-8);
+    gap: var(--espacio-3);
+    padding: 0;
+  }
+
+  .esqueleto-filas {
+    gap: calc(var(--espacio-3) + var(--linea-gruesa));
+  }
+
+  .esqueleto-fila-portada {
+    border-radius: var(--espacio-2);
+  }
+}

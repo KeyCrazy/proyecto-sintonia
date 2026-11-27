@@ -1,19 +1,50 @@
 import { useCatalogo } from "../hooks/useCatalogo.js";
 import { useMedia } from "../hooks/useMedia.js";
-import Button from "./base/Button.jsx";
 import Card from "./base/Card.jsx";
+import Esqueleto from "./base/Esqueleto.jsx";
+import {
+  EsqueletoFilas,
+  EsqueletoTarjetas,
+  EstadoCarga,
+  EstadoError,
+  EstadoVacio,
+} from "./Estados.jsx";
 import "./Catalogo.css";
 
-function EstadoCarga({ etiqueta }) {
-  return <p className="catalogo-estado cuerpo-p" role="status">{etiqueta}</p>;
+// Esqueleto de la grilla de géneros: mismas celdas que las tarjetas de género.
+function EsqueletoGeneros() {
+  return (
+    <div className="catalogo-lista-generos" aria-hidden="true">
+      {Array.from({ length: 12 }, (_, indice) => (
+        <Esqueleto className="catalogo-genero catalogo-genero-esqueleto" key={indice} />
+      ))}
+    </div>
+  );
 }
 
-function EstadoError({ textos, reintentar }) {
+// Esqueleto del detalle de un género: artistas, álbumes y canciones.
+function EsqueletoDetalleGenero() {
   return (
-    <div className="catalogo-error" role="alert">
-      <h3 className="titular-h4">{textos.titulo}</h3>
-      <p className="cuerpo-p">{textos.descripcion}</p>
-      <Button onClick={reintentar}>{textos.botones.reintentar}</Button>
+    <div className="catalogo-detalle">
+      <section>
+        <Esqueleto forma="texto" ancho="20%" className="catalogo-esqueleto-titulo" />
+        <div className="catalogo-artistas-lista" aria-hidden="true">
+          {Array.from({ length: 6 }, (_, indice) => (
+            <span className="catalogo-artista" key={indice}>
+              <Esqueleto forma="circulo" className="catalogo-artista-avatar" />
+              <Esqueleto forma="texto" ancho="70%" />
+            </span>
+          ))}
+        </div>
+      </section>
+      <section>
+        <Esqueleto forma="texto" ancho="25%" className="catalogo-esqueleto-titulo" />
+        <EsqueletoTarjetas cantidad={6} className="catalogo-albumes-lista" claseTarjeta="catalogo-album" />
+      </section>
+      <section>
+        <Esqueleto forma="texto" ancho="30%" className="catalogo-esqueleto-titulo" />
+        <EsqueletoFilas cantidad={5} />
+      </section>
     </div>
   );
 }
@@ -69,6 +100,9 @@ export default function Catalogo({ textos, estados }) {
     estadoGeneros,
     estadoAlbumesPopulares,
     estadoDetalle,
+    errorGeneros,
+    errorAlbumesPopulares,
+    errorDetalle,
     reintentar,
   } = useCatalogo(generoId);
   const generoLista = generos.find((genero) => genero.id === generoId);
@@ -92,12 +126,16 @@ export default function Catalogo({ textos, estados }) {
 
       <section className="catalogo-generos" aria-labelledby="catalogo-generos-titulo">
         <h2 id="catalogo-generos-titulo" className={claseSeccion}>{catalogo.generos.titulo}</h2>
-        {estadoGeneros === "cargando" && <EstadoCarga etiqueta={estados.cargando.aria} />}
+        {estadoGeneros === "cargando" && (
+          <EstadoCarga textos={textos}>
+            <EsqueletoGeneros />
+          </EstadoCarga>
+        )}
         {estadoGeneros === "error" && (
-          <EstadoError textos={estados.error} reintentar={reintentar} />
+          <EstadoError textos={textos} codigo={errorGeneros} reintentar={reintentar} />
         )}
         {estadoGeneros === "listo" && generos.length === 0 && (
-          <p className="catalogo-estado cuerpo-p">{estados.vacio.generico}</p>
+          <EstadoVacio texto={estados.vacio.generico} />
         )}
         {estadoGeneros === "listo" && generos.length > 0 && (
           <nav className="catalogo-lista-generos" aria-label={catalogo.generos.titulo}>
@@ -134,12 +172,16 @@ export default function Catalogo({ textos, estados }) {
               <span aria-hidden="true">→</span>
             </a>
           </div>
-          {estadoAlbumesPopulares === "cargando" && <EstadoCarga etiqueta={estados.cargando.aria} />}
+          {estadoAlbumesPopulares === "cargando" && (
+            <EstadoCarga textos={textos}>
+              <EsqueletoTarjetas cantidad={6} className="catalogo-albumes-lista" claseTarjeta="catalogo-album" />
+            </EstadoCarga>
+          )}
           {estadoAlbumesPopulares === "error" && (
-            <EstadoError textos={estados.error} reintentar={reintentar} />
+            <EstadoError textos={textos} codigo={errorAlbumesPopulares} reintentar={reintentar} />
           )}
           {estadoAlbumesPopulares === "listo" && albumesPopulares.length === 0 && (
-            <p className="catalogo-estado cuerpo-p">{estados.vacio.generico}</p>
+            <EstadoVacio texto={estados.vacio.generico} />
           )}
           {estadoAlbumesPopulares === "listo" && albumesPopulares.length > 0 && (
             <Albumes albumes={albumesPopulares} />
@@ -148,17 +190,19 @@ export default function Catalogo({ textos, estados }) {
       )}
 
       {generoId && estadoDetalle === "cargando" && (
-        <EstadoCarga etiqueta={estados.cargando.aria} />
+        <EstadoCarga textos={textos}>
+          <EsqueletoDetalleGenero />
+        </EstadoCarga>
       )}
       {generoId && estadoDetalle === "error" && (
-        <EstadoError textos={estados.error} reintentar={reintentar} />
+        <EstadoError textos={textos} codigo={errorDetalle} reintentar={reintentar} />
       )}
       {generoId && estadoDetalle === "listo" && detalleGenero && (
         <div className="catalogo-detalle">
           <section className="catalogo-artistas" aria-labelledby="catalogo-artistas-titulo">
             <h2 id="catalogo-artistas-titulo" className={claseSeccion}>{catalogo.genero.artistas.titulo}</h2>
             {detalleGenero.artistas.length === 0 ? (
-              <p className="catalogo-estado cuerpo-p">{estados.vacio.generico}</p>
+              <EstadoVacio texto={estados.vacio.generico} />
             ) : (
               <div className="catalogo-artistas-lista">
                 {detalleGenero.artistas.map((artista) => (
@@ -187,7 +231,7 @@ export default function Catalogo({ textos, estados }) {
               {catalogo.genero.albumes.titulo.replace("{genero}", detalleGenero.nombre)}
             </h2>
             {detalleGenero.albumes.length === 0 ? (
-              <p className="catalogo-estado cuerpo-p">{catalogo.vacio.texto}</p>
+              <EstadoVacio titulo={catalogo.vacio.titulo} texto={catalogo.vacio.texto} />
             ) : (
               <Albumes albumes={detalleGenero.albumes} />
             )}
@@ -196,7 +240,7 @@ export default function Catalogo({ textos, estados }) {
           <section className="catalogo-canciones" aria-labelledby="catalogo-canciones-titulo">
             <h2 id="catalogo-canciones-titulo" className={claseSeccion}>{catalogo.genero.canciones.titulo}</h2>
             {detalleGenero.pistas.length === 0 ? (
-              <p className="catalogo-estado cuerpo-p">{estados.vacio.generico}</p>
+              <EstadoVacio texto={estados.vacio.generico} />
             ) : (
               <Pistas pistas={detalleGenero.pistas} />
             )}

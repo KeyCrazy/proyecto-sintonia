@@ -180,6 +180,7 @@ function App() {
                     <InicioPublico
                         textos={datos.textos.paginas.inicioPublico}
                         estados={datos.textos.estados}
+                        errores={datos.textos.errores}
                     />
                 ) : activo === "catalogo" && datos.textos?.paginas?.catalogo && datos.textos?.estados ? (
                     <Catalogo

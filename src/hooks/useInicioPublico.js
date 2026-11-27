@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { crearUrlApi } from "../utils/api.js";
+import { codigoDeError, pedirJson } from "../utils/api.js";
 
 const HEX_COLOR = /^#[\da-f]{6}$/i;
 
@@ -55,6 +55,9 @@ export function useInicioPublico(incluirAlbumesPopulares = true) {
   const [albumesPopulares, setAlbumesPopulares] = useState([]);
   const [estadoGeneros, setEstadoGeneros] = useState("cargando");
   const [estadoAlbumesPopulares, setEstadoAlbumesPopulares] = useState("cargando");
+  // Código del último error (textos.errores[codigo]) de cada petición.
+  const [errorGeneros, setErrorGeneros] = useState(null);
+  const [errorAlbumesPopulares, setErrorAlbumesPopulares] = useState(null);
   const [intento, setIntento] = useState(0);
 
   useEffect(() => {
@@ -66,12 +69,9 @@ export function useInicioPublico(incluirAlbumesPopulares = true) {
 
     async function cargarGeneros() {
       try {
-        const respuesta = await fetch(crearUrlApi("generos"), {
-          signal: controlador.signal,
-        });
-        if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
-
-        const nuevosGeneros = validarGeneros(await respuesta.json());
+        const nuevosGeneros = validarGeneros(
+          await pedirJson("generos", { signal: controlador.signal, simular: true }),
+        );
         if (!vigente) return;
 
         setGeneros(nuevosGeneros);
@@ -79,25 +79,26 @@ export function useInicioPublico(incluirAlbumesPopulares = true) {
       } catch (error) {
         if (!vigente || controlador.signal.aborted) return;
         console.error("Error al cargar los géneros:", error);
+        setErrorGeneros(codigoDeError(error));
         setEstadoGeneros("error");
       }
     }
 
     async function cargarAlbumesPopulares() {
       try {
-        const respuesta = await fetch(
-          crearUrlApi("albumes?orden=populares&limite=6"),
-          { signal: controlador.signal },
+        const albumes = validarAlbumesPopulares(
+          await pedirJson("albumes?orden=populares&limite=6", {
+            signal: controlador.signal,
+            simular: true,
+          }),
         );
-        if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
-
-        const albumes = validarAlbumesPopulares(await respuesta.json());
         if (!vigente) return;
         setAlbumesPopulares(albumes);
         setEstadoAlbumesPopulares("listo");
       } catch (error) {
         if (!vigente || controlador.signal.aborted) return;
         console.error("Error al cargar los álbumes populares:", error);
+        setErrorAlbumesPopulares(codigoDeError(error));
         setEstadoAlbumesPopulares("error");
       }
     }
@@ -115,6 +116,8 @@ export function useInicioPublico(incluirAlbumesPopulares = true) {
     albumesPopulares,
     estadoGeneros,
     estadoAlbumesPopulares,
+    errorGeneros,
+    errorAlbumesPopulares,
     reintentar: () => setIntento((actual) => actual + 1),
   };
 }

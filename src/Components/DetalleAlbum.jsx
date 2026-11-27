@@ -9,8 +9,15 @@ import {
   plural,
   rellenar,
 } from "../utils/formato.js";
-import Button from "./base/Button.jsx";
 import Card from "./base/Card.jsx";
+import Esqueleto from "./base/Esqueleto.jsx";
+import {
+  EsqueletoFilas,
+  EsqueletoTarjetas,
+  EstadoCarga,
+  EstadoError,
+  EstadoVacio,
+} from "./Estados.jsx";
 import Portada from "./base/Portada.jsx";
 import Tag from "./base/Tag.jsx";
 import Icono from "./Icono.jsx";
@@ -121,7 +128,7 @@ function MasDelArtista({ album, textos, claseTitulo }) {
  * `textos` es el objeto completo de textos de la API.
  */
 export default function DetalleAlbum({ id, textos, idioma }) {
-  const { album, estado, reintentar } = useAlbum(id);
+  const { album, estado, codigoError, reintentar } = useAlbum(id);
   const movil = useMedia("(max-width: 40rem)");
   const paginaAlbum = textos.paginas.album;
   const nombreSitio = textos.sitio?.nombre ?? "Sintonía";
@@ -156,19 +163,27 @@ export default function DetalleAlbum({ id, textos, idioma }) {
       </a>
 
       {estado === "cargando" && (
-        <>
+        <EstadoCarga textos={textos} className="album-carga">
           {/* Mientras carga, el <main> sigue teniendo un título al que apuntar. */}
           <h1 id="titulo-album" className="solo-lectores">{textos.estados.cargando.titulo}</h1>
-          <p className="album-estado cuerpo-p" role="status">{textos.estados.cargando.aria}</p>
-        </>
+          <div className="album-cabecera" aria-hidden="true">
+            <Esqueleto forma="cuadrado" className="album-portada" />
+            <div className="album-info album-info-esqueleto">
+              <Esqueleto forma="texto" ancho="var(--espacio-16)" className="album-esqueleto-etiqueta" />
+              <Esqueleto forma="texto" ancho="60%" className="album-esqueleto-titulo" />
+              <Esqueleto forma="texto" ancho="35%" />
+            </div>
+          </div>
+          <EsqueletoFilas cantidad={5} />
+          <EsqueletoTarjetas cantidad={5} className="album-mas-lista" />
+        </EstadoCarga>
       )}
 
       {estado === "error" && (
-        <div className="album-error" role="alert">
-          <h1 id="titulo-album" className="titular-h4">{textos.estados.error.titulo}</h1>
-          <p className="cuerpo-p">{textos.estados.error.descripcion}</p>
-          <Button onClick={reintentar}>{textos.estados.error.botones.reintentar}</Button>
-        </div>
+        <>
+          <h1 id="titulo-album" className="solo-lectores">{textos.estados.error.titulo}</h1>
+          <EstadoError textos={textos} codigo={codigoError} reintentar={reintentar} />
+        </>
       )}
 
       {estado === "listo" && album && (
@@ -192,7 +207,11 @@ export default function DetalleAlbum({ id, textos, idioma }) {
             </div>
           </header>
 
-          <Pistas pistas={album.pistas} textos={textos} idioma={idioma} />
+          {album.pistas.length === 0 ? (
+            <EstadoVacio texto={textos.estados.vacio.generico} />
+          ) : (
+            <Pistas pistas={album.pistas} textos={textos} idioma={idioma} />
+          )}
 
           <p className="album-fecha cuerpo-p">
             <time dateTime={album.fechaPublicacion}>

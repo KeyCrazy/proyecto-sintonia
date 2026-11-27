@@ -158,24 +158,10 @@
   height: 100%;
 }
 
-.inicio-estado {
-  color: var(--texto-secundario);
-}
-
-.inicio-error {
-  padding: var(--espacio-6);
-  border: var(--linea) solid var(--borde-sutil);
-  border-radius: var(--radio-lg);
-  background: var(--fondo-superficie);
-}
-
-.inicio-error h3,
-.inicio-error p {
-  margin: 0 0 var(--espacio-3);
-}
-
-.inicio-error p {
-  color: var(--texto-secundario);
+/* Esqueleto de carga con la forma de la tarjeta de género */
+.inicio-genero-esqueleto {
+  aspect-ratio: 2 / 1;
+  border-radius: calc(var(--radio-md) + var(--espacio-1));
 }
 
 .inicio-cta {
