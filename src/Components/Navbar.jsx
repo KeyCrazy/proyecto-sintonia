@@ -17,20 +17,121 @@ function colorDeToken(color) {
 }
 
 // Avatar de la persona con sesión (Figma: «Botón · Cuenta», 40 × 40 con sus iniciales).
+// Es decorativo: el nombre siempre aparece escrito al lado o en la etiqueta del botón.
 function Avatar({ usuario, className = "" }) {
   return (
     <span
       className={`navbar-avatar cuerpo-p-fuerte ${className}`.trim()}
       style={{ "--color-avatar": colorDeToken(usuario.color) }}
-      role="img"
-      aria-label={usuario.nombre}
+      aria-hidden="true"
     >
       {usuario.iniciales}
     </span>
   );
 }
 
-const Navbar = ({ usuario, textos, cargando, error, recargar, idiomas, estadoIdiomas, reintentarIdiomas, idioma, activo, accesibilidadAbierta, abrirAccesibilidad, botonAccesibilidadRef, cambiarIdioma }) => {
+// Nombre y correo de la persona con su avatar (Figma: «Persona» del menú de cuenta).
+function Persona({ usuario }) {
+  return (
+    <div className="navbar-persona">
+      <Avatar usuario={usuario} />
+      <span className="navbar-persona-texto">
+        <span className="navbar-persona-nombre cuerpo-p-fuerte">{usuario.nombre}</span>
+        <span className="navbar-persona-correo detalle-nota">{usuario.correo}</span>
+      </span>
+    </div>
+  );
+}
+
+// Botón «Cerrar sesión»: llama a DELETE /sesion y muestra que está cerrando mientras tanto.
+function BotonCerrarSesion({ texto, cerrarSesion, className = "" }) {
+  const [cerrando, setCerrando] = useState(false);
+
+  async function cerrar() {
+    setCerrando(true);
+    try {
+      await cerrarSesion();
+    } catch (error) {
+      console.error("No se pudo cerrar la sesión:", error);
+      setCerrando(false);
+    }
+  }
+
+  return (
+    <button
+      type="button"
+      className={`navbar-cerrar-sesion cuerpo-p-fuerte ${className}`.trim()}
+      onClick={cerrar}
+      disabled={cerrando}
+      aria-busy={cerrando || undefined}
+    >
+      <Icono nombre="salir" />
+      {texto}
+    </button>
+  );
+}
+
+/**
+ * Menú de cuenta de escritorio (Figma: «Menú de cuenta (abierto)», 272 de ancho):
+ * el avatar abre un panel con la persona, un divisor y «Cerrar sesión».
+ * Se cierra con Escape, al hacer clic fuera o al salir con el tabulador.
+ */
+function MenuCuenta({ usuario, textos, cerrarSesion }) {
+  const [abierto, setAbierto] = useState(false);
+  const contenedor = useRef(null);
+  const boton = useRef(null);
+
+  useEffect(() => {
+    if (!abierto) return undefined;
+
+    function alHacerClic(evento) {
+      if (!contenedor.current?.contains(evento.target)) setAbierto(false);
+    }
+    function alPulsarTecla(evento) {
+      if (evento.key === "Escape") {
+        setAbierto(false);
+        boton.current?.focus();
+      }
+    }
+    document.addEventListener("mousedown", alHacerClic);
+    document.addEventListener("keydown", alPulsarTecla);
+    return () => {
+      document.removeEventListener("mousedown", alHacerClic);
+      document.removeEventListener("keydown", alPulsarTecla);
+    };
+  }, [abierto]);
+
+  return (
+    <div
+      className="navbar-menu-cuenta"
+      ref={contenedor}
+      onBlur={(evento) => {
+        if (!contenedor.current?.contains(evento.relatedTarget)) setAbierto(false);
+      }}
+    >
+      <button
+        ref={boton}
+        type="button"
+        className="navbar-boton-cuenta"
+        aria-label={`${textos.navbar.usuario.menu}: ${usuario.nombre}`}
+        aria-expanded={abierto}
+        aria-controls="menu-cuenta"
+        onClick={() => setAbierto((valor) => !valor)}
+      >
+        <Avatar usuario={usuario} />
+      </button>
+      {abierto && (
+        <div id="menu-cuenta" className="navbar-menu-cuenta-panel">
+          <Persona usuario={usuario} />
+          <hr className="navbar-divisor" />
+          <BotonCerrarSesion texto={textos.navbar.usuario.cerrarSesion} cerrarSesion={cerrarSesion} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+const Navbar = ({ usuario, cerrarSesion, textos, cargando, error, recargar, idiomas, estadoIdiomas, reintentarIdiomas, idioma, activo, accesibilidadAbierta, abrirAccesibilidad, botonAccesibilidadRef, cambiarIdioma }) => {
   const [abierto, setAbierto] = useState(false); // Saber si el toogle de mobile esta abierto
   const botonMenu = useRef(null);
   const nav = textos?.navbar;
@@ -76,14 +177,11 @@ const Navbar = ({ usuario, textos, cargando, error, recargar, idiomas, estadoIdi
 
         {/* Acciones del navbar movil */}
         <div className="navbar-movil-acciones">
-          {usuario ? (
-            <Avatar usuario={usuario} />
-          ) : (
-            nav && (
-              <a className="navbar-movil-ingresar cuerpo-p-fuerte" href="/#ingresar">
-                {nav.botones.invitado.ingresar}
-              </a>
-            )
+          {/* Figma móvil: con sesión la barra solo tiene el botón de menú; la cuenta va dentro del menú. */}
+          {!usuario && nav && (
+            <a className="navbar-movil-ingresar cuerpo-p-fuerte" href="/#ingresar">
+              {nav.botones.invitado.ingresar}
+            </a>
           )}
           <button
             type="button"
@@ -151,9 +249,21 @@ const Navbar = ({ usuario, textos, cargando, error, recargar, idiomas, estadoIdi
                 <Icono nombre="accesibilidad" />
               </span>
             </button>
-            {usuario && (
-              <div className="navbar-cuenta">
-                <Avatar usuario={usuario} />
+            {usuario && nav && (
+              <div className="navbar-cuenta navbar-cuenta--sesion">
+                {/* Escritorio: avatar que abre el menú de cuenta */}
+                <MenuCuenta usuario={usuario} textos={textos} cerrarSesion={cerrarSesion} />
+                {/* Móvil (Figma «Menú · sesión iniciada»): sección «Sesión iniciada» al final del menú */}
+                <section className="navbar-sesion-movil" aria-labelledby="navbar-sesion-titulo">
+                  <h2 id="navbar-sesion-titulo" className="navbar-sesion-titulo detalle-etiqueta">
+                    {textos.menuMovil.secciones.cuenta}
+                  </h2>
+                  <Persona usuario={usuario} />
+                  <BotonCerrarSesion
+                    texto={textos.menuMovil.botones.conSesion.cerrarSesion}
+                    cerrarSesion={cerrarSesion}
+                  />
+                </section>
               </div>
             )}
             {!usuario && nav && <div className="navbar-cuenta">
