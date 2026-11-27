@@ -144,6 +144,7 @@ export default function DetalleAlbum({ id, textos, idioma }) {
         boton={paginaAlbum.noEncontrado.botones.volver}
         href="/catalogo"
         tituloSitio={nombreSitio}
+        idTitulo="titulo-album"
       />
     );
   }
@@ -155,7 +156,11 @@ export default function DetalleAlbum({ id, textos, idioma }) {
       </a>
 
       {estado === "cargando" && (
-        <p className="album-estado cuerpo-p" role="status">{textos.estados.cargando.aria}</p>
+        <>
+          {/* Mientras carga, el <main> sigue teniendo un título al que apuntar. */}
+          <h1 id="titulo-album" className="solo-lectores">{textos.estados.cargando.titulo}</h1>
+          <p className="album-estado cuerpo-p" role="status">{textos.estados.cargando.aria}</p>
+        </>
       )}
 
       {estado === "error" && (

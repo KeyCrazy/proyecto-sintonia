@@ -24,9 +24,21 @@ const SECCIONES = new Set([
 // Ruta dinámica /albumes/:id (equivale a app/albumes/[id] en Next).
 const RUTA_ALBUM = /^\/albumes\/([^/]+)\/?$/;
 
+// Devuelve el id de /albumes/:id, o null si la ruta no es de álbum o está mal escrita
+// (por ejemplo /albumes/%E0, que haría fallar a decodeURIComponent).
+function leerIdAlbum(){
+    const coincidencia = window.location.pathname.match(RUTA_ALBUM);
+    if (!coincidencia) return null;
+    try {
+        return decodeURIComponent(coincidencia[1]);
+    } catch {
+        return null;
+    }
+}
+
 function leerSeccion(){
     if (window.location.pathname === "/catalogo") return "catalogo";
-    if (RUTA_ALBUM.test(window.location.pathname)) return "album";
+    if (leerIdAlbum()) return "album";
     if (window.location.pathname !== "/") return "noEncontrado";
     const seccion = window.location.hash.slice(1);
     return SECCIONES.has(seccion) ? seccion : "inicio";
@@ -52,8 +64,7 @@ function App() {
 
     const datos = useTextos(idioma);
     const idiomasDisponibles = useIdiomas();
-    const idAlbum =
-        activo === "album" ? decodeURIComponent(window.location.pathname.match(RUTA_ALBUM)[1]) : "";
+    const idAlbum = activo === "album" ? leerIdAlbum() : "";
     
     //va a sincornizar el estado del componente con el hash de la URL
     useEffect(() => {
