@@ -58,7 +58,7 @@ const Navbar = ({ textos, cargando, error, recargar, idiomas, estadoIdiomas, rei
         {/* Acciones del navbar movil */}
         <div className="navbar-movil-acciones">
           {nav && (
-            <a className="navbar-movil-ingresar" href="/#ingresar">
+            <a className="navbar-movil-ingresar cuerpo-p-fuerte" href="/#ingresar">
               {nav.botones.invitado.ingresar}
             </a>
           )}
@@ -76,22 +76,22 @@ const Navbar = ({ textos, cargando, error, recargar, idiomas, estadoIdiomas, rei
         </div>
 
         <div id="navbar-panel" className={`navbar-panel${abierto ? " is-abierto" : ""}`} aria-busy={cargando}>
-          {cargando && estados?.cargando && <p className="navbar-estado" role="status">{estados.cargando.aria}</p>}
+          {cargando && estados?.cargando && <p className="navbar-estado cuerpo-p" role="status">{estados.cargando.aria}</p>}
           {error && estados?.error && (
-            <div className="navbar-estado" role="alert">
+            <div className="navbar-estado cuerpo-p" role="alert">
               <p>{estados.error.descripcion}</p>
               <button type="button" onClick={recargar}>{estados.error.botones.reintentar}</button>
             </div>
           )}
           {nav && (
             <ul className="navbar-enlaces">
-              {enlaces.map(([clave, etiqueta]) => <li key={clave}><a href={DESTINOS[clave]} aria-current={activo === clave ? "page" : undefined} onClick={() => setAbierto(false)}>{etiqueta}</a></li>)}
+              {enlaces.map(([clave, etiqueta]) => <li key={clave}><a className="cuerpo-p" href={DESTINOS[clave]} aria-current={activo === clave ? "page" : undefined} onClick={() => setAbierto(false)}>{etiqueta}</a></li>)}
             </ul>
           )}
           <div className="navbar-utilidades">
             <div className="navbar-preferencia navbar-preferencia-idioma">
               {estadoIdiomas === "error" && estados?.error ? (
-                <div className="navbar-estado" role="alert">
+                <div className="navbar-estado cuerpo-p" role="alert">
                   <p>{estados.error.descripcion}</p>
                   <button type="button" onClick={reintentarIdiomas}>
                     {estados.error.botones.reintentar}
@@ -123,13 +123,13 @@ const Navbar = ({ textos, cargando, error, recargar, idiomas, estadoIdiomas, rei
                 abrirAccesibilidad();
               }}
             >
-              <span>{textos?.menuMovil?.secciones?.accesibilidad}</span>
+              <span className="cuerpo-m">{textos?.menuMovil?.secciones?.accesibilidad}</span>
               <span className="navbar-accesibilidad-icono">
                 <Icono nombre="accesibilidad" />
               </span>
             </button>
             {nav && <div className="navbar-cuenta">
-              <a className="navbar-ingresar" href="/#ingresar" onClick={() => setAbierto(false)}>{nav.botones.invitado.ingresar}</a>
+              <a className="navbar-ingresar cuerpo-m-fuerte" href="/#ingresar" onClick={() => setAbierto(false)}>{nav.botones.invitado.ingresar}</a>
               <Button
                 href="/#registro"
                 className="navbar-accion"

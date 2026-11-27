@@ -1,3 +1,35 @@
+/*
+ * Estilos globales. Los valores visuales salen de tokens.css (exportado de Figma).
+ * Las medidas que Figma no exporta como variable se derivan aquí con calc()
+ * a partir de los tokens de espacio, para no escribir valores sueltos.
+ * La tipografía se aplica con las clases de tokens.css (.titular-h1, .cuerpo-p, …) en el JSX.
+ */
+:root {
+    color-scheme: dark;
+
+    --linea: calc(var(--espacio-1) / 4);                                  /* 1px: bordes */
+    --linea-gruesa: calc(var(--espacio-1) / 2);                           /* 2px */
+    --anillo-foco: calc(var(--espacio-1) * 0.75);                         /* 3px */
+    --alto-control: calc(var(--espacio-12) - var(--espacio-1));           /* 44px */
+    --alto-control-compacto: calc(var(--espacio-8) + var(--espacio-1));   /* 36px */
+    --alto-icono: calc(var(--espacio-8) + var(--espacio-2));              /* 40px */
+    --alto-navbar: calc(var(--espacio-12) + var(--espacio-3));            /* 60px */
+    --alto-navbar-escritorio: calc(var(--espacio-16) + var(--espacio-2)); /* 72px */
+    --ancho-contenido: calc(var(--espacio-16) * 18);                      /* 1152px */
+    --ancho-navbar: calc(var(--espacio-16) * 23.5);                       /* 1504px */
+    --ancho-pagina: calc(var(--espacio-16) * 20);                         /* 1280px */
+    --margen-pagina: clamp(                                               /* 20px – 92px */
+        calc(var(--espacio-4) + var(--espacio-1)),
+        5.5vw,
+        calc(var(--espacio-16) + var(--espacio-6) + var(--espacio-1))
+    );
+    --velo: color-mix(in srgb, var(--fijo-negro) 55%, transparent);
+    --sombra-portada: 0 var(--espacio-1) var(--espacio-2) color-mix(in srgb, var(--fijo-negro) 22%, transparent);
+
+    /* Figma no exporta duraciones de animación: es el único valor que no sale de un token. */
+    --transicion: 160ms ease;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -5,8 +37,6 @@
 body {
     margin: 0;
     font-family: var(--fuente-inter);
-    font-size: var(--tamano-cuerpo-m);
-    line-height: var(--interlineado);
     color: var(--texto-principal);
     background: var(--fondo-base);
 }
@@ -15,38 +45,7 @@ h1,
 h2,
 h3,
 h4 {
-    overflow-wrap: anywhere;
-}
-
-h1 {
-    font-family: var(--fuente-syne);
-    font-size: var(--tamano-h1);
-    font-weight: var(--peso-bold);
-    line-height: var(--interlineado-h1);
-    letter-spacing: var(--tracking-h1);
-}
-
-h2 {
-    font-family: var(--fuente-syne);
-    font-size: var(--tamano-h2);
-    font-weight: var(--peso-bold);
-    line-height: var(--interlineado-h2);
-    letter-spacing: var(--tracking-h2);
-}
-
-h3 {
-    font-family: var(--fuente-syne);
-    font-size: var(--tamano-h3);
-    font-weight: var(--peso-bold);
-    line-height: var(--interlineado-h3);
-    letter-spacing: var(--tracking-h3);
-}
-
-h4 {
-    font-family: var(--fuente-syne);
-    font-size: var(--tamano-h4);
-    font-weight: var(--peso-bold);
-    line-height: var(--interlineado-h4);
+    overflow-wrap: break-word;
 }
 
 a {

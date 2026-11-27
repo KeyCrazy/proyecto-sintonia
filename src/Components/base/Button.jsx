@@ -2,16 +2,17 @@ import "./base.css";
 
 export default function Button({
   children,
-  variant = "primary",
+  variante = "primary",
   href,
   className = "",
   disabled = false,
   type = "button",
   onClick,
+  tipografia = "cuerpo-p-fuerte",
   tabIndex,
   ...props
 }) {
-  const classes = ["boton", `boton--${variant}`, className]
+  const classes = ["boton", `boton--${variante}`, tipografia, className]
     .filter(Boolean)
     .join(" ");
 

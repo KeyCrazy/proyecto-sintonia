@@ -23,21 +23,23 @@ export default function CookieNotice({ textos, idioma = "es" }) {
   return (
     <aside className="aviso-cookies" aria-labelledby="aviso-cookies-titulo">
       <div className="aviso-cookies-contenido">
-        <h2 className="aviso-cookies-titulo" id="aviso-cookies-titulo">
+        <h2 className="aviso-cookies-titulo cuerpo-p-fuerte" id="aviso-cookies-titulo">
           {textos.titulo}
         </h2>
-        <p className="aviso-cookies-texto">{textos.texto}</p>
+        <p className="aviso-cookies-texto detalle-nota">{textos.texto}</p>
       </div>
       <div className="aviso-cookies-acciones">
         <Button
-          variant="secondary"
+          variante="secondary"
           onClick={() => responder("rechazada")}
+          tipografia="detalle-nota-fuerte"
         >
           {textos.botones.rechazar}
         </Button>
         <Button
-          variant="secondary"
+          variante="secondary"
           onClick={() => responder("aceptada")}
+          tipografia="detalle-nota-fuerte"
         >
           {textos.botones.aceptar}
         </Button>

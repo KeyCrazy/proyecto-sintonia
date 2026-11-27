@@ -3,8 +3,8 @@ import "./base.css";
 
 export default function Field({
   id,
-  label,
-  hint,
+  etiqueta,
+  ayuda,
   error,
   className = "",
   ...inputProps
@@ -16,31 +16,31 @@ export default function Field({
     "aria-invalid": externalInvalid,
     ...restInputProps
   } = inputProps;
-  const hintId = hint ? `${inputId}-hint` : undefined;
+  const ayudaId = ayuda ? `${inputId}-ayuda` : undefined;
   const errorId = error ? `${inputId}-error` : undefined;
-  const describedBy = [externalDescribedBy, hintId, errorId]
+  const describedBy = [externalDescribedBy, ayudaId, errorId]
     .filter(Boolean)
     .join(" ") || undefined;
 
   return (
     <div className={`campo ${className}`.trim()}>
-      <label className="campo-etiqueta" htmlFor={inputId}>
-        {label}
+      <label className="campo-etiqueta cuerpo-p-fuerte" htmlFor={inputId}>
+        {etiqueta}
       </label>
       <input
-        className="campo-control"
+        className="campo-control cuerpo-m"
         id={inputId}
         aria-invalid={error ? true : externalInvalid}
         aria-describedby={describedBy}
         {...restInputProps}
       />
-      {hint && (
-        <p className="campo-ayuda" id={hintId}>
-          {hint}
+      {ayuda && (
+        <p className="campo-ayuda detalle-nota" id={ayudaId}>
+          {ayuda}
         </p>
       )}
       {error && (
-        <p className="campo-error" id={errorId} role="alert">
+        <p className="campo-error detalle-nota-fuerte" id={errorId} role="alert">
           {error}
         </p>
       )}

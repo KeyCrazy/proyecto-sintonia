@@ -69,7 +69,8 @@ function App() {
 
     useEffect(() => {
         const raiz = document.documentElement;
-        raiz.style.fontSize = `${ajustesAccesibilidad.escalaTexto}%`;
+        // Las clases tipográficas de Figma están en px: el tamaño se escala con zoom.
+        raiz.style.zoom = String(ajustesAccesibilidad.escalaTexto / 100);
         const atributos = {
             "data-contraste-alto": ajustesAccesibilidad.contrasteAlto,
             "data-reducir-movimiento": ajustesAccesibilidad.reducirMovimiento,
@@ -82,7 +83,7 @@ function App() {
         });
 
         return () => {
-            raiz.style.fontSize = "";
+            raiz.style.zoom = "";
             Object.keys(atributos).forEach((atributo) => raiz.removeAttribute(atributo));
         };
     }, [ajustesAccesibilidad]);
@@ -130,7 +131,7 @@ function App() {
 
 
     return (
-        <div className="sitio">
+        <div className="sitio cuerpo-m">
             <Navbar 
                 {...datos} 
                 idioma = {idioma} 
