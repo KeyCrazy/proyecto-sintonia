@@ -100,7 +100,7 @@ export default function AccessibilityPanel({
     >
       <section className="panel-accesibilidad-contenido">
         <header className="panel-accesibilidad-encabezado">
-          <h2 id="panel-accesibilidad-titulo">
+          <h2 id="panel-accesibilidad-titulo" className="titular-h3">
             {textos.titulo}
           </h2>
           <button
@@ -118,21 +118,23 @@ export default function AccessibilityPanel({
 
         <div className="panel-accesibilidad-opciones">
           <section className="panel-accesibilidad-tamano">
-            <h3>{textos.tamanoTexto.etiqueta}</h3>
+            <h3 className="cuerpo-p-fuerte">{textos.tamanoTexto.etiqueta}</h3>
             <div className="panel-accesibilidad-control-tamano">
               <button
                 type="button"
+                className="cuerpo-g"
                 aria-label={textos.tamanoTexto.reducir}
                 disabled={ajustes.escalaTexto <= 80}
                 onClick={() => alCambiarEscala(-10)}
               >
                 −
               </button>
-              <output aria-live="polite">
+              <output className="cuerpo-p-fuerte" aria-live="polite">
                 {textos.tamanoTexto.valor.replace("{valor}", ajustes.escalaTexto)}
               </output>
               <button
                 type="button"
+                className="cuerpo-g"
                 aria-label={textos.tamanoTexto.aumentar}
                 disabled={ajustes.escalaTexto >= 150}
                 onClick={() => alCambiarEscala(10)}
@@ -148,8 +150,8 @@ export default function AccessibilityPanel({
             return (
               <div className="panel-accesibilidad-opcion" key={clave}>
                 <span className="panel-accesibilidad-textos">
-                  <span className="panel-accesibilidad-titulo-opcion">{etiqueta}</span>
-                  <span className="panel-accesibilidad-descripcion">{ayuda}</span>
+                  <span className="panel-accesibilidad-titulo-opcion cuerpo-p-fuerte">{etiqueta}</span>
+                  <span className="panel-accesibilidad-descripcion detalle-nota">{ayuda}</span>
                 </span>
                 <button
                   type="button"
@@ -166,15 +168,15 @@ export default function AccessibilityPanel({
           })}
         </div>
 
-        <p className="panel-accesibilidad-nota">{textos.mensajes.nota}</p>
+        <p className="panel-accesibilidad-nota detalle-nota">{textos.mensajes.nota}</p>
 
         <footer className="panel-accesibilidad-pie">
-          <a href="#accesibilidad" onClick={alCerrar}>
+          <a className="detalle-nota-fuerte" href="#accesibilidad" onClick={alCerrar}>
             {textos.enlaces.declaracion}
           </a>
           <button
             type="button"
-            className="panel-accesibilidad-restablecer"
+            className="panel-accesibilidad-restablecer detalle-nota-fuerte"
             onClick={alRestablecer}
           >
             {textos.botones.restablecer}

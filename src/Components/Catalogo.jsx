@@ -1,17 +1,18 @@
 import { useCatalogo } from "../hooks/useCatalogo.js";
+import { useMedia } from "../hooks/useMedia.js";
 import Button from "./base/Button.jsx";
 import Portada from "./base/Portada.jsx";
 import "./Catalogo.css";
 
 function EstadoCarga({ etiqueta }) {
-  return <p className="catalogo-estado" role="status">{etiqueta}</p>;
+  return <p className="catalogo-estado cuerpo-p" role="status">{etiqueta}</p>;
 }
 
 function EstadoError({ textos, reintentar }) {
   return (
     <div className="catalogo-error" role="alert">
-      <h3>{textos.titulo}</h3>
-      <p>{textos.descripcion}</p>
+      <h3 className="titular-h4">{textos.titulo}</h3>
+      <p className="cuerpo-p">{textos.descripcion}</p>
       <Button onClick={reintentar}>{textos.botones.reintentar}</Button>
     </div>
   );
@@ -27,8 +28,8 @@ function Albumes({ albumes }) {
           key={album.id}
         >
           <Portada portada={album.portada} />
-          <span className="catalogo-album-titulo">{album.titulo}</span>
-          <span className="catalogo-album-artista">{album.artista.nombre}</span>
+          <span className="catalogo-album-titulo detalle-nota-fuerte">{album.titulo}</span>
+          <span className="catalogo-album-artista detalle-nota">{album.artista.nombre}</span>
         </a>
       ))}
     </div>
@@ -44,12 +45,12 @@ function Pistas({ pistas }) {
             href={`/${encodeURIComponent(pista.id)}`}
             className="catalogo-pista"
           >
-            <span className="catalogo-pista-numero">{indice + 1}</span>
+            <span className="catalogo-pista-numero detalle-nota">{indice + 1}</span>
             <span className="catalogo-pista-info">
-              <span className="catalogo-pista-titulo">{pista.titulo}</span>
-              <span className="catalogo-pista-artista">{pista.artista.nombre}</span>
+              <span className="catalogo-pista-titulo detalle-nota">{pista.titulo}</span>
+              <span className="catalogo-pista-artista detalle-nota">{pista.artista.nombre}</span>
             </span>
-            <time className="catalogo-pista-duracion">
+            <time className="catalogo-pista-duracion detalle-nota">
               {Math.floor(pista.duracionSeg / 60)}:
               {String(pista.duracionSeg % 60).padStart(2, "0")}
             </time>
@@ -73,28 +74,31 @@ export default function Catalogo({ textos, estados }) {
   } = useCatalogo(generoId);
   const generoLista = generos.find((genero) => genero.id === generoId);
   const catalogo = textos.paginas.catalogo;
+  // Las clases de Figma tienen tamaño fijo: se elige una según el ancho de pantalla.
+  const movil = useMedia("(max-width: 40rem)");
+  const claseSeccion = movil ? "titular-h4" : "titular-h3";
   const tituloGenero = detalleGenero?.nombre ?? generoLista?.nombre;
   const subtituloGenero = detalleGenero?.descripcion ?? generoLista?.descripcion;
 
   return (
     <div className={`catalogo${generoId ? " catalogo-con-genero" : ""}`}>
       <header className="catalogo-encabezado">
-        <h1 id="titulo-catalogo">
+        <h1 id="titulo-catalogo" className="titular-h2">
           {generoId ? (tituloGenero ?? catalogo.encabezado.titulo) : catalogo.encabezado.titulo}
         </h1>
-        <p>
+        <p className="detalle-nota">
           {generoId ? subtituloGenero : catalogo.encabezado.subtitulo}
         </p>
       </header>
 
       <section className="catalogo-generos" aria-labelledby="catalogo-generos-titulo">
-        <h2 id="catalogo-generos-titulo">{catalogo.generos.titulo}</h2>
+        <h2 id="catalogo-generos-titulo" className={claseSeccion}>{catalogo.generos.titulo}</h2>
         {estadoGeneros === "cargando" && <EstadoCarga etiqueta={estados.cargando.aria} />}
         {estadoGeneros === "error" && (
           <EstadoError textos={estados.error} reintentar={reintentar} />
         )}
         {estadoGeneros === "listo" && generos.length === 0 && (
-          <p className="catalogo-estado">{estados.vacio.generico}</p>
+          <p className="catalogo-estado cuerpo-p">{estados.vacio.generico}</p>
         )}
         {estadoGeneros === "listo" && generos.length > 0 && (
           <nav className="catalogo-lista-generos" aria-label={catalogo.generos.titulo}>
@@ -102,7 +106,7 @@ export default function Catalogo({ textos, estados }) {
               const seleccionado = genero.id === generoId;
               return (
                 <a
-                  className="catalogo-genero"
+                  className="catalogo-genero titular-h4"
                   href={seleccionado ? "/catalogo" : `/catalogo?genero=${encodeURIComponent(genero.id)}`}
                   key={genero.id}
                   aria-current={seleccionado ? "true" : undefined}
@@ -125,8 +129,8 @@ export default function Catalogo({ textos, estados }) {
       {!generoId && (
         <section className="catalogo-destacados" aria-labelledby="catalogo-destacados-titulo">
           <div className="catalogo-seccion-encabezado">
-            <h2 id="catalogo-destacados-titulo">{catalogo.destacados.titulo}</h2>
-            <a href="/catalogo" className="catalogo-descubrir">
+            <h2 id="catalogo-destacados-titulo" className={claseSeccion}>{catalogo.destacados.titulo}</h2>
+            <a href="/catalogo" className="catalogo-descubrir detalle-nota-fuerte">
               {catalogo.destacados.enlaces.descubrirMas}
               <span aria-hidden="true">→</span>
             </a>
@@ -136,7 +140,7 @@ export default function Catalogo({ textos, estados }) {
             <EstadoError textos={estados.error} reintentar={reintentar} />
           )}
           {estadoAlbumesPopulares === "listo" && albumesPopulares.length === 0 && (
-            <p className="catalogo-estado">{estados.vacio.generico}</p>
+            <p className="catalogo-estado cuerpo-p">{estados.vacio.generico}</p>
           )}
           {estadoAlbumesPopulares === "listo" && albumesPopulares.length > 0 && (
             <Albumes albumes={albumesPopulares} />
@@ -153,9 +157,9 @@ export default function Catalogo({ textos, estados }) {
       {generoId && estadoDetalle === "listo" && detalleGenero && (
         <div className="catalogo-detalle">
           <section className="catalogo-artistas" aria-labelledby="catalogo-artistas-titulo">
-            <h2 id="catalogo-artistas-titulo">{catalogo.genero.artistas.titulo}</h2>
+            <h2 id="catalogo-artistas-titulo" className={claseSeccion}>{catalogo.genero.artistas.titulo}</h2>
             {detalleGenero.artistas.length === 0 ? (
-              <p className="catalogo-estado">{estados.vacio.generico}</p>
+              <p className="catalogo-estado cuerpo-p">{estados.vacio.generico}</p>
             ) : (
               <div className="catalogo-artistas-lista">
                 {detalleGenero.artistas.map((artista) => (
@@ -169,8 +173,8 @@ export default function Catalogo({ textos, estados }) {
                       style={{ backgroundColor: artista.portada.fondo }}
                       aria-hidden="true"
                     />
-                    <span className="catalogo-artista-nombre">{artista.nombre}</span>
-                    <span className="catalogo-artista-etiqueta">
+                    <span className="catalogo-artista-nombre detalle-nota">{artista.nombre}</span>
+                    <span className="catalogo-artista-etiqueta detalle-nota">
                       {catalogo.genero.artistas.etiqueta}
                     </span>
                   </a>
@@ -180,20 +184,20 @@ export default function Catalogo({ textos, estados }) {
           </section>
 
           <section className="catalogo-albumes" aria-labelledby="catalogo-albumes-titulo">
-            <h2 id="catalogo-albumes-titulo">
+            <h2 id="catalogo-albumes-titulo" className={claseSeccion}>
               {catalogo.genero.albumes.titulo.replace("{genero}", detalleGenero.nombre)}
             </h2>
             {detalleGenero.albumes.length === 0 ? (
-              <p className="catalogo-estado">{catalogo.vacio.texto}</p>
+              <p className="catalogo-estado cuerpo-p">{catalogo.vacio.texto}</p>
             ) : (
               <Albumes albumes={detalleGenero.albumes} />
             )}
           </section>
 
           <section className="catalogo-canciones" aria-labelledby="catalogo-canciones-titulo">
-            <h2 id="catalogo-canciones-titulo">{catalogo.genero.canciones.titulo}</h2>
+            <h2 id="catalogo-canciones-titulo" className={claseSeccion}>{catalogo.genero.canciones.titulo}</h2>
             {detalleGenero.pistas.length === 0 ? (
-              <p className="catalogo-estado">{estados.vacio.generico}</p>
+              <p className="catalogo-estado cuerpo-p">{estados.vacio.generico}</p>
             ) : (
               <Pistas pistas={detalleGenero.pistas} />
             )}
