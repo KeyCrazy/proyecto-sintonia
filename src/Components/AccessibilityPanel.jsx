@@ -34,7 +34,7 @@ export default function AccessibilityPanel({
     if (!dialogo.open) dialogo.showModal();
 
     function posicionar() {
-      if (window.matchMedia("(max-width: 640px)").matches) {
+      if (window.matchMedia("(max-width: 40rem)").matches) {
         dialogo.style.left = "";
         dialogo.style.top = "";
         dialogo.style.right = "";
