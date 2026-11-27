@@ -9,6 +9,7 @@ function validarTextos(datos){
     const accesibilidad = textos?.accesibilidad;
     const inicio = textos?.paginas?.inicioPublico;
     const catalogo = textos?.paginas?.catalogo;
+    const album = textos?.paginas?.album;
     const etiquetas = [
         nav?.logo?.texto,
         nav?.logo?.aria,
@@ -91,6 +92,26 @@ function validarTextos(datos){
         catalogo?.genero?.canciones?.titulo,
         catalogo?.vacio?.titulo,
         catalogo?.vacio?.texto,
+        album?.seo?.titulo,
+        album?.seo?.descripcion,
+        album?.encabezado?.etiquetas?.tipo?.album,
+        album?.encabezado?.etiquetas?.resumen,
+        album?.encabezado?.canciones?.uno,
+        album?.encabezado?.canciones?.otro,
+        album?.encabezado?.duracion,
+        album?.tabla?.etiquetas?.numero,
+        album?.tabla?.etiquetas?.titulo,
+        album?.tabla?.etiquetas?.reproducciones,
+        album?.tabla?.etiquetas?.duracion,
+        album?.masDelArtista?.titulo,
+        album?.masDelArtista?.etiquetas?.anioYTipo,
+        album?.noEncontrado?.titulo,
+        album?.noEncontrado?.texto,
+        album?.noEncontrado?.botones?.volver,
+        textos?.estados?.noEncontrado?.titulo,
+        textos?.estados?.noEncontrado?.descripcion,
+        textos?.estados?.noEncontrado?.botones?.irAlInicio,
+        textos?.estados?.cargando?.titulo,
         textos?.estados?.cargando?.aria,
         textos?.estados?.vacio?.generico,
         textos?.estados?.error?.titulo,

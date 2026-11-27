@@ -92,6 +92,7 @@ export default function InicioPublico({ textos, estados }) {
                 titulo={album.titulo}
                 subtitulo={album.artista.nombre}
                 portada={album.portada}
+                href={`/albumes/${encodeURIComponent(album.id)}`}
               />
             ))}
           </div>

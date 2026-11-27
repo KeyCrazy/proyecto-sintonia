@@ -28,7 +28,7 @@ function Albumes({ albumes }) {
           titulo={album.titulo}
           subtitulo={album.artista.nombre}
           portada={album.portada}
-          href={`/${encodeURIComponent(album.id)}`}
+          href={`/albumes/${encodeURIComponent(album.id)}`}
         />
       ))}
     </div>
