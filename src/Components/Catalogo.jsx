@@ -2,7 +2,6 @@ import { useCatalogo } from "../hooks/useCatalogo.js";
 import { useMedia } from "../hooks/useMedia.js";
 import Button from "./base/Button.jsx";
 import Card from "./base/Card.jsx";
-import Portada from "./base/Portada.jsx";
 import "./Catalogo.css";
 
 function EstadoCarga({ etiqueta }) {
@@ -105,21 +104,21 @@ export default function Catalogo({ textos, estados }) {
             {generos.map((genero) => {
               const seleccionado = genero.id === generoId;
               return (
-                <a
-                  className="catalogo-genero titular-h4"
-                  href={seleccionado ? "/catalogo" : `/catalogo?genero=${encodeURIComponent(genero.id)}`}
+                <Card
+                  variante="genero"
+                  className="catalogo-genero"
                   key={genero.id}
-                  aria-current={seleccionado ? "true" : undefined}
+                  titulo={genero.nombre}
+                  portada={genero.portada}
+                  color={genero.color ?? genero.colorHex}
+                  seleccionado={seleccionado}
+                  href={seleccionado ? "/catalogo" : `/catalogo?genero=${encodeURIComponent(genero.id)}`}
                   aria-label={
                     seleccionado
                       ? `${genero.nombre}, ${catalogo.generos.aria.seleccionado}`
                       : genero.nombre
                   }
-                  style={{ "--color-genero": genero.colorHex }}
-                >
-                  <span>{genero.nombre}</span>
-                  <Portada className="catalogo-genero-portada" portada={genero.portada} />
-                </a>
+                />
               );
             })}
           </nav>

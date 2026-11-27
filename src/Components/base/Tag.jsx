@@ -8,14 +8,14 @@ import "./base.css";
  *   <Tag onClick={filtrar} seleccionado={activo}>Pop</Tag> → botón tipo filtro
  *   <Tag onClick={filtrar} disabled>Rock</Tag>         → deshabilitada
  *
- * variante: "default" (verde de marca) | "neutral" (gris).
- * tipografia: clase de Figma del texto; por defecto "detalle-etiqueta" (mayúsculas).
+ * variante (tonos de Figma): "marca" (por defecto) | "neutro" | "exito" | "alerta" | "error" | "violeta".
+ * tipografia: clase de Figma del texto; por defecto "detalle-nota-fuerte" (12px semibold).
  * Con href u onClick tiene estados de foco, hover y deshabilitado.
  */
 export default function Tag({
   children,
-  variante = "default",
-  tipografia = "detalle-etiqueta",
+  variante = "marca",
+  tipografia = "detalle-nota-fuerte",
   href,
   onClick,
   seleccionado,

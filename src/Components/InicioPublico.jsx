@@ -4,7 +4,6 @@ import ilustracionInicio from "../assets/inicio-ilustracion.png";
 import Button from "./base/Button.jsx";
 import Card from "./base/Card.jsx";
 import Tag from "./base/Tag.jsx";
-import Portada from "./base/Portada.jsx";
 import "./InicioPublico.css";
 
 function EstadoCarga({ etiqueta }) {
@@ -39,7 +38,7 @@ export default function InicioPublico({ textos, estados }) {
     <div className="inicio-publico">
       <section className="inicio-hero" aria-labelledby="titulo-inicio">
         <div className="inicio-hero-contenido">
-          <Tag className="inicio-etiqueta" tipografia="detalle-nota-fuerte">{textos.hero.etiquetas.temporada}</Tag>
+          <Tag className="inicio-etiqueta">{textos.hero.etiquetas.temporada}</Tag>
           <h1 className={`inicio-hero-titulo ${claseTitular}`} id="titulo-inicio">{textos.hero.titulo}</h1>
           <p className="inicio-hero-subtitulo cuerpo-m">{textos.hero.subtitulo}</p>
           <div className="inicio-hero-acciones">
@@ -115,18 +114,15 @@ export default function InicioPublico({ textos, estados }) {
         {estadoGeneros === "listo" && generos.length > 0 && (
           <div className="inicio-lista-generos" role="group" aria-labelledby="inicio-generos-titulo">
             {generos.slice(0, 8).map((genero) => (
-              <a
-                className="inicio-genero titular-h4"
+              <Card
+                variante="genero"
+                className="inicio-genero"
                 key={genero.id}
+                titulo={genero.nombre}
+                portada={genero.portada}
+                color={genero.color ?? genero.colorHex}
                 href={`/catalogo?genero=${encodeURIComponent(genero.id)}`}
-                style={{ "--color-genero": genero.colorHex }}
-              >
-                <span>{genero.nombre}</span>
-                <Portada
-                  className="inicio-genero-miniatura"
-                  portada={genero.portada}
-                />
-              </a>
+              />
             ))}
           </div>
         )}
