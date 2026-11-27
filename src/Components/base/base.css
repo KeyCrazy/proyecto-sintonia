@@ -21,7 +21,8 @@
 .boton:focus-visible,
 .campo-control:focus-visible,
 .selector-idioma-opcion:focus-visible,
-.tarjeta--interactiva:focus-visible {
+.tarjeta--interactiva:focus-visible,
+.etiqueta--interactiva:focus-visible {
   outline: var(--anillo-foco) solid var(--marca-primario);
   outline-offset: var(--anillo-foco);
 }
@@ -136,8 +137,50 @@
   background: var(--fondo-elevada);
 }
 
+/* Etiqueta interactiva (con href u onClick): foco, hover, seleccionada y deshabilitada */
+.etiqueta--interactiva {
+  border: var(--linea) solid transparent;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    color var(--transicion),
+    background-color var(--transicion),
+    border-color var(--transicion);
+}
+
+.etiqueta--interactiva:hover:not(:disabled, [aria-disabled="true"]) {
+  border-color: var(--borde-fuerte);
+  color: var(--texto-principal);
+  background: var(--fondo-sutil);
+}
+
+.etiqueta--interactiva[aria-pressed="true"],
+.etiqueta--interactiva[aria-current="true"] {
+  border-color: var(--marca-primario);
+  color: var(--texto-sobre-marca);
+  background: var(--marca-primario);
+}
+
+.etiqueta--interactiva[aria-pressed="true"]:hover:not(:disabled),
+.etiqueta--interactiva[aria-current="true"]:hover:not([aria-disabled="true"]) {
+  color: var(--texto-sobre-marca);
+  background: var(--marca-primario-hover);
+}
+
+.etiqueta--interactiva:disabled,
+.etiqueta--interactiva[aria-disabled="true"] {
+  border-color: transparent;
+  color: var(--texto-terciario);
+  background: var(--fondo-sutil);
+  cursor: not-allowed;
+}
+
 .tarjeta {
+  display: grid;
+  align-content: start;
+  gap: var(--espacio-1);
   min-width: 0;
+  padding: var(--espacio-3);
   border: var(--linea) solid var(--borde-sutil);
   border-radius: var(--radio-lg);
   color: var(--texto-principal);
@@ -145,8 +188,27 @@
   box-shadow: var(--sombra-tarjeta);
 }
 
+.tarjeta-portada {
+  margin-bottom: var(--espacio-2);
+}
+
+.tarjeta-etiqueta {
+  justify-self: start;
+}
+
+.tarjeta-titulo,
+.tarjeta-subtitulo {
+  overflow: hidden;
+  margin: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tarjeta-subtitulo {
+  color: var(--texto-secundario);
+}
+
 .tarjeta--interactiva {
-  display: block;
   text-decoration: none;
   transition:
     border-color var(--transicion),
@@ -165,7 +227,14 @@
   background: var(--fondo-sutil);
   box-shadow: none;
   cursor: not-allowed;
-  pointer-events: none;
+}
+
+.tarjeta--interactiva[aria-disabled="true"] .tarjeta-subtitulo {
+  color: var(--texto-terciario);
+}
+
+.tarjeta--interactiva[aria-disabled="true"] .portada {
+  filter: grayscale(1);
 }
 
 .selector-idioma {
@@ -203,6 +272,12 @@
   color: var(--texto-terciario);
   background: transparent;
   cursor: not-allowed;
+}
+
+/* Deshabilitado pero seleccionado: se sigue viendo cuál idioma está activo. */
+.selector-idioma-opcion[aria-pressed="true"]:disabled {
+  color: var(--texto-marca);
+  background: var(--marca-suave);
 }
 
 .aviso-cookies {

@@ -2,7 +2,7 @@ import "./base.css";
 
 export default function Button({
   children,
-  variant = "primary",
+  variante = "primary",
   href,
   className = "",
   disabled = false,
@@ -12,7 +12,7 @@ export default function Button({
   tabIndex,
   ...props
 }) {
-  const classes = ["boton", `boton--${variant}`, tipografia, className]
+  const classes = ["boton", `boton--${variante}`, tipografia, className]
     .filter(Boolean)
     .join(" ");
 

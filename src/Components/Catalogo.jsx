@@ -1,6 +1,7 @@
 import { useCatalogo } from "../hooks/useCatalogo.js";
 import { useMedia } from "../hooks/useMedia.js";
 import Button from "./base/Button.jsx";
+import Card from "./base/Card.jsx";
 import Portada from "./base/Portada.jsx";
 import "./Catalogo.css";
 
@@ -22,15 +23,14 @@ function Albumes({ albumes }) {
   return (
     <div className="catalogo-albumes-lista">
       {albumes.map((album) => (
-        <a
+        <Card
           className="catalogo-album"
-          href={`/${encodeURIComponent(album.id)}`}
           key={album.id}
-        >
-          <Portada portada={album.portada} />
-          <span className="catalogo-album-titulo detalle-nota-fuerte">{album.titulo}</span>
-          <span className="catalogo-album-artista detalle-nota">{album.artista.nombre}</span>
-        </a>
+          titulo={album.titulo}
+          subtitulo={album.artista.nombre}
+          portada={album.portada}
+          href={`/${encodeURIComponent(album.id)}`}
+        />
       ))}
     </div>
   );

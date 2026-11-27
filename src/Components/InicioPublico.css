@@ -19,16 +19,6 @@
   z-index: 1;
 }
 
-.inicio-etiqueta {
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--espacio-6);
-  padding-inline: var(--espacio-3);
-  border-radius: var(--radio-completo);
-  color: var(--texto-marca);
-  background: var(--marca-suave);
-}
-
 .inicio-hero-titulo {
   max-width: 9ch;
   margin: var(--espacio-6) 0 var(--espacio-12);
@@ -147,32 +137,6 @@
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: var(--espacio-4);
-}
-
-.inicio-destacado {
-  min-width: 0;
-  padding: calc(var(--espacio-2) + var(--linea-gruesa));
-  border-radius: var(--radio-lg);
-  background: var(--fondo-superficie);
-}
-
-.inicio-destacado .portada {
-  margin-bottom: calc(var(--espacio-2) + var(--linea-gruesa));
-}
-
-.inicio-destacado h3 {
-  overflow: hidden;
-  margin: 0;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.inicio-destacado p {
-  overflow: hidden;
-  margin: var(--espacio-1) 0 0;
-  color: var(--texto-secundario);
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .inicio-lista-generos {
@@ -400,16 +364,7 @@
 
   .inicio-destacado {
     flex: 0 0 calc(var(--espacio-16) * 2.5 + var(--espacio-4) + var(--espacio-1));
-    padding: var(--espacio-2);
     scroll-snap-align: start;
-  }
-
-  .inicio-destacado .portada {
-    margin-bottom: var(--espacio-2);
-  }
-
-  .inicio-destacado p {
-    margin-top: var(--espacio-1);
   }
 
   .inicio-destacados-lista {

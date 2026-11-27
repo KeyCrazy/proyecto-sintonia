@@ -63,7 +63,6 @@
 }
 
 .catalogo-genero:focus-visible,
-.catalogo-album:focus-visible,
 .catalogo-artista:focus-visible,
 .catalogo-pista:focus-visible,
 .catalogo-descubrir:focus-visible {
@@ -113,30 +112,12 @@
   gap: clamp(calc(var(--espacio-2) + var(--linea-gruesa)), 2vw, var(--espacio-6));
 }
 
-.catalogo-album {
-  display: grid;
-  align-content: start;
-  gap: var(--espacio-1);
-  min-width: 0;
-  color: var(--texto-principal);
-  text-decoration: none;
-}
-
-.catalogo-album .portada {
-  width: 100%;
-  margin-bottom: var(--espacio-1);
-  border-radius: var(--radio-md);
-}
-
-.catalogo-album-titulo,
-.catalogo-album-artista,
 .catalogo-artista-nombre {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.catalogo-album-artista,
 .catalogo-artista-etiqueta {
   color: var(--texto-secundario);
 }
@@ -294,16 +275,6 @@
   .catalogo-albumes-lista {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--espacio-3);
-  }
-
-  .catalogo-album {
-    padding: calc(var(--espacio-1) + var(--linea-gruesa));
-    border-radius: var(--radio-md);
-    background: var(--fondo-superficie);
-  }
-
-  .catalogo-album .portada {
-    margin-bottom: var(--linea-gruesa);
   }
 
   .catalogo-detalle > section {

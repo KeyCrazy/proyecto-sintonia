@@ -30,14 +30,14 @@ export default function CookieNotice({ textos, idioma = "es" }) {
       </div>
       <div className="aviso-cookies-acciones">
         <Button
-          variant="secondary"
+          variante="secondary"
           onClick={() => responder("rechazada")}
           tipografia="detalle-nota-fuerte"
         >
           {textos.botones.rechazar}
         </Button>
         <Button
-          variant="secondary"
+          variante="secondary"
           onClick={() => responder("aceptada")}
           tipografia="detalle-nota-fuerte"
         >

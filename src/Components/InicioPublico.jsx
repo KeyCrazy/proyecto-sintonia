@@ -2,6 +2,8 @@ import { useInicioPublico } from "../hooks/useInicioPublico.js";
 import { useMedia } from "../hooks/useMedia.js";
 import ilustracionInicio from "../assets/inicio-ilustracion.png";
 import Button from "./base/Button.jsx";
+import Card from "./base/Card.jsx";
+import Tag from "./base/Tag.jsx";
 import Portada from "./base/Portada.jsx";
 import "./InicioPublico.css";
 
@@ -37,12 +39,12 @@ export default function InicioPublico({ textos, estados }) {
     <div className="inicio-publico">
       <section className="inicio-hero" aria-labelledby="titulo-inicio">
         <div className="inicio-hero-contenido">
-          <span className="inicio-etiqueta detalle-nota-fuerte">{textos.hero.etiquetas.temporada}</span>
+          <Tag className="inicio-etiqueta" tipografia="detalle-nota-fuerte">{textos.hero.etiquetas.temporada}</Tag>
           <h1 className={`inicio-hero-titulo ${claseTitular}`} id="titulo-inicio">{textos.hero.titulo}</h1>
           <p className="inicio-hero-subtitulo cuerpo-m">{textos.hero.subtitulo}</p>
           <div className="inicio-hero-acciones">
             <Button href="/#registro">{textos.hero.botones.crearCuentaGratis}</Button>
-            <Button href="/catalogo" variant="secondary">{textos.hero.botones.explorarCatalogo}</Button>
+            <Button href="/catalogo" variante="secondary">{textos.hero.botones.explorarCatalogo}</Button>
           </div>
           <div className="inicio-cifras" role="group" aria-label={textos.hero.titulo}>
             <div>
@@ -85,11 +87,13 @@ export default function InicioPublico({ textos, estados }) {
         {estadoAlbumesPopulares === "listo" && albumesPopulares.length > 0 && (
           <div className="inicio-destacados-lista">
             {albumesPopulares.map((album) => (
-              <article className="inicio-destacado" key={album.id}>
-                <Portada portada={album.portada} />
-                <h3 className={movil ? "cuerpo-m-fuerte" : "cuerpo-p-fuerte"}>{album.titulo}</h3>
-                <p className={movil ? "cuerpo-p" : "detalle-nota"}>{album.artista.nombre}</p>
-              </article>
+              <Card
+                className="inicio-destacado"
+                key={album.id}
+                titulo={album.titulo}
+                subtitulo={album.artista.nombre}
+                portada={album.portada}
+              />
             ))}
           </div>
         )}
@@ -98,7 +102,7 @@ export default function InicioPublico({ textos, estados }) {
       <section className="inicio-generos" aria-labelledby="inicio-generos-titulo">
         <div className="inicio-seccion-encabezado">
           <h2 id="inicio-generos-titulo" className={claseSeccion}>{textos.generos.titulo}</h2>
-          <Button href="/catalogo" variant="secondary">{textos.generos.enlaces.verCatalogo}</Button>
+          <Button href="/catalogo" variante="secondary">{textos.generos.enlaces.verCatalogo}</Button>
         </div>
 
         {estadoGeneros === "cargando" && <EstadoCarga etiqueta={estados.cargando.aria} />}
