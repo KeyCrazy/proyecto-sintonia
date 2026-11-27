@@ -168,6 +168,20 @@
   gap: var(--espacio-4);
 }
 
+/* Avatar con las iniciales de la persona con sesión (Figma «Botón · Cuenta», 40 × 40) */
+.navbar-avatar {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  align-self: flex-start;
+  justify-content: center;
+  width: var(--alto-icono);
+  height: var(--alto-icono);
+  border-radius: var(--radio-completo);
+  color: var(--fijo-negro);
+  background: var(--color-avatar, var(--marca-primario));
+}
+
 .navbar-ingresar {
   display: inline-flex;
   align-items: center;

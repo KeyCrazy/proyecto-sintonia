@@ -7,6 +7,8 @@ import InicioPublico from "./Components/InicioPublico.jsx";
 import Catalogo from "./Components/Catalogo.jsx";
 import DetalleAlbum from "./Components/DetalleAlbum.jsx";
 import NoEncontrado from "./Components/NoEncontrado.jsx";
+import Ingresar from "./Components/Ingresar.jsx";
+import { useSesion } from "./hooks/useSesion.js";
 import AccessibilityPanel from "./Components/AccessibilityPanel.jsx";
 import { guardarCookie, leerCookie } from "./utils/cookies.js";
 import { useIdiomas } from "./hooks/useIdiomas.js";
@@ -17,6 +19,7 @@ const SECCIONES = new Set([
     "catalogo",
     "ingresar",
     "registro",
+    "recuperar-clave",
     "terminos",
     "accesibilidad",
 ]);
@@ -64,6 +67,7 @@ function App() {
 
     const datos = useTextos(idioma);
     const idiomasDisponibles = useIdiomas();
+    const { usuario } = useSesion();
     const idAlbum = activo === "album" ? leerIdAlbum() : "";
     
     //va a sincornizar el estado del componente con el hash de la URL
@@ -147,9 +151,35 @@ function App() {
 
 
 
+    const panelAccesibilidad = (
+        <AccessibilityPanel
+            abierto={accesibilidadAbierta}
+            textos={datos.textos?.accesibilidad}
+            ajustes={ajustesAccesibilidad}
+            alCambiarEscala={cambiarEscalaTexto}
+            botonActivadorRef={botonAccesibilidadRef}
+            alCerrar={() => setAccesibilidadAbierta(false)}
+            alAlternar={alternarAjusteAccesibilidad}
+            alRestablecer={restablecerAccesibilidad}
+        />
+    );
+
+    // Vista 4 · Iniciar sesión: pantalla completa sin barra ni pie, como en Figma.
+    if (activo === "ingresar" && datos.textos?.paginas?.ingresar) {
+        return (
+            <div className="sitio cuerpo-m">
+                <main id="ingresar" aria-labelledby="titulo-ingresar">
+                    <Ingresar textos={datos.textos} />
+                </main>
+                <CookieNotice textos={datos.textos?.cookies?.banner} idioma={idioma} />
+            </div>
+        );
+    }
+
     return (
         <div className="sitio cuerpo-m">
-            <Navbar 
+            <Navbar
+                usuario={usuario}
                 {...datos} 
                 idioma = {idioma} 
                 cambiarIdioma={cambiarIdioma}
@@ -161,16 +191,7 @@ function App() {
                 abrirAccesibilidad={() => setAccesibilidadAbierta(true)}
                 botonAccesibilidadRef={botonAccesibilidadRef}
             />
-            <AccessibilityPanel
-                abierto={accesibilidadAbierta}
-                textos={datos.textos?.accesibilidad}
-                ajustes={ajustesAccesibilidad}
-                alCambiarEscala={cambiarEscalaTexto}
-                botonActivadorRef={botonAccesibilidadRef}
-                alCerrar={() => setAccesibilidadAbierta(false)}
-                alAlternar={alternarAjusteAccesibilidad}
-                alRestablecer={restablecerAccesibilidad}
-            />
+            {panelAccesibilidad}
             <main
                 id={activo}
                 className={`contenido${activo === "inicio" ? " contenido-inicio" : ""}${activo === "catalogo" ? " contenido-catalogo" : ""}`}

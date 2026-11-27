@@ -72,7 +72,7 @@
 
 .campo-control {
   width: 100%;
-  min-height: var(--alto-control);
+  min-height: calc(var(--espacio-12) + var(--linea-gruesa)); /* 50, Figma «Campo» */
   padding-inline: var(--espacio-4);
   border: var(--linea) solid var(--borde-fuerte);
   border-radius: var(--radio-md);
@@ -97,6 +97,50 @@
 
 .campo-control[aria-invalid="true"] {
   border-color: var(--estado-error);
+  box-shadow: 0 0 0 var(--linea) var(--estado-error);
+}
+
+/* Campo con botón dentro (el ojo de la contraseña) */
+.campo-con-boton {
+  position: relative;
+}
+
+.campo-con-boton .campo-control {
+  padding-right: calc(var(--alto-control) + var(--espacio-1));
+}
+
+.campo-boton {
+  position: absolute;
+  top: 50%;
+  right: var(--espacio-1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--alto-icono);
+  height: var(--alto-icono);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radio-completo);
+  color: var(--texto-secundario);
+  background: transparent;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: color var(--transicion), background-color var(--transicion);
+}
+
+.campo-boton:hover:not(:disabled) {
+  color: var(--texto-principal);
+  background: var(--fondo-elevada);
+}
+
+.campo-boton:focus-visible {
+  outline: var(--anillo-foco) solid var(--marca-primario);
+  outline-offset: calc(var(--anillo-foco) * -1);
+}
+
+.campo-boton:disabled {
+  color: var(--texto-terciario);
+  cursor: not-allowed;
 }
 
 .campo-control:disabled {

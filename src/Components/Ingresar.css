@@ -1,0 +1,250 @@
+/* Vista 4 · Iniciar sesión. Medidas de Figma (web 1440): formulario de 640 con padding 56 y
+   contenido de 400; panel de marca con mosaico de 4 × 2 portadas de 160 separadas 16.
+   Móvil (390): margen 24, collage arriba, sin panel de marca. */
+.ingresar {
+  --margen-ingresar: calc(var(--espacio-12) + var(--espacio-2)); /* 56 */
+
+  display: grid;
+  grid-template-columns: minmax(0, calc(var(--espacio-16) * 10)) minmax(0, 1fr); /* 640 | resto */
+  min-height: 100vh;
+  min-height: 100dvh;
+  color: var(--texto-principal);
+  background: var(--fondo-base);
+}
+
+.ingresar p,
+.ingresar h1 {
+  margin: 0;
+}
+
+/* Columna del formulario */
+.ingresar-formulario {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: var(--margen-ingresar);
+}
+
+.ingresar-collage {
+  display: none;
+}
+
+.ingresar-logo {
+  align-self: flex-start;
+  border-radius: var(--radio-sm);
+}
+
+.ingresar-logo img {
+  display: block;
+  height: var(--espacio-8);
+}
+
+.ingresar-logo:focus-visible,
+.ingresar-enlace:focus-visible,
+.ingresar-aviso:focus-visible {
+  outline: var(--anillo-foco) solid var(--marca-primario);
+  outline-offset: var(--anillo-foco);
+}
+
+.ingresar-contenido {
+  display: grid;
+  gap: var(--espacio-6);
+  width: min(100%, calc(var(--espacio-16) * 6 + var(--espacio-4))); /* 400 */
+  margin-block: auto;
+  padding-block: var(--espacio-12);
+}
+
+.ingresar-contenido h1 {
+  max-width: calc(var(--espacio-16) * 5); /* el título va en dos líneas como en Figma */
+}
+
+.ingresar .ingresar-subtitulo {
+  margin-top: calc(var(--espacio-3) * -1);
+  color: var(--texto-secundario);
+}
+
+.ingresar-aviso {
+  border-radius: calc(var(--radio-md) + var(--linea-gruesa));
+}
+
+.ingresar-campos {
+  display: grid;
+  gap: var(--espacio-6);
+}
+
+.ingresar-opciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-2) var(--espacio-4);
+  margin-top: calc(var(--espacio-2) * -1);
+}
+
+.ingresar-mantener {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  color: var(--texto-principal);
+  cursor: pointer;
+}
+
+.ingresar-mantener input {
+  width: calc(var(--espacio-4) + var(--espacio-1));
+  height: calc(var(--espacio-4) + var(--espacio-1));
+  margin: 0;
+  accent-color: var(--marca-primario);
+  cursor: pointer;
+}
+
+.ingresar-mantener input:focus-visible {
+  outline: var(--anillo-foco) solid var(--marca-primario);
+  outline-offset: var(--linea-gruesa);
+}
+
+.ingresar-enlace {
+  border-radius: var(--radio-sm);
+  color: var(--texto-marca);
+  text-decoration: underline;
+  text-underline-offset: var(--linea-gruesa);
+}
+
+.ingresar-enlace:hover {
+  color: var(--marca-primario-hover);
+}
+
+.ingresar-boton {
+  width: 100%;
+  min-height: calc(var(--espacio-12) + var(--espacio-1)); /* 52, botón G */
+  margin-top: calc(var(--espacio-2) * -1);
+}
+
+.ingresar-registro {
+  color: var(--texto-secundario);
+  text-align: center;
+}
+
+.ingresar-legal {
+  color: var(--texto-terciario);
+}
+
+/* Panel de marca */
+.ingresar-marca {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--espacio-8);
+  min-width: 0;
+  padding: var(--margen-ingresar);
+  background: var(--fondo-superficie);
+}
+
+.ingresar-mosaico {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, calc(var(--espacio-16) * 2.5))); /* 160 */
+  gap: var(--espacio-4);
+}
+
+.ingresar .ingresar-mosaico-portada {
+  border-radius: var(--radio-lg);
+}
+
+.ingresar-marca-texto {
+  color: var(--texto-secundario);
+}
+
+@media (max-width: 64rem) {
+  .ingresar {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+  }
+
+  .ingresar-mosaico {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .ingresar-mosaico-portada:nth-child(n + 7) {
+    display: none;
+  }
+}
+
+/* Móvil: una sola columna con el collage arriba, como en Figma */
+@media (max-width: 48rem) {
+  .ingresar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ingresar-marca,
+  .ingresar-legal {
+    display: none;
+  }
+
+  .ingresar-formulario {
+    padding: var(--espacio-4) var(--espacio-6) var(--espacio-8);
+  }
+
+  .ingresar-collage {
+    position: relative;
+    display: block;
+    width: min(100%, calc(var(--espacio-16) * 5.5));
+    height: calc(var(--espacio-16) * 3 + var(--espacio-2)); /* 200 */
+    margin: 0 auto var(--espacio-4);
+  }
+
+  .ingresar .ingresar-collage-portada {
+    position: absolute;
+    border-radius: var(--radio-lg);
+    box-shadow: var(--sombra-flotante);
+  }
+
+  .ingresar-collage-1 {
+    top: 0;
+    left: 27%;
+    z-index: 1;
+    width: 44%;
+  }
+
+  .ingresar-collage-2 {
+    top: 30%;
+    left: 4%;
+    z-index: 2;
+    width: 30%;
+    transform: rotate(-12deg);
+  }
+
+  .ingresar-collage-3 {
+    top: 8%;
+    right: 4%;
+    z-index: 2;
+    width: 30%;
+    transform: rotate(12deg);
+  }
+
+  .ingresar-contenido {
+    width: 100%;
+    margin-block: var(--espacio-4) 0;
+    padding-block: 0;
+    gap: var(--espacio-4);
+  }
+
+  .ingresar-contenido h1 {
+    max-width: none;
+  }
+
+  .ingresar .ingresar-subtitulo {
+    margin-top: calc(var(--espacio-1) * -1);
+  }
+
+  .ingresar-campos {
+    gap: var(--espacio-4);
+  }
+
+  .ingresar-opciones {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 0;
+  }
+
+  .ingresar-boton {
+    margin-top: 0;
+  }
+}
