@@ -10,12 +10,15 @@ export function crearUrlApi(recurso) {
 
 // Error de la API con su estado HTTP y su `codigo` (el que usa textos.errores).
 // Si no hubo respuesta (sin red), el código es "sin_conexion".
+// `campos`: mensajes por campo de un 422 validacion. `reintentarEn`: segundos de Retry-After (429).
 export class ErrorApi extends Error {
-  constructor(estado, codigo, mensaje) {
+  constructor(estado, codigo, mensaje, { campos = null, reintentarEn = null } = {}) {
     super(mensaje || `HTTP ${estado}`);
     this.name = "ErrorApi";
     this.estado = estado;
     this.codigo = codigo;
+    this.campos = campos;
+    this.reintentarEn = reintentarEn;
   }
 }
 
@@ -41,26 +44,46 @@ function cabecerasDeSimulacion() {
   return cabeceras;
 }
 
-// GET a la API que devuelve el JSON o lanza un ErrorApi.
-export async function pedirJson(recurso, { signal, simular = false } = {}) {
+/*
+ * Petición a la API que devuelve el JSON o lanza un ErrorApi.
+ *   pedirJson("generos", { signal })
+ *   pedirJson("sesion", { metodo: "POST", cuerpo: { correo, clave }, conSesion: true })
+ * conSesion: envía y recibe la cookie httpOnly `sesion` que pone la API (credentials: "include").
+ * Así el token nunca queda en localStorage ni al alcance del JavaScript de la página.
+ */
+export async function pedirJson(
+  recurso,
+  { signal, simular = false, metodo = "GET", cuerpo, conSesion = false } = {},
+) {
+  const cabeceras = simular ? cabecerasDeSimulacion() : {};
+  if (cuerpo !== undefined) cabeceras["Content-Type"] = "application/json";
+
   let respuesta;
   try {
     respuesta = await fetch(crearUrlApi(recurso), {
+      method: metodo,
       signal,
-      headers: simular ? cabecerasDeSimulacion() : undefined,
+      headers: cabeceras,
+      body: cuerpo === undefined ? undefined : JSON.stringify(cuerpo),
+      credentials: conSesion ? "include" : "same-origin",
     });
   } catch (error) {
     if (signal?.aborted) throw error;
     throw new ErrorApi(0, "sin_conexion", error.message);
   }
 
-  const cuerpo = await respuesta.json().catch(() => null);
+  const datos = await respuesta.json().catch(() => null);
   if (!respuesta.ok) {
+    const segundos = Number(respuesta.headers.get("Retry-After"));
     throw new ErrorApi(
       respuesta.status,
-      cuerpo?.error?.codigo ?? "error_interno",
-      cuerpo?.error?.mensaje,
+      datos?.error?.codigo ?? "error_interno",
+      datos?.error?.mensaje,
+      {
+        campos: datos?.error?.campos ?? null,
+        reintentarEn: Number.isFinite(segundos) && segundos > 0 ? segundos : null,
+      },
     );
   }
-  return cuerpo;
+  return datos;
 }

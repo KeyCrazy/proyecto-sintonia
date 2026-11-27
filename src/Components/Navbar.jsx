@@ -11,7 +11,26 @@ const DESTINOS = {
   catalogo: "/catalogo",
 };
 
-const Navbar = ({ textos, cargando, error, recargar, idiomas, estadoIdiomas, reintentarIdiomas, idioma, activo, accesibilidadAbierta, abrirAccesibilidad, botonAccesibilidadRef, cambiarIdioma }) => {
+// "portada/1" (color que manda la API) -> var(--portada-1)
+function colorDeToken(color) {
+  return typeof color === "string" && color.includes("/") ? `var(--${color.replace("/", "-")})` : undefined;
+}
+
+// Avatar de la persona con sesión (Figma: «Botón · Cuenta», 40 × 40 con sus iniciales).
+function Avatar({ usuario, className = "" }) {
+  return (
+    <span
+      className={`navbar-avatar cuerpo-p-fuerte ${className}`.trim()}
+      style={{ "--color-avatar": colorDeToken(usuario.color) }}
+      role="img"
+      aria-label={usuario.nombre}
+    >
+      {usuario.iniciales}
+    </span>
+  );
+}
+
+const Navbar = ({ usuario, textos, cargando, error, recargar, idiomas, estadoIdiomas, reintentarIdiomas, idioma, activo, accesibilidadAbierta, abrirAccesibilidad, botonAccesibilidadRef, cambiarIdioma }) => {
   const [abierto, setAbierto] = useState(false); // Saber si el toogle de mobile esta abierto
   const botonMenu = useRef(null);
   const nav = textos?.navbar;
@@ -57,10 +76,14 @@ const Navbar = ({ textos, cargando, error, recargar, idiomas, estadoIdiomas, rei
 
         {/* Acciones del navbar movil */}
         <div className="navbar-movil-acciones">
-          {nav && (
-            <a className="navbar-movil-ingresar cuerpo-p-fuerte" href="/#ingresar">
-              {nav.botones.invitado.ingresar}
-            </a>
+          {usuario ? (
+            <Avatar usuario={usuario} />
+          ) : (
+            nav && (
+              <a className="navbar-movil-ingresar cuerpo-p-fuerte" href="/#ingresar">
+                {nav.botones.invitado.ingresar}
+              </a>
+            )
           )}
           <button
             type="button"
@@ -128,7 +151,12 @@ const Navbar = ({ textos, cargando, error, recargar, idiomas, estadoIdiomas, rei
                 <Icono nombre="accesibilidad" />
               </span>
             </button>
-            {nav && <div className="navbar-cuenta">
+            {usuario && (
+              <div className="navbar-cuenta">
+                <Avatar usuario={usuario} />
+              </div>
+            )}
+            {!usuario && nav && <div className="navbar-cuenta">
               <a className="navbar-ingresar cuerpo-m-fuerte" href="/#ingresar" onClick={() => setAbierto(false)}>{nav.botones.invitado.ingresar}</a>
               <Button
                 href="/#registro"
