@@ -5,6 +5,8 @@ import Footer from "./Components/Footer.jsx";
 import CookieNotice from "./Components/base/CookieNotice.jsx";
 import InicioPublico from "./Components/InicioPublico.jsx";
 import Catalogo from "./Components/Catalogo.jsx";
+import DetalleAlbum from "./Components/DetalleAlbum.jsx";
+import NoEncontrado from "./Components/NoEncontrado.jsx";
 import AccessibilityPanel from "./Components/AccessibilityPanel.jsx";
 import { guardarCookie, leerCookie } from "./utils/cookies.js";
 import { useIdiomas } from "./hooks/useIdiomas.js";
@@ -19,9 +21,13 @@ const SECCIONES = new Set([
     "accesibilidad",
 ]);
 
+// Ruta dinámica /albumes/:id (equivale a app/albumes/[id] en Next).
+const RUTA_ALBUM = /^\/albumes\/([^/]+)\/?$/;
+
 function leerSeccion(){
     if (window.location.pathname === "/catalogo") return "catalogo";
-    if (window.location.pathname !== "/") return "detalle";
+    if (RUTA_ALBUM.test(window.location.pathname)) return "album";
+    if (window.location.pathname !== "/") return "noEncontrado";
     const seccion = window.location.hash.slice(1);
     return SECCIONES.has(seccion) ? seccion : "inicio";
 }
@@ -46,8 +52,8 @@ function App() {
 
     const datos = useTextos(idioma);
     const idiomasDisponibles = useIdiomas();
-    const rutaDetalle =
-        activo === "detalle" ? decodeURIComponent(window.location.pathname.slice(1)) : "";
+    const idAlbum =
+        activo === "album" ? decodeURIComponent(window.location.pathname.match(RUTA_ALBUM)[1]) : "";
     
     //va a sincornizar el estado del componente con el hash de la URL
     useEffect(() => {
@@ -157,7 +163,7 @@ function App() {
             <main
                 id={activo}
                 className={`contenido${activo === "inicio" ? " contenido-inicio" : ""}${activo === "catalogo" ? " contenido-catalogo" : ""}`}
-                aria-labelledby={`titulo-${activo}`}
+                aria-labelledby={activo === "noEncontrado" ? "titulo-no-encontrado" : `titulo-${activo}`}
             >
                 {activo === "inicio" && datos.textos?.paginas?.inicioPublico && datos.textos?.estados ? (
                     <InicioPublico
@@ -169,10 +175,21 @@ function App() {
                         textos={datos.textos}
                         estados={datos.textos.estados}
                     />
-                ) : activo === "detalle" ? (
-                    <h1 id="titulo-detalle" className="solo-lectores">
-                        {rutaDetalle}
-                    </h1>
+                ) : activo === "album" && datos.textos?.paginas?.album && datos.textos?.estados ? (
+                    <DetalleAlbum
+                        key={idAlbum}
+                        id={idAlbum}
+                        textos={datos.textos}
+                        idioma={idioma}
+                    />
+                ) : activo === "noEncontrado" && datos.textos?.estados?.noEncontrado ? (
+                    <NoEncontrado
+                        titulo={datos.textos.estados.noEncontrado.titulo}
+                        texto={datos.textos.estados.noEncontrado.descripcion}
+                        boton={datos.textos.estados.noEncontrado.botones.irAlInicio}
+                        href="/"
+                        tituloSitio={datos.textos.sitio?.nombre}
+                    />
                 ) : (
                     <h1 id={`titulo-${activo}`} className="solo-lectores">
                         {etiquetasSeccion[activo]}

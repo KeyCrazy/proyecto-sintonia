@@ -1,0 +1,25 @@
+/* La tipografía sale de las clases de Figma aplicadas en NoEncontrado.jsx. */
+.no-encontrado {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: var(--espacio-3);
+  min-height: calc(var(--espacio-16) * 7);
+  padding: var(--espacio-8) var(--espacio-4);
+  text-align: center;
+}
+
+.no-encontrado h1,
+.no-encontrado p {
+  margin: 0;
+}
+
+.no-encontrado-codigo {
+  color: var(--marca-primario);
+}
+
+.no-encontrado .no-encontrado-texto {
+  max-width: calc(var(--espacio-16) * 7);
+  margin-bottom: var(--espacio-3);
+  color: var(--texto-secundario);
+}
