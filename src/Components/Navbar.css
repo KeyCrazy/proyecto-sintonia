@@ -168,6 +168,112 @@
   gap: var(--espacio-4);
 }
 
+/* Menú de cuenta (Figma «Menú de cuenta (abierto)»: 272 de ancho, padding 9,
+   persona de 60, divisor y opción «Cerrar sesión» de 40) */
+.navbar-menu-cuenta {
+  position: relative;
+}
+
+.navbar-boton-cuenta {
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radio-completo);
+  background: transparent;
+  cursor: pointer;
+}
+
+.navbar-boton-cuenta:hover .navbar-avatar,
+.navbar-boton-cuenta[aria-expanded="true"] .navbar-avatar {
+  box-shadow: 0 0 0 var(--linea-gruesa) var(--fondo-base), 0 0 0 calc(var(--linea-gruesa) * 2) var(--texto-secundario);
+}
+
+.navbar-boton-cuenta:focus-visible,
+.navbar-cerrar-sesion:focus-visible {
+  outline: var(--anillo-foco) solid var(--marca-primario);
+  outline-offset: var(--anillo-foco);
+}
+
+.navbar-menu-cuenta-panel {
+  position: absolute;
+  top: calc(100% + var(--espacio-2));
+  right: 0;
+  z-index: 30;
+  display: grid;
+  width: calc(var(--espacio-16) * 4 + var(--espacio-4)); /* 272 */
+  padding: calc(var(--espacio-2) + var(--linea)); /* 9 */
+  border: var(--linea) solid var(--borde-sutil);
+  border-radius: var(--radio-lg);
+  background: var(--fondo-elevada);
+  box-shadow: var(--sombra-flotante);
+}
+
+.navbar-persona {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  min-height: calc(var(--espacio-12) + var(--espacio-3)); /* 60 */
+  padding-inline: var(--espacio-2);
+}
+
+.navbar-persona-texto {
+  display: grid;
+  min-width: 0;
+}
+
+.navbar-persona-nombre,
+.navbar-persona-correo {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.navbar-persona-nombre {
+  color: var(--texto-principal);
+}
+
+.navbar-persona-correo {
+  color: var(--texto-secundario);
+}
+
+.navbar-divisor {
+  width: 100%;
+  margin: var(--espacio-1) 0;
+  border: 0;
+  border-top: var(--linea) solid var(--borde-sutil);
+}
+
+.navbar-cerrar-sesion {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  width: 100%;
+  min-height: var(--alto-icono);
+  padding-inline: var(--espacio-2);
+  border: 0;
+  border-radius: var(--radio-md);
+  color: var(--texto-principal);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--transicion), color var(--transicion);
+}
+
+.navbar-cerrar-sesion:hover:not(:disabled) {
+  color: var(--estado-error);
+  background: var(--fondo-sutil);
+}
+
+.navbar-cerrar-sesion:disabled {
+  color: var(--texto-terciario);
+  cursor: progress;
+}
+
+/* La sección de sesión del menú móvil solo se ve en móvil */
+.navbar-sesion-movil {
+  display: none;
+}
+
 /* Avatar con las iniciales de la persona con sesión (Figma «Botón · Cuenta», 40 × 40) */
 .navbar-avatar {
   display: inline-flex;
@@ -409,6 +515,35 @@
     gap: var(--espacio-2);
     width: 100%;
     margin: var(--espacio-2) 0 0;
+  }
+
+  /* Móvil con sesión: sin avatar desplegable; la sección «Sesión iniciada» va al final */
+  .navbar-menu-cuenta {
+    display: none;
+  }
+
+  .navbar-sesion-movil {
+    display: grid;
+    gap: var(--espacio-2);
+    padding-top: var(--espacio-4);
+    border-top: var(--linea) solid var(--borde-sutil);
+  }
+
+  .navbar-sesion-titulo {
+    margin: 0;
+    color: var(--texto-terciario);
+  }
+
+  .navbar-sesion-movil .navbar-persona {
+    min-height: var(--alto-control);
+    padding-inline: 0;
+  }
+
+  .navbar-sesion-movil .navbar-cerrar-sesion {
+    justify-content: center;
+    min-height: var(--alto-control);
+    border: var(--linea) solid var(--borde-sutil);
+    border-radius: var(--radio-completo);
   }
 
   .navbar-panel .navbar-ingresar {

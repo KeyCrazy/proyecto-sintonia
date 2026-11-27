@@ -67,7 +67,7 @@ function App() {
 
     const datos = useTextos(idioma);
     const idiomasDisponibles = useIdiomas();
-    const { usuario } = useSesion();
+    const { usuario, cerrarSesion } = useSesion();
     const idAlbum = activo === "album" ? leerIdAlbum() : "";
     
     //va a sincornizar el estado del componente con el hash de la URL
@@ -180,6 +180,7 @@ function App() {
         <div className="sitio cuerpo-m">
             <Navbar
                 usuario={usuario}
+                cerrarSesion={cerrarSesion}
                 {...datos} 
                 idioma = {idioma} 
                 cambiarIdioma={cambiarIdioma}
