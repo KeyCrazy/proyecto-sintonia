@@ -3,7 +3,7 @@ import {
   portadaValida,
   useInicioPublico,
 } from "./useInicioPublico.js";
-import { crearUrlApi } from "../utils/api.js";
+import { codigoDeError, pedirJson } from "../utils/api.js";
 
 function validarDetalleGenero(genero) {
   const listasValidas =
@@ -50,8 +50,11 @@ export function useCatalogo(generoId) {
     albumesPopulares,
     estadoGeneros,
     estadoAlbumesPopulares,
+    errorGeneros,
+    errorAlbumesPopulares,
     reintentar: reintentarListas,
   } = useInicioPublico(!generoId);
+  const [errorDetalle, setErrorDetalle] = useState(null);
   const [detalleGenero, setDetalleGenero] = useState(null);
   const [estadoDetalle, setEstadoDetalle] = useState(
     generoId ? "cargando" : "inactivo",
@@ -72,19 +75,19 @@ export function useCatalogo(generoId) {
 
     async function cargarDetalle() {
       try {
-        const respuesta = await fetch(
-          crearUrlApi(`generos/${encodeURIComponent(generoId)}`),
-          { signal: controlador.signal },
+        const detalle = validarDetalleGenero(
+          await pedirJson(`generos/${encodeURIComponent(generoId)}`, {
+            signal: controlador.signal,
+            simular: true,
+          }),
         );
-        if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
-
-        const detalle = validarDetalleGenero(await respuesta.json());
         if (!vigente) return;
         setDetalleGenero(detalle);
         setEstadoDetalle("listo");
       } catch (error) {
         if (!vigente || controlador.signal.aborted) return;
         console.error("Error al cargar el detalle del género:", error);
+        setErrorDetalle(codigoDeError(error));
         setEstadoDetalle("error");
       }
     }
@@ -103,6 +106,9 @@ export function useCatalogo(generoId) {
     estadoGeneros,
     estadoAlbumesPopulares,
     estadoDetalle,
+    errorGeneros,
+    errorAlbumesPopulares,
+    errorDetalle,
     reintentar: () => {
       reintentarListas();
       setIntento((actual) => actual + 1);

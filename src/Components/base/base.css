@@ -350,6 +350,111 @@
   background: var(--marca-suave);
 }
 
+/* Aviso (Figma: padding 12/16, radio 12, borde 1, icono de 20, separación 12;
+   título Cuerpo/P fuerte y texto Cuerpo/P con 2 entre ellos) */
+.aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--espacio-3);
+  padding: var(--espacio-3) var(--espacio-4);
+  border: var(--linea) solid var(--borde-fuerte);
+  border-radius: calc(var(--radio-md) + var(--linea-gruesa));
+  color: var(--texto-principal);
+  background: var(--fondo-elevada);
+}
+
+.aviso--error {
+  border-color: var(--estado-error);
+  background: var(--estado-error-suave);
+}
+
+.aviso--exito {
+  border-color: var(--estado-exito);
+  background: var(--estado-exito-suave);
+}
+
+.aviso-icono {
+  display: inline-flex;
+  flex: 0 0 auto;
+  color: var(--texto-principal);
+}
+
+.aviso--error .aviso-icono {
+  color: var(--estado-error);
+}
+
+.aviso--exito .aviso-icono {
+  color: var(--estado-exito);
+}
+
+.aviso-contenido {
+  display: grid;
+  gap: var(--linea-gruesa);
+  min-width: 0;
+}
+
+.aviso-titulo,
+.aviso-texto {
+  margin: 0;
+}
+
+.aviso-texto {
+  color: var(--texto-secundario);
+}
+
+.aviso-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espacio-2);
+  margin-top: var(--espacio-2);
+}
+
+.aviso-acciones .boton {
+  min-height: var(--alto-control-compacto);
+  padding-inline: var(--espacio-4);
+}
+
+/* Esqueleto de carga: bloque con un brillo que lo recorre */
+.esqueleto {
+  display: block;
+  width: 100%;
+  border-radius: var(--radio-sm);
+  background:
+    linear-gradient(90deg, transparent, var(--fondo-sutil), transparent) 0 0 / 50% 100% no-repeat,
+    var(--fondo-elevada);
+  animation: esqueleto-brillo 1.4s ease-in-out infinite;
+}
+
+.esqueleto--cuadrado {
+  aspect-ratio: 1;
+  border-radius: calc(var(--radio-md) + var(--linea-gruesa));
+}
+
+.esqueleto--texto {
+  height: var(--espacio-3);
+  border-radius: var(--radio-completo);
+}
+
+.esqueleto--circulo {
+  aspect-ratio: 1;
+  border-radius: var(--radio-completo);
+}
+
+@keyframes esqueleto-brillo {
+  from {
+    background-position: -100% 0, 0 0;
+  }
+  to {
+    background-position: 200% 0, 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .esqueleto {
+    animation: none;
+  }
+}
+
 .aviso-cookies {
   position: fixed;
   right: var(--espacio-4);

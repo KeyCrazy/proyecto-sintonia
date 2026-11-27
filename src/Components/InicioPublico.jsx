@@ -3,31 +3,23 @@ import { useMedia } from "../hooks/useMedia.js";
 import ilustracionInicio from "../assets/inicio-ilustracion.png";
 import Button from "./base/Button.jsx";
 import Card from "./base/Card.jsx";
+import Esqueleto from "./base/Esqueleto.jsx";
 import Tag from "./base/Tag.jsx";
+import { EsqueletoTarjetas, EstadoCarga, EstadoError, EstadoVacio } from "./Estados.jsx";
 import "./InicioPublico.css";
 
-function EstadoCarga({ etiqueta }) {
-  return <p className="inicio-estado cuerpo-p" role="status">{etiqueta}</p>;
-}
-
-function EstadoError({ textos, reintentar }) {
-  return (
-    <div className="inicio-error" role="alert">
-      <h3 className="titular-h4">{textos.titulo}</h3>
-      <p className="cuerpo-p">{textos.descripcion}</p>
-      <Button onClick={reintentar}>{textos.botones.reintentar}</Button>
-    </div>
-  );
-}
-
-export default function InicioPublico({ textos, estados }) {
+export default function InicioPublico({ textos, estados, errores }) {
   const {
     generos,
     albumesPopulares,
     estadoGeneros,
     estadoAlbumesPopulares,
+    errorGeneros,
+    errorAlbumesPopulares,
     reintentar,
   } = useInicioPublico();
+  // Los estados compartidos leen textos.estados y textos.errores.
+  const textosEstados = { estados, errores };
   // Las clases de Figma tienen tamaño fijo: se elige una según el ancho de pantalla.
   const movil = useMedia("(max-width: 30rem)");
   const muyAncha = useMedia("(min-width: 110rem)");
@@ -75,13 +67,15 @@ export default function InicioPublico({ textos, estados }) {
         </div>
 
         {estadoAlbumesPopulares === "cargando" && (
-          <EstadoCarga etiqueta={estados.cargando.aria} />
+          <EstadoCarga textos={textosEstados}>
+            <EsqueletoTarjetas cantidad={6} className="inicio-destacados-lista" claseTarjeta="inicio-destacado" />
+          </EstadoCarga>
         )}
         {estadoAlbumesPopulares === "error" && (
-          <EstadoError textos={estados.error} reintentar={reintentar} />
+          <EstadoError textos={textosEstados} codigo={errorAlbumesPopulares} reintentar={reintentar} />
         )}
         {estadoAlbumesPopulares === "listo" && albumesPopulares.length === 0 && (
-          <p className="inicio-estado cuerpo-p">{estados.vacio.generico}</p>
+          <EstadoVacio texto={estados.vacio.generico} />
         )}
         {estadoAlbumesPopulares === "listo" && albumesPopulares.length > 0 && (
           <div className="inicio-destacados-lista">
@@ -105,12 +99,20 @@ export default function InicioPublico({ textos, estados }) {
           <Button href="/catalogo" variante="secondary">{textos.generos.enlaces.verCatalogo}</Button>
         </div>
 
-        {estadoGeneros === "cargando" && <EstadoCarga etiqueta={estados.cargando.aria} />}
+        {estadoGeneros === "cargando" && (
+          <EstadoCarga textos={textosEstados}>
+            <div className="inicio-lista-generos" aria-hidden="true">
+              {Array.from({ length: 8 }, (_, indice) => (
+                <Esqueleto className="inicio-genero inicio-genero-esqueleto" key={indice} />
+              ))}
+            </div>
+          </EstadoCarga>
+        )}
         {estadoGeneros === "error" && (
-          <EstadoError textos={estados.error} reintentar={reintentar} />
+          <EstadoError textos={textosEstados} codigo={errorGeneros} reintentar={reintentar} />
         )}
         {estadoGeneros === "listo" && generos.length === 0 && (
-          <p className="inicio-estado cuerpo-p">{estados.vacio.generico}</p>
+          <EstadoVacio texto={estados.vacio.generico} />
         )}
         {estadoGeneros === "listo" && generos.length > 0 && (
           <div className="inicio-lista-generos" role="group" aria-labelledby="inicio-generos-titulo">

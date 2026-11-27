@@ -162,24 +162,15 @@
   white-space: nowrap;
 }
 
-.catalogo-estado {
-  color: var(--texto-secundario);
+/* Esqueletos de carga con la forma de lo que reemplazan */
+.catalogo-genero-esqueleto {
+  aspect-ratio: 2 / 1;
+  border-radius: calc(var(--radio-md) + var(--espacio-1));
 }
 
-.catalogo-error {
-  padding: calc(var(--espacio-4) + var(--espacio-1));
-  border: var(--linea) solid var(--borde-sutil);
-  border-radius: var(--radio-lg);
-  background: var(--fondo-elevada);
-}
-
-.catalogo-error h3,
-.catalogo-error p {
-  margin: 0 0 calc(var(--espacio-2) + var(--linea-gruesa));
-}
-
-.catalogo-error p {
-  color: var(--texto-secundario);
+.catalogo-esqueleto-titulo {
+  height: var(--espacio-6);
+  margin-bottom: var(--espacio-3);
 }
 
 @media (max-width: 40rem) {

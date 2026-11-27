@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { portadaValida } from "./useInicioPublico.js";
-import { crearUrlApi } from "../utils/api.js";
+import { codigoDeError, ErrorApi, pedirJson } from "../utils/api.js";
 
 const FECHA = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -42,10 +42,12 @@ function validarAlbum(album) {
 /**
  * Carga GET /albumes/:id.
  * estado: "cargando" | "listo" | "noEncontrado" (404 no_encontrado) | "error"
+ * codigoError: código de textos.errores cuando estado es "error".
  */
 export function useAlbum(id) {
   const [album, setAlbum] = useState(null);
   const [estado, setEstado] = useState("cargando");
+  const [codigoError, setCodigoError] = useState(null);
   const [intento, setIntento] = useState(0);
 
   useEffect(() => {
@@ -56,26 +58,23 @@ export function useAlbum(id) {
 
     async function cargar() {
       try {
-        const respuesta = await fetch(crearUrlApi(`albumes/${encodeURIComponent(id)}`), {
-          signal: controlador.signal,
-        });
-
-        if (respuesta.status === 404) {
-          const cuerpo = await respuesta.json().catch(() => null);
-          if (cuerpo?.error?.codigo === "no_encontrado" || !cuerpo) {
-            if (vigente) setEstado("noEncontrado");
-            return;
-          }
-        }
-        if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
-
-        const datos = validarAlbum(await respuesta.json());
+        const datos = validarAlbum(
+          await pedirJson(`albumes/${encodeURIComponent(id)}`, {
+            signal: controlador.signal,
+            simular: true,
+          }),
+        );
         if (!vigente) return;
         setAlbum(datos);
         setEstado("listo");
       } catch (error) {
         if (!vigente || controlador.signal.aborted) return;
+        if (error instanceof ErrorApi && error.codigo === "no_encontrado") {
+          setEstado("noEncontrado");
+          return;
+        }
         console.error("Error al cargar el álbum:", error);
+        setCodigoError(codigoDeError(error));
         setEstado("error");
       }
     }
@@ -87,5 +86,5 @@ export function useAlbum(id) {
     };
   }, [id, intento]);
 
-  return { album, estado, reintentar: () => setIntento((actual) => actual + 1) };
+  return { album, estado, codigoError, reintentar: () => setIntento((actual) => actual + 1) };
 }
